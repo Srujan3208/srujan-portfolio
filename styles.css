@@ -213,3 +213,12 @@
   background: transparent !important;
   object-fit: contain !important;
 }
+
+/* FINAL FIX: keep all hero decoration behind the portrait */
+.hero-art { position: relative !important; isolation: isolate !important; }
+.hero-art .globe { z-index: 0 !important; }
+.hero-art .orbit { z-index: 1 !important; pointer-events: none !important; }
+.hero-art .portrait-wrap { position: absolute !important; z-index: 30 !important; isolation: isolate !important; }
+.hero-art .portrait-wrap img.portrait { position: relative !important; z-index: 31 !important; mix-blend-mode: normal !important; opacity: 1 !important; filter: none !important; }
+.hero-art .code-window, .hero-art .focus-card { z-index: 10 !important; }
+.hero-art .stats { z-index: 12 !important; }
