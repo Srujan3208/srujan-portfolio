@@ -331,30 +331,3 @@
 @media(max-width:900px){.certificate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.certificate-grid{grid-template-columns:1fr}.certificate-card{padding:20px}.certificate-card h3{font-size:18px}}
 
-/* PREVIEW: motion polish + dynamic island navigation */
-@keyframes islandRise{from{opacity:0;transform:translate(-50%,18px) scale(.94)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
-@keyframes islandPulse{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,.25)}50%{box-shadow:0 0 0 7px rgba(168,85,247,0)}}
-@keyframes floatSoft{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-@keyframes orbitSpin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes glowBreath{0%,100%{filter:drop-shadow(0 0 8px rgba(168,85,247,.22))}50%{filter:drop-shadow(0 0 22px rgba(168,85,247,.42))}}
-.dynamic-island{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:1000;width:min(440px,calc(100vw - 24px));padding:7px;border:1px solid rgba(190,140,255,.3);border-radius:28px;background:rgba(12,9,23,.88);backdrop-filter:blur(24px) saturate(1.4);box-shadow:0 16px 55px rgba(0,0,0,.45),0 0 30px rgba(124,58,237,.13);animation:islandRise .65s cubic-bezier(.2,.8,.2,1) both}
-.island-toggle{width:100%;display:flex;align-items:center;gap:11px;border:0;background:transparent;color:var(--text);padding:9px 12px;cursor:pointer;border-radius:22px;font:600 13px 'Space Grotesk'}
-.island-avatar{display:grid;place-items:center;width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,#9333ea,#6d28d9);box-shadow:0 0 18px rgba(168,85,247,.35);color:white}
-.island-label{font-weight:700}.island-status{margin-left:auto;color:var(--muted);font-size:11px;display:flex;align-items:center;gap:6px}.island-status i{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 9px #34d399}.island-chevron{font-size:14px;color:#c084fc;transition:transform .3s}
-.dynamic-island.open .island-chevron{transform:rotate(180deg)}
-.island-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;max-height:0;overflow:hidden;opacity:0;transform:translateY(-6px);transition:max-height .35s ease,opacity .25s ease,transform .3s ease;padding:0 4px}
-.dynamic-island.open .island-tabs{max-height:90px;opacity:1;transform:translateY(0);padding:6px 4px 4px}
-.island-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:var(--muted);padding:9px 5px;border-radius:16px;font-size:10px;transition:background .2s,color .2s,transform .2s}
-.island-tab span{font-size:17px;color:#c084fc}.island-tab:hover{background:rgba(168,85,247,.13);color:var(--text);transform:translateY(-2px)}.island-tab.active{background:linear-gradient(135deg,rgba(124,58,237,.24),rgba(168,85,247,.08));color:#e9d5ff;border:1px solid rgba(168,85,247,.18)}
-/* Motion details */
-.hero h1,.section-head h2{animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) both}
-.hero-copy{animation:fadeUp .9s .12s both}.hero-buttons{animation:fadeUp .9s .2s both}.socials{animation:fadeUp .9s .28s both}
-.portrait-wrap{animation:floatSoft 6s ease-in-out infinite,glowBreath 5s ease-in-out infinite}
-.project,.certificate-card,.skill-grid>div,.timeline article,.recognition-grid>div{transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s}
-.project:hover,.certificate-card:hover,.skill-grid>div:hover,.recognition-grid>div:hover{transform:translateY(-7px) scale(1.012)}
-.certificate-card:hover{box-shadow:0 18px 50px rgba(124,58,237,.2)}
-.button,.nav a,.socials a{transition:transform .22s ease,box-shadow .25s ease,color .25s ease,background .25s ease}
-.button:hover,.socials a:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(124,58,237,.22)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
-@media(max-width:600px){.dynamic-island{bottom:12px;width:min(390px,calc(100vw - 18px));border-radius:25px}.island-toggle{padding:8px 10px}.island-status{font-size:10px}.island-tab{font-size:9px;padding:8px 2px}}
