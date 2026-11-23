@@ -173,3 +173,18 @@
   mix-blend-mode:screen!important;
   object-fit:contain!important;
 }
+
+/* Stronger black-background blending fix for portrait image */
+.hero-art .portrait-wrap,
+.about-visual .about-photo {
+  background: transparent !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+}
+.hero-art .portrait-wrap img.portrait,
+.about-visual .about-photo img {
+  background: transparent !important;
+  mix-blend-mode: screen !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
