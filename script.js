@@ -5,3 +5,35 @@ const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isInters
 const glow=document.querySelector('.cursor-glow');window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const sections=[...document.querySelectorAll('main section[id]')],links=[...document.querySelectorAll('.nav a')];window.addEventListener('scroll',()=>{let current='home';sections.forEach(s=>{if(scrollY>=s.offsetTop-180)current=s.id});links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current))},{passive:true});
 
+
+/* iPhone Dynamic Island menu behavior */
+(()=>{
+ const island=document.getElementById('iphoneIsland');
+ const toggle=document.getElementById('iphoneIslandToggle');
+ if(!island||!toggle)return;
+ const links=[...island.querySelectorAll('.island-choice')];
+ toggle.addEventListener('click',()=>{
+  const open=island.classList.toggle('open');
+  toggle.setAttribute('aria-expanded',String(open));
+ });
+ links.forEach(link=>link.addEventListener('click',()=>{
+  links.forEach(l=>l.classList.toggle('active',l===link));
+  island.classList.remove('open');
+  toggle.setAttribute('aria-expanded','false');
+ }));
+ const sections=links.map(link=>document.querySelector(link.getAttribute('href'))).filter(Boolean);
+ if('IntersectionObserver' in window){
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+   if(entry.isIntersecting){
+    const current=links.find(link=>link.getAttribute('href')==='#'+entry.target.id);
+    if(current)links.forEach(link=>link.classList.toggle('active',link===current));
+   }
+  }),{rootMargin:'-35% 0px -45% 0px'});
+  sections.forEach(section=>observer.observe(section));
+ }
+ document.addEventListener('click',e=>{
+  if(!island.contains(e.target)&&island.classList.contains('open')){
+   island.classList.remove('open');toggle.setAttribute('aria-expanded','false');
+  }
+ });
+})();
