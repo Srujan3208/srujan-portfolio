@@ -349,3 +349,32 @@
 .island-choice{display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#aaa;font:500 10px 'Space Grotesk';padding:9px 4px;border-radius:15px;transition:all .22s ease}.island-choice span{font-size:17px;color:#c084fc}.island-choice.active,.island-choice:hover{background:rgba(168,85,247,.15);color:#fff;transform:translateY(-2px)}
 @media(max-width:600px){.iphone-island{bottom:12px;width:min(360px,calc(100vw - 20px));}.iphone-island-main{padding:8px 12px}.island-choice{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.iphone-island,.island-live-dot,.island-wave i{animation:none!important}}
+
+/* Cinematic motion layer inspired by immersive event sites */
+#motionCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.62}
+body>*:not(#motionCanvas){position:relative;z-index:1}
+.scroll-progress{position:fixed!important;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,#8b5cf6,#22d3ee,#ec4899);z-index:2000!important;box-shadow:0 0 14px #8b5cf6;transition:width .08s linear}
+.hero{isolation:isolate;overflow:hidden}
+.hero-grid{animation:gridDrift 22s linear infinite}
+@keyframes gridDrift{to{background-position:100px 100px}}
+.hero h1{animation:heroTextIn .9s cubic-bezier(.2,.8,.2,1) both}
+.hero-copy,.hero-buttons,.socials{animation:heroTextIn .8s .25s cubic-bezier(.2,.8,.2,1) both}
+.hero-art{animation:heroArtIn 1.1s .15s cubic-bezier(.2,.8,.2,1) both}
+@keyframes heroTextIn{from{opacity:0;transform:translateY(30px);filter:blur(8px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes heroArtIn{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+.globe{animation:globeBreath 8s ease-in-out infinite}
+@keyframes globeBreath{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.035);filter:brightness(1.15)}}
+.orbit{animation-duration:18s!important}
+.orbit-b{animation-direction:reverse}
+.portrait-wrap{animation:portraitFloat 6s ease-in-out infinite}
+@keyframes portraitFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+.glass,.project-card,.skill-card,.cert-card,.timeline-item{transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s}
+.glass:hover,.project-card:hover,.skill-card:hover,.cert-card:hover{transform:translateY(-7px);border-color:rgba(168,85,247,.45);box-shadow:0 20px 55px rgba(92,32,170,.15)}
+.reveal{opacity:0;transform:translateY(36px);filter:blur(5px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1),filter .75s ease}
+.reveal.visible{opacity:1;transform:none;filter:blur(0)}
+.reveal[data-delay="1"]{transition-delay:.08s}.reveal[data-delay="2"]{transition-delay:.16s}.reveal[data-delay="3"]{transition-delay:.24s}
+.button,.nav a,.icon-btn,.island-choice{transition:all .25s cubic-bezier(.2,.8,.2,1)}
+.button:hover{transform:translateY(-3px) scale(1.025)}
+section:not(.hero){position:relative}
+section:not(.hero)::before{content:"";position:absolute;top:0;left:50%;width:min(78%,800px);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(168,85,247,.24),rgba(34,211,238,.2),transparent)}
+@media(prefers-reduced-motion:reduce){#motionCanvas{display:none}.hero h1,.hero-copy,.hero-buttons,.socials,.hero-art,.portrait-wrap,.globe,.hero-grid{animation:none!important}.reveal{opacity:1;transform:none;filter:none;transition:none}}
