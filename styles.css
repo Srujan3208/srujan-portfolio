@@ -257,3 +257,31 @@
     filter: none !important;
   }
 }
+
+/* FINAL: remove all hero orbital/dotted decorations so they cannot overlap portrait */
+.hero-art .globe,
+.hero-art .globe-lines,
+.hero-art .globe-dots,
+.hero-art .orbit,
+.hero-art .orbit-a,
+.hero-art .orbit-b {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.hero-art .portrait-wrap,
+.hero-art .portrait-wrap::before,
+.hero-art .portrait-wrap::after {
+  background: transparent !important;
+  background-image: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+.hero-art .portrait-wrap img.portrait {
+  position: relative !important;
+  z-index: 2 !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: none !important;
+  background: transparent !important;
+}
