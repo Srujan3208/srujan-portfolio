@@ -104,3 +104,9 @@
 .project.featured .project-top{margin-top:0!important}.project.featured .project-icon{margin:22px 0 15px!important}.project.featured h3{font-size:24px!important;margin:0 0 10px!important}.project.featured p{min-height:unset!important}.project.featured .project-links{padding-bottom:0!important;margin-top:22px!important}
 .project-logo{display:none!important}
 @media(max-width:760px){.project.featured{grid-column:auto!important;padding:24px!important}.project.featured .project-links{padding-bottom:0!important}}
+
+/* Featured TREAN AI card now matches every other project card in size */
+.project.featured{grid-column:auto!important;display:flex!important;flex-direction:column!important;min-height:310px!important;padding:28px!important;background:linear-gradient(145deg,#17112b,#0d0a18)!important}
+.project.featured .project-top,.project.featured .project-icon,.project.featured h3,.project.featured p,.project.featured .chips,.project.featured .project-links{grid-column:auto!important;grid-row:auto!important;margin-left:0!important;margin-right:0!important}
+.project.featured .project-top{margin-top:0!important}.project.featured .project-icon{margin:22px 0 15px!important}.project.featured h3{font-size:24px!important;margin:0 0 10px!important}.project.featured p{min-height:unset!important}.project.featured .project-links{padding-bottom:0!important;margin-top:auto!important;padding-top:24px!important}
+@media(max-width:760px){.project.featured{grid-column:auto!important;min-height:unset!important;padding:24px!important}}
