@@ -137,3 +137,6 @@
 /* Transparent portrait assets: retain natural alpha and preserve dark clothing detail */
 .hero .portrait,.about-photo img{background:transparent!important;mix-blend-mode:normal!important;filter:drop-shadow(0 0 22px rgba(168,85,247,.24))!important;}
 .portrait-wrap,.about-visual,.about-photo{background:transparent!important;}
+
+/* AI cutout fallback: blend black matte into the dark site background */
+.hero .portrait,.about-photo img{mix-blend-mode:screen!important;background:transparent!important;filter:contrast(1.08) brightness(1.03)!important;}
