@@ -25,3 +25,13 @@
  .orbit{width:310px;height:88px;top:59%;}
  .orbit-b{width:270px;height:70px;}
 }
+
+/* Prevent the hero artwork from visually stacking over the Projects section */
+.hero{isolation:isolate;z-index:0;overflow:hidden}
+.hero-art{isolation:isolate}
+.projects{position:relative;z-index:3;isolation:isolate;background:#090812;clear:both;}
+.project-grid,.project{position:relative;z-index:1}
+/* Never leave project content invisible if scroll-reveal fails */
+.projects.reveal,.projects .project.reveal{opacity:1;transform:none}
+.projects .project{opacity:1;transform:none}
+@media(max-width:760px){.hero{overflow:hidden}.projects{margin-top:0;padding-top:80px}.project-grid{display:grid;grid-template-columns:1fr;gap:18px}.project{min-height:unset;padding:24px}.project p{min-height:unset}.project-links{flex-wrap:wrap}}
