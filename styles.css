@@ -97,3 +97,10 @@
 .project-logo .logo-mark{display:none!important}
 .project-logo{gap:12px}
 .project-logo small{font-size:9px;letter-spacing:1.8px}
+
+/* Final project section: no images/logos, just the small category icon and clean project information */
+.project.featured{display:flex!important;flex-direction:column!important;grid-column:span 2!important;min-height:unset!important;padding:28px!important;background:linear-gradient(145deg,#17112b,#0d0a18)!important}
+.project.featured .project-top,.project.featured .project-icon,.project.featured h3,.project.featured p,.project.featured .chips,.project.featured .project-links{grid-column:auto!important;grid-row:auto!important;margin-left:0!important;margin-right:0!important}
+.project.featured .project-top{margin-top:0!important}.project.featured .project-icon{margin:22px 0 15px!important}.project.featured h3{font-size:24px!important;margin:0 0 10px!important}.project.featured p{min-height:unset!important}.project.featured .project-links{padding-bottom:0!important;margin-top:22px!important}
+.project-logo{display:none!important}
+@media(max-width:760px){.project.featured{grid-column:auto!important;padding:24px!important}.project.featured .project-links{padding-bottom:0!important}}
