@@ -168,22 +168,6 @@
 
 
 
-/* Stronger black-background blending fix for portrait image */
-.hero-art .portrait-wrap,
-.about-visual .about-photo {
-  background: transparent !important;
-  isolation: isolate !important;
-  overflow: visible !important;
-}
-.hero-art .portrait-wrap img.portrait,
-.about-visual .about-photo img {
-  background: transparent !important;
-  mix-blend-mode: screen !important;
-  filter: none !important;
-  opacity: 1 !important;
-}
-
-
 /* FINAL PORTRAIT VISIBILITY FIX: remove blend modes that hide portraits */
 .hero .portrait,
 .about-photo img {
@@ -210,4 +194,22 @@
   opacity: 1 !important;
   filter: drop-shadow(0 0 22px rgba(168,85,247,.24)) !important;
   background: transparent !important;
+}
+
+/* Clean portrait rendering: preserve the source image's clothing and colors */
+.hero-art .portrait-wrap,
+.about-visual .about-photo {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 0 28px rgba(139,92,246,.32)) !important;
+}
+.hero-art .portrait-wrap img.portrait,
+.about-visual .about-photo img {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  background: transparent !important;
+  object-fit: contain !important;
 }
