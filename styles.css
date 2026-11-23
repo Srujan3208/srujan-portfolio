@@ -222,3 +222,38 @@
 .hero-art .portrait-wrap img.portrait { position: relative !important; z-index: 31 !important; mix-blend-mode: normal !important; opacity: 1 !important; filter: none !important; }
 .hero-art .code-window, .hero-art .focus-card { z-index: 10 !important; }
 .hero-art .stats { z-index: 12 !important; }
+
+/* MOBILE: remove decorative layers that visually contaminate the portrait/clothing */
+@media (max-width: 760px) {
+  .hero-art .globe,
+  .hero-art .globe-lines,
+  .hero-art .globe-dots,
+  .hero-art .orbit,
+  .hero-art .orbit-b {
+    display: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    animation: none !important;
+  }
+  .hero-art,
+  .hero-art::before,
+  .hero-art::after,
+  .portrait-wrap,
+  .portrait-wrap::before,
+  .portrait-wrap::after {
+    background: transparent !important;
+    background-image: none !important;
+    mix-blend-mode: normal !important;
+  }
+  .hero-art .portrait-wrap {
+    z-index: 30 !important;
+    isolation: isolate !important;
+  }
+  .hero-art .portrait {
+    z-index: 31 !important;
+    opacity: 1 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+  }
+}
