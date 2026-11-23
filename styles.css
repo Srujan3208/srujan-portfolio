@@ -331,3 +331,21 @@
 @media(max-width:900px){.certificate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.certificate-grid{grid-template-columns:1fr}.certificate-card{padding:20px}.certificate-card h3{font-size:18px}}
 
+
+/* iPhone-inspired Dynamic Island */
+@keyframes islandPop{0%{opacity:0;transform:translate(-50%,24px) scale(.82)}70%{transform:translate(-50%,-3px) scale(1.02)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes islandGlow{0%,100%{box-shadow:0 0 0 rgba(168,85,247,0),0 14px 40px rgba(0,0,0,.35)}50%{box-shadow:0 0 24px rgba(168,85,247,.16),0 14px 40px rgba(0,0,0,.35)}}
+@keyframes dotPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(52,211,153,.55)}50%{transform:scale(1.15);box-shadow:0 0 0 5px rgba(52,211,153,0)}}
+@keyframes wave{0%,100%{height:5px}50%{height:14px}}
+@keyframes menuOpen{from{opacity:0;transform:translateY(-8px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.iphone-island{position:fixed;z-index:1000;left:50%;bottom:24px;transform:translateX(-50%);width:min(370px,calc(100vw - 28px));border-radius:32px;background:rgba(8,8,13,.94);border:1px solid rgba(255,255,255,.1);padding:7px;backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);animation:islandPop .65s cubic-bezier(.18,.89,.32,1.28) both,islandGlow 5s ease-in-out 1s infinite;color:#fff}
+.iphone-island-main{display:flex;width:100%;align-items:center;gap:12px;border:0;background:transparent;color:white;padding:9px 14px;border-radius:25px;cursor:pointer;text-align:left}
+.island-live-dot{width:8px;height:8px;border-radius:50%;background:#34d399;animation:dotPulse 2s infinite;flex-shrink:0}
+.island-now{font:600 13px 'Space Grotesk';display:flex;flex-direction:column;line-height:1.2;letter-spacing:.2px}.island-now small{font:500 8px 'Space Grotesk';letter-spacing:1.8px;color:#8b8b98;margin-top:3px}
+.island-wave{display:flex;align-items:center;gap:3px;height:18px;margin-left:auto}.island-wave i{width:3px;height:5px;border-radius:4px;background:linear-gradient(#c084fc,#7c3aed);animation:wave .7s ease-in-out infinite}.island-wave i:nth-child(2){animation-delay:.15s}.island-wave i:nth-child(3){animation-delay:.3s}.island-wave i:nth-child(4){animation-delay:.45s}
+.island-arrow{color:#aaa;font-size:15px;transition:transform .3s ease}.iphone-island.open .island-arrow{transform:rotate(180deg)}
+.iphone-island-menu{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;max-height:0;overflow:hidden;opacity:0;padding:0 4px;transition:max-height .4s cubic-bezier(.2,.8,.2,1),opacity .25s,padding .3s}
+.iphone-island.open .iphone-island-menu{max-height:90px;opacity:1;padding:6px 4px 4px;animation:menuOpen .25s ease both}
+.island-choice{display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:#aaa;font:500 10px 'Space Grotesk';padding:9px 4px;border-radius:15px;transition:all .22s ease}.island-choice span{font-size:17px;color:#c084fc}.island-choice.active,.island-choice:hover{background:rgba(168,85,247,.15);color:#fff;transform:translateY(-2px)}
+@media(max-width:600px){.iphone-island{bottom:12px;width:min(360px,calc(100vw - 20px));}.iphone-island-main{padding:8px 12px}.island-choice{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.iphone-island,.island-live-dot,.island-wave i{animation:none!important}}
