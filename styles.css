@@ -165,3 +165,11 @@
 .scroll-hint{bottom:5px!important}
 }
 @media(max-width:430px){.hero{min-height:1080px!important}.hero h1{font-size:68px!important;letter-spacing:-4px!important}.hero-art{min-height:610px!important}.portrait-wrap{width:238px!important;height:330px!important;bottom:205px!important}.code-window{width:158px!important;top:0!important}.focus-card{bottom:16px!important;width:100%!important;padding:12px 14px!important}.focus-card a{font-size:10px!important;padding:6px 0!important}.stats{bottom:19px!important}.stats strong{font-size:18px!important}.stats small{font-size:8px!important}}
+
+/* CSS blend workaround: make the portrait's pure-black backdrop blend into the dark portfolio */
+.hero .portrait,
+.about-photo img{
+  background:transparent!important;
+  mix-blend-mode:screen!important;
+  object-fit:contain!important;
+}
