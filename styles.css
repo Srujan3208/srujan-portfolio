@@ -91,3 +91,9 @@
 .logo-trean .logo-mark{background:linear-gradient(135deg,#7c3aed,#3b1b78)}.logo-rail .logo-mark{background:linear-gradient(135deg,#0f7fbb,#283b8f)}.logo-org .logo-mark{background:linear-gradient(135deg,#1d9c55,#145b36)}.logo-cine .logo-mark{background:linear-gradient(135deg,#e14b80,#6c267c)}.logo-dev .logo-mark{background:linear-gradient(135deg,#18b7a3,#175b83)}.logo-nav .logo-mark{background:linear-gradient(135deg,#f4a62a,#7c4211)}
 .project.featured .project-logo{height:100%;min-height:320px;border-bottom:0;border-right:1px solid rgba(180,120,255,.2)}
 @media(max-width:760px){.project-logo,.project.featured .project-logo{height:170px!important;min-height:170px!important;border-right:0;border-bottom:1px solid rgba(180,120,255,.2)}}
+
+/* Use the original project favicon/brand image as the card logo */
+.project-logo .brand-logo{width:66px;height:66px;object-fit:contain;border-radius:17px;padding:9px;background:rgba(255,255,255,.06);border:1px solid rgba(190,130,255,.2);box-shadow:0 0 28px rgba(135,70,255,.18);z-index:1}
+.project-logo .logo-mark{display:none!important}
+.project-logo{gap:12px}
+.project-logo small{font-size:9px;letter-spacing:1.8px}
