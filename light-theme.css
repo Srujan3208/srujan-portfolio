@@ -1,0 +1,35 @@
+/* Clean light portfolio theme — no black sheet backgrounds */
+:root{--bg:#f8f7fb;--panel:#fff;--panel2:#f0eafb;--text:#201633;--muted:#6f6680;--border:rgba(109,40,217,.16);--glow:0 8px 32px rgba(109,40,217,.08)}
+html,body{background:#f8f7fb!important;color:#201633!important}
+body:before{background:radial-gradient(ellipse at 72% 20%,rgba(168,85,247,.07),transparent 40%),radial-gradient(ellipse at 0% 80%,rgba(124,58,237,.04),transparent 30%)!important}
+.noise{display:none!important}
+.topbar{background:rgba(248,247,251,.9)!important;border-bottom:1px solid #e8e1f2!important}
+.nav a{color:#6f6680!important}.nav a:hover,.nav a.active{color:#25163d!important}
+.icon-btn,.menu-btn,.button-outline,.button-ghost,.filter{background:#fff!important;color:#392653!important}
+.hero,.section,.projects,.skills{background:transparent!important}
+.hero-grid{opacity:.35}
+.hero h1{background:linear-gradient(180deg,#281b40 30%,#8b5cf6)!important;-webkit-background-clip:text!important;color:transparent!important}
+.roles,.socials a,.hero-copy b,.about-text b{color:#6d28d9!important}
+.hero-copy,.section-head p,.about-text p,.project p,.timeline p{color:#6f6680!important}
+.glass,.code-window,.focus-card,.stats,.about-visual,.project,.timeline article>div:last-child,.skill-grid>div,.recognition-grid>div,.contact-panel,.contact-links a,.contact-links div{background:#fff!important;color:#201633!important;backdrop-filter:none!important;box-shadow:0 8px 28px rgba(48,24,78,.06)!important;border-color:#e7def3!important}
+.code-window pre{color:#43345b!important}.green{color:#15803d!important}.purple{color:#7c3aed!important}
+.focus-card a,.contact-links a,.contact-links div{color:#392653!important}
+.card-label,.project-top,.timeline time,.stats small,.skill-grid span,.scroll-hint,footer{color:#6f6680!important}
+.about-visual{background:transparent!important;min-height:0!important;border:0!important;box-shadow:none!important}
+.about-photo{background:transparent!important}
+.about-photo img,.portrait{background:transparent!important}
+.about-caption{background:linear-gradient(transparent,rgba(248,247,251,.94))!important;color:#43345b!important}
+.globe{background:radial-gradient(circle at 50% 40%,rgba(168,85,247,.08),transparent 60%)!important;box-shadow:none!important;border-color:#cdb9ed!important}
+.globe-lines{opacity:.25}.globe-dots{opacity:.12}
+.orbit{box-shadow:none!important;border-color:#b89ae5!important}
+.project{background:#fff!important}.project.featured{background:#fbf8ff!important}
+.project h3,.timeline h3{color:#201633!important}
+.chips span{background:#f5f0fb!important;color:#5c437b!important;border-color:#e7def3!important}
+.skill-grid>div{background:#fff!important}
+.skill-grid b{color:#7c3aed!important}
+.recognition-grid h3{color:#7c3aed!important}
+.contact-panel{background:linear-gradient(130deg,#fff,#f4edff)!important}
+.contact-links a,.contact-links div{background:#fff!important}
+.contact h2{color:#201633!important}
+footer{background:transparent!important}
+@media(max-width:760px){.nav{background:#f8f7fb!important}.hero{background:transparent!important}}
