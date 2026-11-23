@@ -111,14 +111,14 @@
 .project.featured .project-top{margin-top:0!important}.project.featured .project-icon{margin:22px 0 15px!important}.project.featured h3{font-size:24px!important;margin:0 0 10px!important}.project.featured p{min-height:unset!important}.project.featured .project-links{padding-bottom:0!important;margin-top:auto!important;padding-top:24px!important}
 @media(max-width:760px){.project.featured{grid-column:auto!important;min-height:unset!important;padding:24px!important}}
 
-/* Mobile: make Current Focus readable and clearly separated from portrait */
+/* Mobile: Current Focus lifted slightly so the code/focus panel is visible above the lower stats */
 @media(max-width:760px){
  .hero{min-height:1000px!important;padding-bottom:115px!important;overflow:hidden!important}
  .hero-art{min-height:590px!important;position:relative!important;overflow:visible!important}
- .portrait-wrap{bottom:205px!important;z-index:5!important;height:365px!important;width:270px!important}
- .focus-card{display:flex!important;flex-direction:column!important;position:absolute!important;left:50%!important;right:auto!important;top:auto!important;bottom:10px!important;transform:translateX(-50%)!important;transform-origin:center!important;width:min(350px,94%)!important;opacity:1!important;visibility:visible!important;z-index:20!important;background:rgba(13,9,25,.96)!important;border:1px solid rgba(190,130,255,.45)!important;box-shadow:0 12px 40px rgba(80,20,150,.28)!important;padding:16px 18px!important;border-radius:18px!important}
+ .portrait-wrap{bottom:220px!important;z-index:5!important;height:365px!important;width:270px!important}
+ .focus-card{display:flex!important;flex-direction:column!important;position:absolute!important;left:50%!important;right:auto!important;top:auto!important;bottom:28px!important;transform:translateX(-50%)!important;transform-origin:center!important;width:min(350px,94%)!important;opacity:1!important;visibility:visible!important;z-index:20!important;background:rgba(13,9,25,.96)!important;border:1px solid rgba(190,130,255,.45)!important;box-shadow:0 12px 40px rgba(80,20,150,.28)!important;padding:16px 18px!important;border-radius:18px!important}
  .focus-card .card-label{display:block!important;color:#c99cff!important;font-size:10px!important;letter-spacing:1.3px!important;margin-bottom:8px!important}
  .focus-card a{display:flex!important;justify-content:space-between!important;align-items:center!important;padding:8px 0!important;font-size:12px!important;color:#e8dcff!important;border-top:1px solid rgba(190,130,255,.13)!important}
  .stats{bottom:24px!important;z-index:8!important}
 }
-@media(max-width:430px){.hero{min-height:970px!important}.hero-art{min-height:560px!important}.portrait-wrap{bottom:210px!important;height:350px!important;width:260px!important}.focus-card{bottom:5px!important;width:94%!important;padding:14px 16px!important}.stats{bottom:20px!important}}
+@media(max-width:430px){.hero{min-height:970px!important}.hero-art{min-height:560px!important}.portrait-wrap{bottom:225px!important;height:350px!important;width:260px!important}.focus-card{bottom:22px!important;width:94%!important;padding:14px 16px!important}.stats{bottom:20px!important}}
