@@ -129,3 +129,7 @@
 .about-visual{background:transparent!important;box-shadow:none!important}
 .about-photo{background:transparent!important}
 .about-photo img{background:transparent!important;mix-blend-mode:normal!important;filter:drop-shadow(0 0 18px rgba(139,92,246,.22))}
+
+/* Blend the portrait's black backdrop into the dark hero so only the subject/glow reads */
+.hero .portrait{background:transparent!important;mix-blend-mode:screen!important;filter:contrast(1.08) brightness(1.04)!important}
+.hero .portrait-wrap{background:transparent!important;filter:drop-shadow(0 0 26px rgba(168,85,247,.25))!important}
