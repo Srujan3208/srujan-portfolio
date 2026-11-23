@@ -188,3 +188,23 @@
   filter: none !important;
   opacity: 1 !important;
 }
+
+
+/* FINAL PORTRAIT VISIBILITY FIX: remove blend modes that hide portraits */
+.hero .portrait,
+.about-photo img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  filter: drop-shadow(0 0 22px rgba(168,85,247,.24)) !important;
+  background: transparent !important;
+  object-fit: contain !important;
+}
+.portrait-wrap,
+.about-visual,
+.about-photo {
+  background: transparent !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
