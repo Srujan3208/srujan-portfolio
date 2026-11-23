@@ -285,3 +285,19 @@
   filter: none !important;
   background: transparent !important;
 }
+
+/* RESTORE orbital rings around the hero portrait */
+.hero-art .orbit,
+.hero-art .orbit-b {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.hero-art .orbit {
+  z-index: 3 !important;
+  pointer-events: none !important;
+}
+.hero-art .orbit-b {
+  z-index: 2 !important;
+  pointer-events: none !important;
+}
