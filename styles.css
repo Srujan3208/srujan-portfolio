@@ -166,13 +166,7 @@
 }
 @media(max-width:430px){.hero{min-height:1080px!important}.hero h1{font-size:68px!important;letter-spacing:-4px!important}.hero-art{min-height:610px!important}.portrait-wrap{width:238px!important;height:330px!important;bottom:205px!important}.code-window{width:158px!important;top:0!important}.focus-card{bottom:16px!important;width:100%!important;padding:12px 14px!important}.focus-card a{font-size:10px!important;padding:6px 0!important}.stats{bottom:19px!important}.stats strong{font-size:18px!important}.stats small{font-size:8px!important}}
 
-/* CSS blend workaround: make the portrait's pure-black backdrop blend into the dark portfolio */
-.hero .portrait,
-.about-photo img{
-  background:transparent!important;
-  mix-blend-mode:screen!important;
-  object-fit:contain!important;
-}
+
 
 /* Stronger black-background blending fix for portrait image */
 .hero-art .portrait-wrap,
@@ -207,4 +201,13 @@
   background: transparent !important;
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+/* Preserve the original portrait clothing colors and details. No blend effects. */
+.hero-art .portrait-wrap img.portrait,
+.about-visual .about-photo img {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 22px rgba(168,85,247,.24)) !important;
+  background: transparent !important;
 }
