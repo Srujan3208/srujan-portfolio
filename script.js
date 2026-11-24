@@ -22,3 +22,34 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(!touch&&!reduce){document.querySelectorAll('.hero-buttons .button,.contact .button').forEach(el=>{el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)*.08,y=(e.clientY-r.top-r.height/2)*.08;el.style.transform='translate('+x+'px,'+y+'px)' });el.addEventListener('pointerleave',()=>el.style.transform='')});
  document.querySelectorAll('.project').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;card.style.setProperty('--spot-x',(x*100)+'%');card.style.setProperty('--spot-y',(y*100)+'%');card.style.transform='perspective(900px) rotateX('+((.5-y)*3)+'deg) rotateY('+((x-.5)*3)+'deg) translateY(-2px)'});card.addEventListener('pointerleave',()=>card.style.transform='')})}
 })();
+
+/* Cinematic motion system: scroll storytelling, subtle parallax and spatial effects */
+(()=>{
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduce)return;
+ const sections=[...document.querySelectorAll('main .section,main .hero')];
+ const inView=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  if(entry.isIntersecting){entry.target.classList.add('in-view');}
+  else if(entry.boundingClientRect.top>0){entry.target.classList.remove('in-view')}
+ }),{threshold:.18});
+ sections.forEach(section=>inView.observe(section));
+ let ticking=false;
+ const cinematicScroll=()=>{
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(()=>{
+   const y=scrollY,hero=document.querySelector('.hero'),grid=document.querySelector('.hero-grid'),left=document.querySelector('.hero-left'),art=document.querySelector('.hero-art');
+   if(hero&&y<innerHeight*1.25){
+    const p=Math.min(y/innerHeight,1);
+    if(grid)grid.style.setProperty('--hero-grid-y',(-y*.14)+'px');
+    if(left){left.style.transform='translate3d(0,'+(y*.08)+'px,0)';left.style.opacity=String(1-p*.28)}
+    if(art)art.style.transform='translate3d(0,'+(y*.045)+'px,0)';
+   }else{if(left){left.style.transform='';left.style.opacity=''}if(art)art.style.transform=''}
+   document.querySelectorAll('.section.in-view').forEach(section=>{
+    const rect=section.getBoundingClientRect();
+    section.style.setProperty('--section-y',Math.max(0,Math.min(100,50-rect.top/innerHeight*18))+'%');
+   });
+   ticking=false;
+  });
+ };
+ addEventListener('scroll',cinematicScroll,{passive:true});cinematicScroll();
+})();
