@@ -659,3 +659,17 @@ body.universe-revealed main,body.universe-revealed header.topbar,body.universe-r
       drop-shadow(0 0 20px rgba(168,85,247,.28)) !important;
   }
 }
+
+
+/* Restore the portrait's original black hoodie tones.
+   Remove the global brightness/saturation boost that made dark fabric look purple. */
+.about-visual .about-photo img {
+  filter: drop-shadow(0 0 18px rgba(168,85,247,.20)) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+@media (max-width: 760px) {
+  .about-visual .about-photo img {
+    filter: drop-shadow(0 0 18px rgba(168,85,247,.20)) !important;
+  }
+}
