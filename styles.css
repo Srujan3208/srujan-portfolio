@@ -825,3 +825,66 @@ body.universe-revealed main,body.universe-revealed header.topbar,body.universe-r
     object-position: center top !important;
   }
 }
+
+
+/* ABOUT PORTRAIT FINAL OVERRIDE — remove every fixed-height constraint */
+section#about .about-grid > .about-visual.glass {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  align-self: start !important;
+  display: block !important;
+  padding: 0 !important;
+  aspect-ratio: auto !important;
+}
+section#about .about-grid > .about-visual.glass > .about-photo {
+  display: block !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  width: 100% !important;
+  overflow: visible !important;
+  padding: 0 0 48px !important;
+  box-sizing: border-box !important;
+}
+section#about .about-grid > .about-visual.glass > .about-photo > img {
+  display: block !important;
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: center top !important;
+  aspect-ratio: auto !important;
+  transform: none !important;
+}
+section#about .about-grid > .about-visual.glass > .about-caption {
+  bottom: 0 !important;
+}
+@media (max-width: 760px) {
+  section#about .about-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: start !important;
+  }
+  section#about .about-grid > .about-visual.glass {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  section#about .about-grid > .about-visual.glass > .about-photo {
+    height: auto !important;
+    min-height: 0 !important;
+    padding-bottom: 48px !important;
+  }
+  section#about .about-grid > .about-visual.glass > .about-photo > img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+  }
+}
