@@ -888,3 +888,25 @@ section#about .about-grid > .about-visual.glass > .about-caption {
     object-fit: contain !important;
   }
 }
+
+
+/* ABOUT portrait: do not leave transparent pixels in the clothing area showing
+   the card background. Use a solid near-black backing behind the cutout image. */
+section#about .about-visual .about-photo {
+  background: #08070d !important;
+}
+section#about .about-visual .about-photo img {
+  background-color: #08070d !important;
+  background-image: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+@media (max-width: 760px) {
+  section#about .about-visual .about-photo {
+    background: #08070d !important;
+  }
+  section#about .about-visual .about-photo img {
+    background-color: #08070d !important;
+  }
+}
