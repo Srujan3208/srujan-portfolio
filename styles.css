@@ -1327,3 +1327,40 @@ body:has(#portfolio-world) main section .stats{backdrop-filter:blur(24px);box-sh
  body:has(#portfolio-world) main section .recognition-grid>div{transform:none}
 }
 @media(prefers-reduced-motion:reduce){#portfolio-world{opacity:.35!important}}
+
+/* CINEMATIC WEB MOTION SUITE — kinetic type, layered depth and scroll choreography */
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{perspective:1600px}
+main section{transform-style:preserve-3d;will-change:transform}
+.kinetic-char{display:inline-block;transform-origin:50% 100%;will-change:transform,opacity}
+.section-head h2{perspective:900px;overflow:hidden}
+.section-head h2 .kinetic-char{padding-bottom:.08em}
+.hero h1{transform-origin:left center;will-change:transform,filter,opacity}
+.hero-art,.portrait-wrap,.globe,.about-visual,.contact-panel,.contact-orb{will-change:transform}
+.project-grid,.skill-grid,.certificate-grid,.recognition-grid{perspective:1500px;transform-style:preserve-3d}
+.project,.certificate-card,.skill-grid>div,.recognition-grid>div,.timeline article{
+ transform-style:preserve-3d;backface-visibility:hidden;will-change:transform,opacity;
+}
+.project:before,.certificate-card:before,.recognition-grid>div:before{
+ content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:linear-gradient(125deg,rgba(196,181,253,.11),transparent 34%,rgba(34,211,238,.06) 70%,transparent);
+ opacity:.55;transform:translateZ(1px);
+}
+.section-head{transform-style:preserve-3d}
+.section-head h2 em{text-shadow:0 0 32px rgba(167,139,250,.28)}
+.timeline:before{transform:scaleY(var(--timeline-progress,0));transform-origin:top;transition:none}
+#portfolio-world{transition:opacity .9s ease,filter .9s ease}
+body.is-scrolling #portfolio-world{filter:saturate(1.16) contrast(1.08)}
+#motion-progress{height:3px;filter:drop-shadow(0 0 6px rgba(167,139,250,.8))}
+.nav a{transition:color .35s ease,opacity .35s ease,transform .35s ease}
+.nav a:hover{transform:translateY(-2px)}
+.button{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,background .35s}
+.button:hover{transform:translateY(-4px) scale(1.025)}
+@media(max-width:899px){
+ .kinetic-char{will-change:auto}
+ main section{will-change:auto}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ .kinetic-char,.hero h1,.hero-art,.portrait-wrap,.globe,.about-visual,.contact-panel,.contact-orb{will-change:auto!important}
+}
