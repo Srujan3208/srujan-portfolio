@@ -16,7 +16,7 @@ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finish();retur
 el.classList.add('phase-galaxy');
 setTimeout(()=>{if(!done)el.classList.add('phase-earth')},3400);
 setTimeout(()=>{if(!done)el.classList.add('phase-zoom')},5600);
-setTimeout(finish,8000);
+setTimeout(finish,6500);
 el.addEventListener('pointerdown',finish,{once:true});
 window.addEventListener('keydown',e=>{if(e.key==='Escape')finish()},{once:true});
 })();
