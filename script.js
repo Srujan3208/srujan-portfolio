@@ -5,27 +5,43 @@ const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isInters
 const glow=document.querySelector('.cursor-glow');window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const sections=[...document.querySelectorAll('main section[id]')],links=[...document.querySelectorAll('.nav a')];window.addEventListener('scroll',()=>{let current='home';sections.forEach(s=>{if(scrollY>=s.offsetTop-180)current=s.id});links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current))},{passive:true});
 
-/* Reliable universal loader: never block access to the portfolio */
+/* FIRST-PAINT INTRO — guaranteed visible before portfolio content */
 (()=>{
  const loader=document.getElementById('site-loader');
  if(!loader)return;
- let finished=false;
+ const body=document.body;
+ body.classList.add('is-loading');
+ let finished=false,progress=0;
+ const percent=document.getElementById('loader-percent');
+ const terminal=document.getElementById('loader-terminal-text');
+ const messages=['Initializing universe...','Establishing secure connection...','Compiling creative systems...','Loading projects & experiences...','Welcome to my universe.'];
+ const started=performance.now(),duration=5200;
+ const tick=now=>{
+  if(finished)return;
+  const elapsed=now-started;
+  progress=Math.min(100,Math.floor((elapsed/duration)*100));
+  if(percent)percent.textContent=String(progress).padStart(2,'0')+'%';
+  if(terminal)terminal.textContent=messages[Math.min(messages.length-1,Math.floor(progress/22))];
+  if(elapsed>=duration){finish();return;}
+  requestAnimationFrame(tick);
+ };
  const finish=()=>{
   if(finished)return;
   finished=true;
+  if(percent)percent.textContent='100%';
+  if(terminal)terminal.textContent='Universe ready.';
   loader.classList.add('is-launching');
   window.setTimeout(()=>{
    loader.classList.add('is-hidden');
-   window.setTimeout(()=>loader.remove(),950);
-  },850);
+   body.classList.remove('is-loading');
+   window.setTimeout(()=>loader.remove(),650);
+  },900);
  };
- /* The script is loaded at the end of body; start the intro immediately.
-    Do not wait for every image/font/network request to finish. */
- window.setTimeout(finish,4200);
- window.setTimeout(finish,5600);
- window.addEventListener('pageshow',()=>window.setTimeout(finish,5200),{once:true});
+ requestAnimationFrame(tick);
+ /* Safety fallback if a browser throttles animation frames during startup. */
+ window.setTimeout(finish,7600);
 })();
-
+ 
 /* Cinematic scroll engine: progress, subtle parallax, spatial depth and reveal */
 (()=> {
   const root=document.documentElement;
@@ -587,4 +603,47 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    return ()=>{ST.getAll().forEach(t=>t.kill());};
  });
  window.addEventListener('load',()=>ST.refresh(),{once:true});
+})();
+
+/* FULL-VIEWPORT CYBER MATRIX RAIN — separate 2D layer behind the loader panel */
+(()=>{
+ const canvas=document.querySelector('.loader-matrix'),loader=document.getElementById('site-loader');
+ if(!canvas||!loader)return;
+ const ctx=canvas.getContext('2d');
+ if(!ctx)return;
+ const glyphs='01 01 10 11 0x 0F 1A 7E 9C A5 C0 FF <> {} [] /\\ const let async await function return class import export';
+ let columns=[],font=14,raf=0,last=0,active=true;
+ const resize=()=>{
+  const dpr=Math.min(devicePixelRatio||1,1.5);
+  canvas.width=Math.floor(innerWidth*dpr);canvas.height=Math.floor(innerHeight*dpr);
+  canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);font=Math.max(12,Math.min(17,innerWidth/95));
+  columns=Array.from({length:Math.ceil(innerWidth/font)+1},(_,i)=>({x:i*font,y:Math.random()*-innerHeight,speed:.45+Math.random()*1.25,trail:8+Math.random()*18}));
+ };
+ const draw=now=>{
+  raf=0;if(!active||!loader.isConnected||document.hidden)return;
+  raf=requestAnimationFrame(draw);if(now-last<42)return;last=now;
+  ctx.fillStyle='rgba(2,3,11,.16)';ctx.fillRect(0,0,innerWidth,innerHeight);
+  ctx.font=font+'px monospace';ctx.textAlign='center';
+  for(const c of columns){
+   for(let n=0;n<c.trail;n++){
+    const y=c.y-n*font;if(y<0||y>innerHeight)continue;
+    const ch=glyphs[Math.floor(Math.random()*glyphs.length)];
+    const alpha=Math.max(.025,.34-n/c.trail*.32);
+    ctx.fillStyle=n===0?'rgba(165,243,252,.88)':(n%5===0?'rgba(167,139,250,'+alpha+')':'rgba(89,78,160,'+alpha+')');
+    ctx.fillText(ch,c.x,y);
+   }
+   c.y+=font*c.speed;
+   if(c.y-c.trail*font>innerHeight)c.y=-Math.random()*innerHeight*.5;
+  }
+ };
+ const observer=new IntersectionObserver(entries=>{
+  active=entries[0].isIntersecting;
+  if(active&&!raf&&!document.hidden)raf=requestAnimationFrame(draw);
+  else if(!active&&raf){cancelAnimationFrame(raf);raf=0;}
+ });
+ observer.observe(loader);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}else if(active&&loader.isConnected&&!raf)raf=requestAnimationFrame(draw);});
+ window.addEventListener('resize',resize,{passive:true});
+ resize();ctx.fillStyle='#02030b';ctx.fillRect(0,0,innerWidth,innerHeight);raf=requestAnimationFrame(draw);
 })();
