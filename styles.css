@@ -760,3 +760,68 @@ body.universe-revealed main,body.universe-revealed header.topbar,body.universe-r
     bottom: 155px !important;
   }
 }
+
+
+/* ABOUT SECTION — render the portrait at its natural aspect ratio so the entire
+   uploaded cutout (head, torso, hoodie, sleeves and lower edge) remains visible. */
+.about-grid {
+  align-items: start !important;
+}
+.about-visual {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+.about-photo {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  line-height: 0 !important;
+}
+.about-visual .about-photo img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center top !important;
+  aspect-ratio: auto !important;
+  transform: none !important;
+  filter: drop-shadow(0 0 18px rgba(168,85,247,.20)) !important;
+}
+.about-caption {
+  z-index: 2 !important;
+  line-height: 1.4 !important;
+}
+@media (max-width: 760px) {
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+  }
+  .about-visual {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 auto 24px !important;
+  }
+  .about-photo {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+  .about-visual .about-photo img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    object-position: center top !important;
+  }
+}
