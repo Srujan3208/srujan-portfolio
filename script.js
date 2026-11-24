@@ -378,8 +378,8 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    if(sec<2){camera.position.set(0,0,lerp(28,18,smooth(sec/1.5)));camera.lookAt(0,0,0);earthGroup.visible=false;}
    else if(sec<4){const orbit=smooth((sec-1.5)/1.5)*Math.PI*1.15;camera.position.set(Math.sin(orbit)*12.5,Math.sin(orbit*.72)*4.2,Math.cos(orbit)*12.5+3);camera.lookAt(0,0,-3);earthGroup.visible=false;}
    else if(sec<7){earthGroup.visible=true;camera.position.set(lerp(2.1,0,smooth((sec-3)/2)),lerp(.8,.15,smooth((sec-4)/3)),lerp(11,7.7,smooth((sec-4)/3)));camera.lookAt(0,0,0);earthGroup.scale.setScalar(lerp(.001,1,smooth((sec-3)/.65)));galaxyPoints.material.opacity=lerp(.98,.015,smooth((sec-3)/1.4));sunSprite.material.opacity=.85*smooth((sec-4.3)/.8);}
-   else if(sec<7){earthGroup.visible=true;const approach=smooth((sec-5)/2);earthGroup.scale.setScalar(lerp(1,1.22,approach));camera.position.set(0,lerp(.15,0,approach),lerp(7.7,4.7,approach));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.85;}
-   else{earthGroup.visible=true;const reveal=smooth((sec-7)/.65);earthGroup.scale.setScalar(lerp(1.22,3.45,reveal));earthGroup.position.set(0,lerp(0,-5.35,reveal),0);camera.position.set(0,0,lerp(4.7,16,reveal));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.9;flashLight.material.opacity=sec<7.85?lerp(0,.96,smooth((sec-7)/.28)):lerp(.96,0,smooth((sec-7.85)/.9));universe.rotation.z=sec*.002;}
+   else if(sec<7.8){earthGroup.visible=true;const approach=smooth((sec-5)/2.8);earthGroup.scale.setScalar(lerp(1,1.2,approach));camera.position.set(0,lerp(.15,0,approach),lerp(7.7,5.2,approach));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.85;}
+   else{earthGroup.visible=true;const reveal=smooth((sec-7.8)/.6);earthGroup.scale.setScalar(lerp(1.2,1.5,reveal));earthGroup.position.set(0,0,0);camera.position.set(0,0,lerp(5.2,4.5,reveal));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.9;flashLight.material.opacity=sec<8.25?lerp(0,.55,smooth((sec-7.8)/.3)):lerp(.55,0,smooth((sec-8.25)/.7));universe.rotation.z=sec*.002;}
    if(sec>=7.8&&finalPanel&&!finalPanel.classList.contains('visible')){finalPanel.classList.add('visible');finalPanel.setAttribute('aria-hidden','false');root.classList.add('space-reveal');}
    moon.rotation.y+=.001;asteroidGroup.rotation.y+=.0012;
    if(sec>=8){if(progress)progress.style.width='100%';if(sceneLabel)sceneLabel.textContent='YOUR UNIVERSE IS READY';}
@@ -390,7 +390,9 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0;}else if(!document.hidden&&!finished&&!raf){started=performance.now()-Math.min(9,(performance.now()-started)/1000)*1000;raf=requestAnimationFrame(render);}});
   cleanup=()=>{cancelAnimationFrame(raf);renderer.dispose();world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}});};
   raf=requestAnimationFrame(render);
-  window.setTimeout(()=>{if(!finished&&finalPanel&&!finalPanel.classList.contains('visible')){finalPanel.classList.add('visible');finalPanel.setAttribute('aria-hidden','false');root.classList.add('space-reveal');}},8400);
+  window.setTimeout(()=>{if(!finished){finalPanel?.classList.add('visible');finalPanel?.setAttribute('aria-hidden','false');root.classList.add('space-reveal');}},8400);
+  // Never leave visitors trapped behind the cinematic intro.
+  window.setTimeout(()=>{if(!finished)finish();},12500);
  }catch(error){
   console.error('Cinematic intro renderer fallback:',error);
   root.classList.add('space-fallback');setScene(4);finalPanel?.classList.add('visible');
