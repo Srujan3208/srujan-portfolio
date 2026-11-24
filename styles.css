@@ -776,3 +776,48 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 @keyframes nebula-breathe {0%{transform:scale(.94) rotate(-3deg);opacity:.55}100%{transform:scale(1.08) rotate(4deg);opacity:1}}
 @keyframes starfield-drift {from{transform:translate3d(0,0,0)}to{transform:translate3d(-1.5%,2%,0)}}
 @media(max-width:760px){.earth-stage{width:300px!important;height:300px!important;}}
+
+
+/* Deep-space backdrop refinement: visible nebula, dense star layers and cosmic depth */
+#site-loader {
+ background:
+  radial-gradient(ellipse at 50% 43%,rgba(61,35,126,.28),transparent 35%),
+  radial-gradient(ellipse at 17% 28%,rgba(18,77,143,.24),transparent 38%),
+  radial-gradient(ellipse at 82% 66%,rgba(91,30,132,.25),transparent 40%),
+  radial-gradient(ellipse at 48% 92%,rgba(19,48,103,.20),transparent 42%),
+  linear-gradient(145deg,#020612 0%,#08091d 44%,#10071d 100%)!important;
+}
+#site-loader::before {
+ inset:-20%!important;opacity:.9!important;
+ background:
+  radial-gradient(ellipse at 25% 32%,rgba(38,104,190,.19),transparent 24%),
+  radial-gradient(ellipse at 68% 24%,rgba(121,55,180,.18),transparent 25%),
+  radial-gradient(ellipse at 72% 72%,rgba(68,39,142,.22),transparent 29%),
+  radial-gradient(ellipse at 34% 78%,rgba(20,88,155,.14),transparent 28%),
+  repeating-radial-gradient(ellipse at 50% 50%,transparent 0 74px,rgba(165,139,250,.035) 75px,transparent 77px)!important;
+ filter:blur(20px);animation:deep-nebula-flow 26s ease-in-out infinite alternate!important;
+}
+.loader-cosmos::before,.loader-cosmos::after {
+ content:"";position:absolute;inset:-8%;pointer-events:none;border-radius:50%;
+ background-image:
+  radial-gradient(2px 2px at 5% 9%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 12% 44%,#dbeafe 98%,transparent),
+  radial-gradient(2px 2px at 19% 81%,#c4b5fd 98%,transparent),
+  radial-gradient(1px 1px at 26% 17%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 33% 61%,#bfdbfe 98%,transparent),
+  radial-gradient(2px 2px at 42% 31%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 49% 91%,#ddd6fe 98%,transparent),
+  radial-gradient(2px 2px at 57% 12%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 64% 53%,#bfdbfe 98%,transparent),
+  radial-gradient(2px 2px at 72% 82%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 81% 24%,#ddd6fe 98%,transparent),
+  radial-gradient(2px 2px at 89% 64%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 96% 37%,#bfdbfe 98%,transparent);
+ background-size:100% 100%;opacity:.75;animation:star-layer-drift 38s linear infinite;
+}
+.loader-cosmos::after {transform:scale(1.35);opacity:.36;filter:blur(.5px);animation-duration:58s;animation-direction:reverse;}
+.earth-stage {width:clamp(310px,42vw,440px)!important;height:clamp(310px,42vw,440px)!important;}
+.earth-globe-fallback {box-shadow:inset -28px -16px 38px #02040f,inset 9px 7px 22px #c4edff99,0 0 28px #3b82f6aa,0 0 82px #2563eb55,0 0 135px #7c3aed33!important;}
+@keyframes deep-nebula-flow {0%{transform:translate3d(-2%,1%,0) scale(.98) rotate(-2deg)}100%{transform:translate3d(2%,-1%,0) scale(1.08) rotate(3deg)}}
+@keyframes star-layer-drift {from{transform:translate3d(0,0,0)}to{transform:translate3d(-2%,1.5%,0)}}
+@media(max-width:760px){.earth-stage{width:300px!important;height:300px!important;}}
