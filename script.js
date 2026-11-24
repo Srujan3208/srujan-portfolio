@@ -21,8 +21,8 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  };
  /* The script is loaded at the end of body; start the intro immediately.
     Do not wait for every image/font/network request to finish. */
- window.setTimeout(finish,3200);
- window.setTimeout(finish,5200);
+ window.setTimeout(finish,4200);
+ window.setTimeout(finish,5600);
  window.addEventListener('pageshow',()=>window.setTimeout(finish,5200),{once:true});
 })();
 
@@ -429,7 +429,98 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    const warp=launchStarted?Math.min(1,(now-launchStarted)/800):0;
    for(const s of stars){const tw=.5+.5*Math.sin(t*1.6+s.p),x=cx+(s.x-cx)*(1+warp*3.8),y=cy+(s.y-cy)*(1+warp*3.8);ctx.beginPath();ctx.arc(x,y,s.r*(.65+tw*.55),0,Math.PI*2);ctx.fillStyle='rgba('+(s.z>.72?'220,210,255':'157,145,220')+','+(.22+tw*.68)+')';ctx.fill();if(s.z>.88){ctx.strokeStyle='rgba(196,181,253,'+(tw*.28)+')';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(x-4*s.r,y);ctx.lineTo(x+4*s.r,y);ctx.moveTo(x,y-4*s.r);ctx.lineTo(x,y+4*s.r);ctx.stroke();}}
    const core=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(w,h)*.18);core.addColorStop(0,'rgba(167,139,250,.08)');core.addColorStop(1,'rgba(167,139,250,0)');ctx.fillStyle=core;ctx.fillRect(0,0,w,h);raf=requestAnimationFrame(draw);};
-  const stop=()=>{running=false;cancelAnimationFrame(raf);};loader.addEventListener('animationstart',e=>{if(e.animationName==='loaderFadeAway')launchStarted=performance.now();});loader.addEventListener('transitionend',e=>{if(e.propertyName==='opacity'&&loader.classList.contains('is-hidden'))stop();});resize();addEventListener('resize',resize,{passive:true});raf=requestAnimationFrame(draw);
+  const stop=()=>{running=false;cancelAnimationFrame(raf);};const launchObserver=new MutationObserver(()=>{if(loader.classList.contains('is-launching')&&!launchStarted)launchStarted=performance.now();});launchObserver.observe(loader,{attributes:true,attributeFilter:['class']});loader.addEventListener('transitionend',e=>{if(e.propertyName==='opacity'&&loader.classList.contains('is-hidden'))stop();});resize();addEventListener('resize',resize,{passive:true});raf=requestAnimationFrame(draw);
  }}
  if(!reduce){const hero=document.querySelector('.hero');if(hero){hero.classList.add('cosmic-arrival');setTimeout(()=>hero.classList.add('cosmic-arrived'),900);}}
+})();
+
+
+/* CINEMATIC MOTION SYSTEM — GSAP choreography with native-scroll fallback */
+(()=>{
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+ const gsap=window.gsap,ST=window.ScrollTrigger;
+ if(!gsap||!ST||reduce){
+   document.documentElement.classList.add('motion-fallback');
+   return;
+ }
+ gsap.registerPlugin(ST);
+ gsap.config({nullTargetWarn:false});
+ const mm=gsap.matchMedia();
+ mm.add({
+   desktop:'(min-width: 900px)',
+   tablet:'(min-width: 600px) and (max-width: 899px)',
+   mobile:'(max-width: 599px)'
+ },context=>{
+   const {desktop,mobile}=context.conditions;
+   const distance=mobile?18:34;
+   // Section titles arrive like chapter titles in a cinematic sequence.
+   gsap.utils.toArray('.section').forEach((section,index)=>{
+     const head=section.querySelector('.section-head');
+     if(head){
+       gsap.fromTo(head,{autoAlpha:0,y:distance,filter:'blur(8px)'},{
+         autoAlpha:1,y:0,filter:'blur(0px)',duration:.9,ease:'power3.out',
+         scrollTrigger:{trigger:section,start:'top 78%',once:true}
+       });
+     }
+   });
+   // Project cards enter with depth, then settle into the layout.
+   gsap.fromTo('.project-grid .project',
+     {autoAlpha:0,y:48,rotateX:desktop?7:0,transformPerspective:1000},
+     {autoAlpha:1,y:0,rotateX:0,duration:1,stagger:.13,ease:'power3.out',
+      scrollTrigger:{trigger:'#projects',start:'top 72%',once:true}});
+   // A restrained scroll-scrubbed orbit around the portrait.
+   const portrait=document.querySelector('.hero .portrait-wrap');
+   const orbit=document.querySelector('.hero .orbit-a');
+   if(desktop&&portrait){
+     gsap.to(portrait,{y:42,rotate:1.2,ease:'none',
+       scrollTrigger:{trigger:'#home',start:'top top',end:'bottom top',scrub:1}});
+   }
+   if(desktop&&orbit){
+     gsap.to(orbit,{rotation:22,scale:1.06,ease:'none',
+       scrollTrigger:{trigger:'#home',start:'top top',end:'bottom top',scrub:1.2}});
+   }
+   // About chapter: visual layers move at different depths.
+   const aboutVisual=document.querySelector('.about-visual');
+   if(aboutVisual){
+     gsap.fromTo(aboutVisual,{y:34,rotateY:desktop?-5:0,scale:.96},{
+       y:-12,rotateY:0,scale:1,ease:'none',
+       scrollTrigger:{trigger:'#about',start:'top bottom',end:'center center',scrub:1}});
+   }
+   const aboutOrbit=document.querySelector('.about-orbit');
+   if(aboutOrbit&&desktop){
+     gsap.to(aboutOrbit,{rotate:18,ease:'none',
+       scrollTrigger:{trigger:'#about',start:'top bottom',end:'bottom top',scrub:1}});
+   }
+   // Timeline becomes a vertical story line as each milestone enters.
+   const timeline=document.querySelector('.timeline');
+   if(timeline){
+     gsap.fromTo(timeline.querySelectorAll('article'),{autoAlpha:0,x:desktop?-36:-18},{
+       autoAlpha:1,x:0,duration:.75,stagger:.18,ease:'power2.out',
+       scrollTrigger:{trigger:timeline,start:'top 78%',once:true}});
+   }
+   // Skill constellation: small stagger, no continuous animation loops.
+   gsap.fromTo('.skill-grid > div',{autoAlpha:0,y:22,scale:.94},{
+     autoAlpha:1,y:0,scale:1,duration:.55,stagger:.045,ease:'back.out(1.25)',
+     scrollTrigger:{trigger:'#skills',start:'top 75%',once:true}});
+   // Contact outro: glow and headline rise into the final frame.
+   const contact=document.querySelector('.contact-panel');
+   if(contact){
+     gsap.fromTo(contact,{autoAlpha:0,y:55,scale:.985},{
+       autoAlpha:1,y:0,scale:1,duration:1.05,ease:'power3.out',
+       scrollTrigger:{trigger:contact,start:'top 82%',once:true}});
+   }
+   // Pointer tilt is desktop-only and stays deliberately subtle.
+   if(desktop&&fine){
+     document.querySelectorAll('.project,.certificate-card,.cert-card').forEach(card=>{
+       card.addEventListener('pointermove',e=>{
+         const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+         gsap.to(card,{rotateX:-y*3.2,rotateY:x*4,y:-3,duration:.35,ease:'power2.out',overwrite:true});
+       });
+       card.addEventListener('pointerleave',()=>gsap.to(card,{rotateX:0,rotateY:0,y:0,duration:.5,ease:'power3.out'}));
+     });
+   }
+   return ()=>{ST.getAll().forEach(t=>t.kill());};
+ });
+ window.addEventListener('load',()=>ST.refresh(),{once:true});
 })();
