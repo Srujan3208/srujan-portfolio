@@ -7,3 +7,54 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
 
 /* Universal loader: dismiss after assets load, with a safe fallback */
 (()=>{const loader=document.getElementById('site-loader');if(!loader)return;const hide=()=>{loader.classList.add('is-hidden');setTimeout(()=>loader.remove(),650)};if(document.readyState==='complete')setTimeout(hide,350);else window.addEventListener('load',()=>setTimeout(hide,350),{once:true});setTimeout(hide,5000)})();
+
+
+/* Cinematic scroll engine: progress, subtle parallax, spatial depth and reveal */
+(()=> {
+  const root=document.documentElement;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bar=document.createElement('div');
+  bar.id='motion-progress';
+  bar.setAttribute('aria-hidden','true');
+  document.body.appendChild(bar);
+  let ticking=false;
+  const update=()=>{
+    const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    const y=window.scrollY||0;
+    root.style.setProperty('--motion-progress',String(Math.min(1,y/max)));
+    root.style.setProperty('--scroll-y',y+'px');
+    document.body.classList.toggle('is-scrolling',y>24);
+    if(!reduce && window.innerWidth>760){
+      const hero=document.querySelector('.hero');
+      if(hero){
+        const art=hero.querySelector('.hero-art');
+        const portrait=hero.querySelector('.portrait-wrap');
+        const code=hero.querySelector('.code-window');
+        const focus=hero.querySelector('.focus-card');
+        const rect=hero.getBoundingClientRect();
+        const p=Math.max(0,Math.min(1,-rect.top/Math.max(1,rect.height)));
+        if(art) art.style.setProperty('--hero-depth',p.toFixed(3));
+        if(portrait) portrait.style.translate='0 '+(p*34)+'px';
+        if(code) code.style.translate='0 '+(p*-20)+'px';
+        if(focus) focus.style.translate='0 '+(p*16)+'px';
+      }
+    }
+    ticking=false;
+  };
+  const onScroll=()=>{if(!ticking){requestAnimationFrame(update);ticking=true;}};
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  update();
+
+  if(!reduce && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.project,.certificate-card,.skill-grid>div,.recognition-grid>div').forEach(card=>{
+      card.addEventListener('pointermove',e=>{
+        const r=card.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5;
+        const y=(e.clientY-r.top)/r.height-.5;
+        card.style.transform='perspective(900px) translateY(-5px) rotateX('+(-y*5)+'deg) rotateY('+(x*6)+'deg)';
+      });
+      card.addEventListener('pointerleave',()=>{card.style.transform='';});
+    });
+  }
+})();
