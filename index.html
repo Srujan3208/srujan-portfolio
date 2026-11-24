@@ -11,7 +11,7 @@
 </div>
 <script>
 (()=>{const el=document.getElementById('site-loader');if(!el)return;
-let done=false;const finish=()=>{if(done)return;done=true;document.body.classList.remove('is-loading');el.classList.add('space-exit');setTimeout(()=>{el.remove();window.scrollTo(0,0)},560)};
+el.dataset.introInit='1';let done=false;const finish=()=>{if(done)return;done=true;document.body.classList.remove('is-loading');el.classList.add('space-exit');setTimeout(()=>{el.remove();window.scrollTo(0,0)},560)};
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finish();return}
 el.classList.add('phase-galaxy');
 setTimeout(()=>{if(!done)el.classList.add('phase-earth')},3400);
