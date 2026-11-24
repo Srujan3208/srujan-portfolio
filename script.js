@@ -4,3 +4,6 @@ document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',(
 const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');reveal.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.section,.project,.timeline article,.stats').forEach(el=>{el.classList.add('reveal');reveal.observe(el)});
 const glow=document.querySelector('.cursor-glow');window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const sections=[...document.querySelectorAll('main section[id]')],links=[...document.querySelectorAll('.nav a')];window.addEventListener('scroll',()=>{let current='home';sections.forEach(s=>{if(scrollY>=s.offsetTop-180)current=s.id});links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current))},{passive:true});
+
+/* Universal loader: dismiss after assets load, with a safe fallback */
+(()=>{const loader=document.getElementById('site-loader');if(!loader)return;const hide=()=>{loader.classList.add('is-hidden');setTimeout(()=>loader.remove(),650)};if(document.readyState==='complete')setTimeout(hide,350);else window.addEventListener('load',()=>setTimeout(hide,350),{once:true});setTimeout(hide,5000)})();
