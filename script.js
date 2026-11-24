@@ -761,3 +761,75 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  canvas.classList.add('world-ready');
  window.addEventListener('beforeunload',()=>{io.disconnect();renderer.dispose();},{once:true});
 })();
+
+
+/* CINEMATIC MOTION DIRECTOR — scroll storytelling, kinetic type, parallax, depth */
+(()=>{
+ const gsap=window.gsap,ST=window.ScrollTrigger;
+ if(!gsap||!ST)return;
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ gsap.registerPlugin(ST);
+ gsap.defaults({ease:'power3.out'});
+ const desktop=matchMedia('(min-width: 900px) and (hover:hover)').matches;
+ document.documentElement.classList.add('cinematic-motion-ready');
+ // Kinetic typography: each visible character arrives with a compact, staggered lift.
+ const splitText=el=>{
+  if(el.dataset.kinetic==='done')return;
+  const original=el.textContent.trim();if(!original)return;
+  el.dataset.kinetic='done';el.setAttribute('aria-label',original);
+  const fragment=document.createDocumentFragment();
+  [...original].forEach((char,i)=>{
+   const span=document.createElement('span');span.className='kinetic-char';
+   span.textContent=char===' '?'\u00a0':char;span.style.setProperty('--char-index',i);
+   fragment.appendChild(span);
+  });
+  el.replaceChildren(fragment);
+ };
+ if(!reduce){
+  const heroTitle=document.querySelector('.hero h1');
+  if(heroTitle){
+   // Keep the accent dot visually intact while animating the title as a single kinetic unit.
+   gsap.fromTo(heroTitle,{y:70,opacity:0,rotateX:-28,filter:'blur(12px)'},{y:0,opacity:1,rotateX:0,filter:'blur(0px)',duration:1.25,delay:.08,ease:'power4.out'});
+  }
+  document.querySelectorAll('.section-head h2').forEach((h,i)=>{
+   splitText(h);
+   gsap.fromTo(h.querySelectorAll('.kinetic-char'),{yPercent:115,rotateX:-65,opacity:0},{yPercent:0,rotateX:0,opacity:1,duration:.72,stagger:.022,ease:'back.out(1.35)',scrollTrigger:{trigger:h,start:'top 84%',once:true}});
+  });
+  // Chapter-by-chapter scroll reveals, each with its own visual rhythm.
+  document.querySelectorAll('main section').forEach((section,index)=>{
+   const head=section.querySelector('.section-head');
+   const copy=section.querySelector('.about-copy,.hero-copy,.contact-panel>div:first-child');
+   if(head)gsap.fromTo(head,{y:64,opacity:0,filter:'blur(10px)'},{y:0,opacity:1,filter:'blur(0px)',duration:1,scrollTrigger:{trigger:section,start:'top 78%',once:true}});
+   if(copy&&section.id!=='home')gsap.fromTo(copy,{y:36,opacity:0},{y:0,opacity:1,duration:.9,delay:.08,scrollTrigger:{trigger:copy,start:'top 88%',once:true}});
+   const cards=section.querySelectorAll('.project,.timeline article,.skill-grid>div,.certificate-card,.recognition-grid>div');
+   if(cards.length)gsap.fromTo(cards,{y:58,opacity:0,rotateX:desktop?12:0,rotateY:desktop?index%2?7:-7:0,scale:.94,transformPerspective:1200},{y:0,opacity:1,rotateX:0,rotateY:0,scale:1,duration:1,stagger:.095,ease:'power3.out',scrollTrigger:{trigger:cards[0].parentElement,start:'top 82%',once:true}});
+  });
+  // Multi-plane parallax: foreground subject, interface panels and orbit move at different speeds.
+  if(desktop){
+   const parallax=[
+    ['.hero-art',-90],['.portrait-wrap',-48],['.globe',35],['.about-visual',-58],
+    ['.contact-orb',75],['.contact-panel',-22]
+   ];
+   parallax.forEach(([selector,amount])=>document.querySelectorAll(selector).forEach(el=>{
+    gsap.to(el,{y:amount,ease:'none',scrollTrigger:{trigger:el.closest('section')||el,start:'top bottom',end:'bottom top',scrub:1.15}});
+   }));
+   // Layered 3D tilt on section feature visuals, tied to the scroll position.
+   document.querySelectorAll('.about-visual,.contact-panel,.hero-art').forEach(el=>{
+    gsap.fromTo(el,{rotateX:4,rotateY:-3,transformPerspective:1400},{rotateX:-2,rotateY:3,ease:'none',scrollTrigger:{trigger:el.closest('section'),start:'top bottom',end:'bottom top',scrub:1.4}});
+   });
+  }
+  // Scroll-driven chapter progress line.
+  document.querySelectorAll('.timeline').forEach(el=>{
+   const line=el.querySelector('::before');
+   gsap.fromTo(el,{ '--timeline-progress':0 },{'--timeline-progress':1,ease:'none',scrollTrigger:{trigger:el,start:'top 72%',end:'bottom 58%',scrub:true}});
+  });
+  // Ambient scroll-linked motion in the project gallery.
+  const gallery=document.querySelector('.project-grid');
+  if(gallery&&desktop)gsap.to(gallery,{y:-34,ease:'none',scrollTrigger:{trigger:gallery,start:'top bottom',end:'bottom top',scrub:1.1}});
+ }
+ // Fluid page navigation: native scroll remains available, but links glide to chapters.
+ document.documentElement.style.scrollBehavior=reduce?'auto':'smooth';
+ // Refresh after fonts/images settle so scroll scenes use accurate geometry.
+ window.addEventListener('load',()=>{ST.refresh();setTimeout(()=>ST.refresh(),450);},{once:true});
+ window.addEventListener('resize',()=>ST.refresh(),{passive:true});
+})();
