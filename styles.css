@@ -1481,3 +1481,57 @@ body:before{background:radial-gradient(ellipse at 82% 18%,rgba(20,115,145,.16),t
  .hero-left{position:relative;z-index:5}
  .hero-art{position:relative;z-index:3}
 }
+
+/* COMPLETE RESPONSIVE STABILIZATION — full viewport, no clipped half-width canvas */
+html,body{width:100%!important;min-width:0!important;max-width:100%!important;margin:0!important;overflow-x:clip!important}
+body{position:relative}
+.topbar,main,footer,#site-loader{width:100%!important;max-width:100%!important;min-width:0!important}
+main{display:block;width:100%!important;overflow:clip}
+main>section{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box}
+#portfolio-world{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;max-width:none!important;pointer-events:none!important}
+#portfolio-world.mobile-scene-disabled{display:none!important}
+.section-head h2{display:block!important;white-space:normal!important;overflow:visible!important;line-height:1.12!important;letter-spacing:-.035em}
+.section-head h2 em{display:inline!important}
+.kinetic-char{display:inline!important;white-space:pre-wrap!important;transform:none!important;opacity:1!important}
+.about-grid{min-width:0!important}
+.about-text{min-width:0!important;overflow-wrap:anywhere}
+.about-orbit{display:none!important}
+.project-grid{min-width:0!important}
+.project{min-width:0!important;overflow:hidden}
+.project p,.about-text p{overflow-wrap:anywhere}
+@media(max-width:760px){
+ html,body{width:100vw!important;min-width:100vw!important;max-width:100vw!important;overflow-x:hidden!important}
+ .topbar{width:100vw!important;max-width:100vw!important;min-width:0!important;left:0!important;right:0!important}
+ main,footer{width:100vw!important;max-width:100vw!important;min-width:0!important;margin-left:0!important;margin-right:0!important}
+ main>section{width:100vw!important;max-width:100vw!important;min-width:0!important;margin-left:0!important;margin-right:0!important;padding-left:clamp(20px,6vw,34px)!important;padding-right:clamp(20px,6vw,34px)!important}
+ .hero{width:100vw!important;max-width:100vw!important;min-height:0!important;height:auto!important;padding-top:54px!important;padding-bottom:64px!important;overflow:hidden!important}
+ .hero-left{width:100%!important;max-width:100%!important}
+ .hero-left h1{font-size:clamp(58px,14vw,82px)!important;line-height:.98!important;letter-spacing:-.065em!important}
+ .hero-copy{max-width:100%!important;font-size:15px!important;line-height:1.75!important}
+ .hero-art{width:100%!important;max-width:100%!important;height:390px!important;min-height:390px!important;margin-top:12px!important;overflow:visible!important}
+ .hero-art .globe{display:block!important;visibility:visible!important;opacity:.42!important;width:min(78vw,310px)!important;height:min(78vw,310px)!important;top:34px!important;left:50%!important}
+ .hero-art .orbit,.hero-art .orbit-a,.hero-art .orbit-b{display:block!important;visibility:visible!important;opacity:.5!important;width:min(92vw,350px)!important;left:50%!important}
+ .hero-art .portrait-wrap{left:50%!important;right:auto!important;bottom:0!important;top:auto!important;width:min(70vw,255px)!important;height:340px!important;transform:translateX(-50%)!important}
+ .hero-art .code-window{left:0!important;top:12px!important;width:42%!important;max-width:165px!important}
+ .hero-art .focus-card{right:0!important;left:auto!important;top:35px!important;width:43%!important;max-width:165px!important}
+ .stats{width:100%!important;max-width:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;margin-top:12px!important}
+ .about-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:26px!important;width:100%!important}
+ .about-visual{width:100%!important;max-width:100%!important;min-height:300px!important}
+ .about-geometry-core{height:270px!important;width:min(240px,76%)!important}
+ .about-text{width:100%!important;max-width:100%!important}
+ .section-head{width:100%!important;max-width:100%!important;margin-bottom:28px!important}
+ .section-head h2{font-size:clamp(36px,9vw,52px)!important;line-height:1.1!important;letter-spacing:-.045em!important}
+ .section-head p{font-size:14px!important;line-height:1.65!important}
+ .project-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important;width:100%!important}
+ .project{width:100%!important;max-width:100%!important;padding:22px!important}
+ .certificate-grid{grid-template-columns:minmax(0,1fr)!important}
+ .timeline,.skill-grid,.recognition-grid{max-width:100%!important;min-width:0!important}
+ .skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .contact-panel{grid-template-columns:minmax(0,1fr)!important}
+ .about-orbit{display:none!important}
+ #portfolio-world,#portfolio-world.world-ready{display:none!important;opacity:0!important}
+}
+@media(min-width:761px){
+ main>section{overflow:hidden}
+ .project-grid{perspective:1200px}
+}
