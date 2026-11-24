@@ -365,15 +365,3 @@
 @keyframes cardSweep{to{transform:translateX(100%)}}
 .section-head h2{background:linear-gradient(180deg,var(--text),#c4a5ff);-webkit-background-clip:text;color:transparent}
 @media(prefers-reduced-motion:reduce){.hero-art .globe,.hero-art .globe-lines,.hero-art .globe-dots,.hero-art .orbit,.hero-art .portrait-wrap{animation:none!important}}
-
-
-/* Solar-system hero animation: glowing sun with planets on independent orbital paths */
-.hero-art .solar-system{position:absolute;left:50%;top:52%;width:min(590px,95%);aspect-ratio:1;transform:translate(-50%,-50%);z-index:1;pointer-events:none;overflow:visible}
-.hero-art .solar-sun{position:absolute;left:50%;top:50%;width:94px;height:94px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#fff7d6 0%,#fbbf24 18%,#f97316 48%,#7c2d12 75%);box-shadow:0 0 25px #f59e0b,0 0 65px #f9731688,0 0 130px #f9731633;animation:sunPulse 4s ease-in-out infinite}
-.hero-art .solar-orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(192,132,252,.25);border-radius:50%;transform:translate(-50%,-50%);animation:solarSpin linear infinite;transform-origin:center}
-.hero-art .orbit-1{width:150px;height:150px;animation-duration:8s}.hero-art .orbit-2{width:230px;height:230px;animation-duration:13s}.hero-art .orbit-3{width:320px;height:320px;animation-duration:19s}.hero-art .orbit-4{width:420px;height:420px;animation-duration:27s}.hero-art .orbit-5{width:530px;height:530px;animation-duration:36s}
-.hero-art .planet{position:absolute;left:50%;top:-6px;transform:translateX(-50%);border-radius:50%;display:block}
-.hero-art .planet-1{width:9px;height:9px;background:#c4b5fd;box-shadow:0 0 12px #a78bfa}.hero-art .planet-2{width:13px;height:13px;background:#38bdf8;box-shadow:0 0 16px #38bdf8}.hero-art .planet-3{width:17px;height:17px;background:linear-gradient(135deg,#fb7185,#c2410c);box-shadow:0 0 18px #fb718566}.hero-art .planet-4{width:22px;height:22px;background:linear-gradient(135deg,#fde68a,#b45309);box-shadow:0 0 18px #f59e0b66}.hero-art .planet-5{width:11px;height:11px;background:#67e8f9;box-shadow:0 0 16px #22d3ee}
-@keyframes solarSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes sunPulse{0%,100%{transform:translate(-50%,-50%) scale(1);filter:brightness(1)}50%{transform:translate(-50%,-50%) scale(1.07);filter:brightness(1.25)}}
-@media(max-width:760px){.hero-art .solar-system{top:38%;width:min(390px,96vw)}.hero-art .orbit-1{width:120px;height:120px}.hero-art .orbit-2{width:180px;height:180px}.hero-art .orbit-3{width:245px;height:245px}.hero-art .orbit-4{width:315px;height:315px}.hero-art .orbit-5{width:385px;height:385px}.hero-art .solar-sun{width:65px;height:65px}}
-@media(prefers-reduced-motion:reduce){.hero-art .solar-orbit,.hero-art .solar-sun{animation:none!important}}
