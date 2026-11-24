@@ -1832,3 +1832,13 @@ main>section{width:100%!important;max-width:100%!important;min-width:0!important
 #site-loader.space-intro.photo-intro .space-photo-atmosphere{background:radial-gradient(ellipse at 50% 55%,rgba(52,145,255,.12),transparent 52%)!important}
 #site-loader.space-intro.photo-intro.space-exit{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
 body.is-loading{overflow:hidden!important}
+
+
+/* Final mobile-first photo intro: show the real spiral galaxy immediately, then Earth. */
+#site-loader.space-intro.photo-intro{background:#01020a!important}
+#site-loader.photo-intro .space-photo-galaxy{opacity:1!important;background-image:url("https://science.nasa.gov/wp-content/uploads/2023/04/m101-jpg.webp")!important;background-position:center!important;background-size:cover!important;animation:realGalaxyDrift 3.5s cubic-bezier(.2,.65,.2,1) both!important}
+#site-loader.photo-intro .space-photo-earth{background-image:url("https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia11/pia11066/PIA11066.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2036&w=3060")!important;background-position:center 58%!important;background-size:cover!important}
+#site-loader.photo-intro.phase-earth .space-photo-earth{opacity:1!important;animation:earthArrival 2.2s cubic-bezier(.2,.72,.16,1) both!important}
+#site-loader.photo-intro.phase-earth .space-photo-galaxy{opacity:0!important;transition:opacity .9s ease!important}
+#site-loader.photo-intro.phase-zoom .space-photo-earth{animation:earthSurfaceDive 2.1s cubic-bezier(.45,0,.16,1) both!important}
+@media(max-width:700px){#site-loader.photo-intro .space-photo-galaxy,#site-loader.photo-intro .space-photo-earth{background-size:cover!important;background-position:center!important}}
