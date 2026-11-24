@@ -1422,3 +1422,37 @@ body.is-scrolling #portfolio-world{filter:saturate(1.16) contrast(1.08)}
 @media(max-width:760px){
  .about-geometry-core{width:min(230px,75%);height:250px}
 }
+
+/* 3D RENDERING VISIBILITY FIX — keep the live WebGL world visible behind every chapter */
+#portfolio-world{
+ position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
+ z-index:0!important;display:block!important;opacity:.94!important;
+ mix-blend-mode:screen!important;pointer-events:none!important;
+}
+#portfolio-world.world-ready{opacity:.94!important}
+body:has(#portfolio-world) main{position:relative!important;z-index:1!important}
+body:has(#portfolio-world) main section{
+ background:transparent!important;isolation:isolate;position:relative;
+}
+body:has(#portfolio-world) main section>*{position:relative;z-index:2}
+body:has(#portfolio-world) main section>.hero-grid{z-index:0!important}
+body:has(#portfolio-world) .topbar{z-index:20}
+body:has(#portfolio-world) .glass,
+body:has(#portfolio-world) .project,
+body:has(#portfolio-world) .certificate-card,
+body:has(#portfolio-world) .skill-grid>div,
+body:has(#portfolio-world) .recognition-grid>div{
+ background:linear-gradient(145deg,rgba(24,18,49,.78),rgba(7,9,25,.68))!important;
+ border:1px solid rgba(157,125,255,.32)!important;
+ box-shadow:0 24px 70px rgba(0,0,0,.38),0 0 34px rgba(111,76,255,.2),inset 0 1px rgba(255,255,255,.1)!important;
+ backdrop-filter:blur(16px);
+}
+body:has(#portfolio-world) .project,
+body:has(#portfolio-world) .certificate-card,
+body:has(#portfolio-world) .skill-grid>div,
+body:has(#portfolio-world) .recognition-grid>div{
+ transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s;
+}
+@media(max-width:760px){
+ #portfolio-world,#portfolio-world.world-ready{opacity:.68!important}
+}
