@@ -1773,3 +1773,51 @@ main>section{width:100%!important;max-width:100%!important;min-width:0!important
  #site-loader.space-intro .space-final{top:31%!important}
  #site-loader.space-intro .space-final h1{font-size:clamp(48px,13vw,76px)!important}
 }
+
+/* REAL SPACE PHOTO INTRO — replaces the previous synthetic point-cloud scene */
+#site-loader.space-intro.photo-intro{
+ position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;
+ display:block!important;overflow:hidden!important;z-index:999999!important;background:#01020a!important;
+ opacity:1;visibility:visible;pointer-events:auto;isolation:isolate;
+ transition:opacity .52s ease,visibility .52s ease;
+}
+#site-loader.photo-intro .space-photo-stars,
+#site-loader.photo-intro .space-photo-galaxy,
+#site-loader.photo-intro .space-photo-earth,
+#site-loader.photo-intro .space-photo-atmosphere{position:absolute;inset:0;pointer-events:none}
+#site-loader.photo-intro .space-photo-stars{
+ z-index:0;background-color:#01020a;
+ background-image:radial-gradient(1px 1px at 14% 22%,rgba(255,255,255,.8) 50%,transparent 100%),radial-gradient(1px 1px at 73% 34%,rgba(190,211,255,.75) 50%,transparent 100%),radial-gradient(1px 1px at 38% 76%,rgba(255,255,255,.65) 50%,transparent 100%),radial-gradient(1px 1px at 86% 82%,rgba(190,211,255,.6) 50%,transparent 100%);
+ background-size:180px 210px,230px 270px,290px 320px,340px 390px;
+}
+#site-loader.photo-intro .space-photo-galaxy{
+ z-index:1;opacity:0;transform:scale(1.08) rotate(-2deg);
+ background-image:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.10)),url("https://science.nasa.gov/wp-content/uploads/2023/04/m101-jpg.webp");
+ background-position:center center;background-repeat:no-repeat;background-size:cover;
+ will-change:transform,opacity;
+}
+#site-loader.photo-intro.phase-galaxy .space-photo-galaxy{opacity:1;animation:realGalaxyDrift 3.55s cubic-bezier(.2,.65,.2,1) both}
+#site-loader.photo-intro .space-photo-earth{
+ z-index:2;opacity:0;transform:scale(1.02);
+ background-image:linear-gradient(180deg,rgba(0,0,8,.05),rgba(0,0,8,.02)),url("https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia11/pia11066/PIA11066.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2036&w=3060");
+ background-position:center 58%;background-repeat:no-repeat;background-size:cover;
+ will-change:transform,opacity;
+}
+#site-loader.photo-intro.phase-earth .space-photo-earth{opacity:1;transition:opacity .9s ease;animation:earthArrival 3.3s cubic-bezier(.2,.72,.16,1) both}
+#site-loader.photo-intro.phase-earth .space-photo-galaxy{opacity:0;transition:opacity .85s ease}
+#site-loader.photo-intro.phase-zoom .space-photo-earth{animation:earthSurfaceDive 1.9s cubic-bezier(.45,0,.16,1) both}
+#site-loader.photo-intro .space-photo-atmosphere{
+ z-index:3;opacity:0;background:radial-gradient(ellipse at 50% 62%,rgba(74,174,255,.25),transparent 48%),linear-gradient(180deg,transparent 45%,rgba(5,15,34,.08));
+}
+#site-loader.photo-intro.phase-zoom .space-photo-atmosphere{opacity:1;transition:opacity .7s ease}
+#site-loader.photo-intro.space-exit{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+@keyframes realGalaxyDrift{0%{transform:scale(1.08) rotate(-2deg);filter:brightness(.7) saturate(1.08)}100%{transform:scale(1.55) rotate(1.5deg);filter:brightness(1.08) saturate(1.25)}}
+@keyframes earthArrival{0%{transform:scale(1.12);filter:brightness(.62) saturate(.95)}48%{transform:scale(1.03);filter:brightness(.95) saturate(1.05)}100%{transform:scale(1.12);filter:brightness(1.08) saturate(1.12)}}
+@keyframes earthSurfaceDive{0%{transform:scale(1.12);filter:brightness(1.08)}100%{transform:scale(2.7);filter:brightness(1.32)}}
+@media(max-width:700px){
+ #site-loader.photo-intro .space-photo-galaxy{background-size:auto 100%;background-color:#01020a}
+ #site-loader.photo-intro .space-photo-earth{background-position:center center;background-size:auto 100%;background-color:#01020a}
+}
+@media(prefers-reduced-motion:reduce){
+ #site-loader.photo-intro .space-photo-galaxy,#site-loader.photo-intro .space-photo-earth{animation:none!important}
+}
