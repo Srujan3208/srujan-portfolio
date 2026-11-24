@@ -79,3 +79,61 @@ document.body.classList.add('cinematic-ready');
   });
  },{passive:true});
 })();
+
+/* REAL-TIME WEBGL CINEMATIC NEBULA — desktop GPU layer */
+(()=>{
+ const canvas=document.getElementById('cinematic-webgl');
+ if(!canvas||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const gl=canvas.getContext('webgl',{alpha:true,antialias:false,powerPreference:'high-performance'});
+ if(!gl){canvas.style.display='none';return}
+ const vertex='attribute vec2 p; void main(){gl_Position=vec4(p,0.0,1.0);}';
+ const fragment=`
+ precision mediump float;
+ uniform vec2 resolution;
+ uniform vec2 pointer;
+ uniform float time;
+ uniform float scroll;
+ float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+ float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+1.),f.x),f.y);}
+ float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=noise(p)*a;p*=2.03;a*=.5;}return v;}
+ void main(){
+  vec2 uv=(gl_FragCoord.xy-resolution*.5)/resolution.y;
+  vec2 m=(pointer-resolution*.5)/resolution.y;
+  uv+=m*.055;
+  float t=time*.055+scroll*.25;
+  vec2 q=uv;
+  q.x+=.12*sin(uv.y*2.3+t);q.y+=.12*cos(uv.x*2.1-t);
+  float n=fbm(q*2.2+vec2(t,-t));
+  float n2=fbm(q*3.7-vec2(t*.7,t*.4));
+  float cloud=smoothstep(.34,.78,n*.65+n2*.35);
+  float bands=sin((q.x*1.8+q.y*1.1+n*1.2+t)*4.0);
+  float energy=pow(max(0.,cloud),2.2)*(.65+.35*bands);
+  vec3 purple=vec3(.23,.035,.58),violet=vec3(.48,.12,.95),cyan=vec3(.025,.45,.68),pink=vec3(.62,.06,.38);
+  vec3 col=mix(purple,violet,smoothstep(.2,.8,n));
+  col=mix(col,cyan,smoothstep(.52,.88,n2)*.55);
+  col=mix(col,pink,smoothstep(.6,.95,noise(q*5.+t))*0.3);
+  col*=energy;
+  float glow=exp(-length(uv-m*.3)*4.5)*.18;
+  col+=vec3(.16,.06,.35)*glow;
+  // layered starfield
+  vec2 st=gl_FragCoord.xy/resolution;
+  float stars=step(.997,hash(floor(st*resolution*.35)))+step(.994,hash(floor(st*resolution*.7)+7.));
+  float twinkle=.55+.45*sin(time*2.3+hash(floor(st*resolution))*8.);
+  col+=vec3(.65,.75,1.)*stars*twinkle*.35;
+  float vignette=smoothstep(1.25,.15,length(uv));
+  col*=vignette;
+  gl_FragColor=vec4(col,clamp(energy*.65+glow*.3+stars*.25,0.,.65));
+ }`;
+ const compile=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(s));return null}return s};
+ const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);if(!vs||!fs)return;
+ const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS)){console.warn(gl.getProgramInfoLog(program));return}
+ gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+ const loc=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+ const res=gl.getUniformLocation(program,'resolution'),ptr=gl.getUniformLocation(program,'pointer'),tm=gl.getUniformLocation(program,'time'),scr=gl.getUniformLocation(program,'scroll');
+ let w=0,h=0,dpr=1,mx=innerWidth*.5,my=innerHeight*.5,start=performance.now(),scroll=0;
+ const resize=()=>{dpr=Math.min(devicePixelRatio||1,innerWidth>900?1.6:1.1);w=innerWidth;h=innerHeight;canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);gl.viewport(0,0,canvas.width,canvas.height);gl.uniform2f(res,canvas.width,canvas.height)};
+ resize();addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{mx=e.clientX*dpr;my=(h-e.clientY)*dpr},{passive:true});addEventListener('scroll',()=>scroll=scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight,{passive:true});
+ let running=true;const frame=now=>{if(!running)return;gl.uniform2f(ptr,mx,my);gl.uniform1f(tm,(now-start)/1000);gl.uniform1f(scr,scroll);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(frame)};
+ requestAnimationFrame(frame);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){running=false}else if(!running){running=true;requestAnimationFrame(frame)}});
+})();
