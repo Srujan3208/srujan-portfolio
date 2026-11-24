@@ -329,34 +329,32 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   const glow=new THREE.Sprite(glowMat);glow.scale.set(10,10,1);galaxy.add(glow);galaxy.add(coreGlow);
   const nebulaMat=new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(68,115,255,.28)');g.addColorStop(.38,'rgba(90,50,190,.16)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);})(),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.0});
   for(let i=0;i<8;i++){const sp=new THREE.Sprite(nebulaMat.clone());sp.position.set((Math.random()-.5)*23,(Math.random()-.5)*11,-4-Math.random()*8);sp.scale.set(9+Math.random()*8,4+Math.random()*5,1);universe.add(sp);}
-  // Procedural Earth surface map: ocean gradients, irregular continent silhouettes and cloud wisps.
-  const makeEarthTexture=()=>{
-   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
-   const grad=x.createLinearGradient(0,0,0,1024);grad.addColorStop(0,'#164b78');grad.addColorStop(.48,'#0c4b7c');grad.addColorStop(1,'#061c42');x.fillStyle=grad;x.fillRect(0,0,2048,1024);
-   const land=[
-    [[160,245],[260,160],[390,145],[470,230],[430,310],[370,345],[330,465],[270,520],[220,430],[180,350]],
-    [[400,525],[490,555],[530,690],[480,860],[410,940],[360,820],[380,680]],
-    [[850,190],[970,140],[1090,185],[1180,245],[1150,325],[1050,345],[1010,425],[940,380],[900,295]],
-    [[1010,410],[1120,430],[1200,540],[1160,710],[1090,840],[1010,760],[980,610]],
-    [[1300,210],[1420,165],[1560,220],[1650,310],[1600,400],[1490,390],[1420,470],[1350,370]],
-    [[1500,600],[1630,565],[1740,650],[1700,760],[1580,800],[1500,720]],
-    [[1780,140],[1900,180],[1950,270],[1880,340],[1810,260]]
-   ];
-   land.forEach((poly,i)=>{x.beginPath();x.moveTo(poly[0][0],poly[0][1]);poly.slice(1).forEach(p=>x.lineTo(p[0],p[1]));x.closePath();const lg=x.createLinearGradient(0,120,0,950);lg.addColorStop(0,'#91ad78');lg.addColorStop(.42,'#477b56');lg.addColorStop(1,'#9b9a6a');x.fillStyle=lg;x.fill();x.strokeStyle='rgba(195,211,166,.22)';x.lineWidth=8;x.stroke();});
-   for(let i=0;i<90;i++){const px=Math.random()*2048,py=Math.random()*1024,r=8+Math.random()*45;x.fillStyle='rgba(222,236,255,'+(Math.random()*.12)+')';x.beginPath();x.ellipse(px,py,r,r*.35,Math.random(),0,Math.PI*2);x.fill();}
-   return new THREE.CanvasTexture(c);
-  };
+  // High-detail satellite Earth textures (Three.js public planet maps); procedural fallback keeps the intro resilient.
+  const textureLoader=new THREE.TextureLoader();
+  textureLoader.setCrossOrigin('anonymous');
+  const earthMap=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+  earthMap.encoding=THREE.sRGBEncoding;
+  const earthNormal=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg');
+  const earthCloudMap=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png');
   const earthGroup=new THREE.Group();world.add(earthGroup);earthGroup.position.set(0,0,0);
-  const earth=new THREE.Mesh(new THREE.SphereGeometry(2.1,96,96),new THREE.MeshStandardMaterial({map:makeEarthTexture(),roughness:.9,metalness:.02}));
+  const earthMaterial=new THREE.MeshPhongMaterial({map:earthMap,normalMap:earthNormal,normalScale:new THREE.Vector2(.7,.7),specular:new THREE.Color(0x263d5a),shininess:18});
+  const earth=new THREE.Mesh(new THREE.SphereGeometry(2.1,128,128),earthMaterial);
   earth.rotation.z=.32;earthGroup.add(earth);
-  const cloudCanvas=document.createElement('canvas');cloudCanvas.width=1024;cloudCanvas.height=512;const cx=cloudCanvas.getContext('2d');
-  for(let i=0;i<450;i++){const px=Math.random()*1024,py=Math.random()*512,rx=12+Math.random()*65,ry=3+Math.random()*16;cx.fillStyle='rgba(255,255,255,'+(.025+Math.random()*.12)+')';cx.beginPath();cx.ellipse(px,py,rx,ry,Math.random()*.4,0,Math.PI*2);cx.fill();}
-  const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.135,72,72),new THREE.MeshPhongMaterial({map:new THREE.CanvasTexture(cloudCanvas),transparent:true,opacity:.48,depthWrite:false}));
+  const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.135,96,96),new THREE.MeshPhongMaterial({map:earthCloudMap,transparent:true,opacity:.5,depthWrite:false,blending:THREE.NormalBlending}));
   earthGroup.add(clouds);
-  const atmosphere=new THREE.Mesh(new THREE.SphereGeometry(2.23,72,72),new THREE.MeshBasicMaterial({color:0x3eabff,transparent:true,opacity:.22,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false}));earthGroup.add(atmosphere);
+  const atmosphere=new THREE.Mesh(new THREE.SphereGeometry(2.23,96,96),new THREE.MeshBasicMaterial({color:0x369dff,transparent:true,opacity:.28,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false}));earthGroup.add(atmosphere);
+  const atmosphereRim=new THREE.Mesh(new THREE.SphereGeometry(2.19,96,96),new THREE.MeshBasicMaterial({color:0x7bcfff,transparent:true,opacity:.12,side:THREE.FrontSide,blending:THREE.AdditiveBlending,depthWrite:false}));earthGroup.add(atmosphereRim);
+  // A soft sunrise sprite catches the limb as the camera approaches the horizon.
+  const sunCanvas=document.createElement('canvas');sunCanvas.width=sunCanvas.height=256;
+  const sunCtx=sunCanvas.getContext('2d'),sunGrad=sunCtx.createRadialGradient(128,128,2,128,128,128);
+  sunGrad.addColorStop(0,'rgba(255,255,245,1)');sunGrad.addColorStop(.12,'rgba(255,229,188,.92)');sunGrad.addColorStop(.28,'rgba(255,176,104,.35)');sunGrad.addColorStop(1,'rgba(255,140,60,0)');
+  sunCtx.fillStyle=sunGrad;sunCtx.fillRect(0,0,256,256);
+  const sunSprite=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(sunCanvas),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));
+  sunSprite.scale.set(5.5,5.5,1);sunSprite.position.set(2.35,1.25,1.8);earthGroup.add(sunSprite);
   earthGroup.visible=false;
   // A small distant moon and a few passing asteroids add scale during approach.
-  const moon=new THREE.Mesh(new THREE.SphereGeometry(.32,32,32),new THREE.MeshStandardMaterial({color:0x9ba8b6,roughness:1}));moon.position.set(4.5,1.8,-1.8);world.add(moon);
+  const moonMap=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/moon_1024.jpg');
+  const moon=new THREE.Mesh(new THREE.SphereGeometry(.32,48,48),new THREE.MeshStandardMaterial({map:moonMap,roughness:1}));moon.position.set(4.5,1.8,-1.8);world.add(moon);
   const asteroidGroup=new THREE.Group();world.add(asteroidGroup);
   for(let i=0;i<32;i++){const a=new THREE.Mesh(new THREE.IcosahedronGeometry(.045+Math.random()*.09,0),new THREE.MeshStandardMaterial({color:0x647080,roughness:1}));a.position.set((Math.random()-.5)*16,(Math.random()-.5)*10,-2-Math.random()*12);a.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);asteroidGroup.add(a);}
   const flashLight=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshBasicMaterial({color:0xe7f7ff,transparent:true,opacity:0,depthWrite:false}));flashLight.position.set(0,0,5);camera.add(flashLight);world.add(camera);
@@ -370,15 +368,15 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    const fadeIn=smooth(sec/.9),galaxyIn=smooth((sec-3.8)/1.1),earthIn=smooth((sec-8)/1.1);
    starfield.material.opacity=lerp(.0,.9,fadeIn);
    galaxyPoints.material.opacity=.98*galaxyIn;glowMat.opacity=.92*galaxyIn;coreGlow.material.opacity=.22*galaxyIn;
-   galaxy.rotation.z=sec*.045;galaxy.rotation.x=.34+Math.sin(sec*.18)*.06;
+   galaxy.rotation.z=sec*.045;galaxy.rotation.x=.58+Math.sin(sec*.18)*.055;
    if(sec<4){camera.position.set(0,0,lerp(28,18,smooth(sec/4)));camera.lookAt(0,0,0);earthGroup.visible=false;}
-   else if(sec<8){camera.position.set(lerp(0,1.5,smooth((sec-4)/4)),lerp(0,.4,smooth((sec-4)/4)),lerp(18,10,smooth((sec-4)/4)));camera.lookAt(0,0,-2);earthGroup.visible=false;}
-   else if(sec<13){earthGroup.visible=true;camera.position.set(lerp(1.5,0,smooth((sec-8)/5)),lerp(.4,.25,smooth((sec-8)/5)),lerp(10,7.5,smooth((sec-8)/5)));camera.lookAt(0,0,0);earthGroup.scale.setScalar(lerp(.001,1,smooth((sec-8)/1.2)));galaxyPoints.material.opacity=lerp(.98,.08,smooth((sec-8)/3));}
-   else if(sec<17){earthGroup.visible=true;earthGroup.scale.setScalar(lerp(1,4.6,smooth((sec-13)/4)));camera.position.set(0,.15,lerp(7.5,4.2,smooth((sec-13)/4)));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;flashLight.material.opacity=.18*smooth((sec-15.5)/1.5);}
-   else{earthGroup.visible=true;earthGroup.scale.setScalar(lerp(4.6,12,smooth((sec-17)/1.1)));camera.position.set(0,0,4.2);camera.lookAt(0,0,0);flashLight.material.opacity=lerp(.9,0,smooth((sec-17)/.8));universe.rotation.z=sec*.006;}
+   else if(sec<8){const orbit=smooth((sec-4)/4)*Math.PI*1.15;camera.position.set(Math.sin(orbit)*12.5,Math.sin(orbit*.72)*4.2,Math.cos(orbit)*12.5+3);camera.lookAt(0,0,-3);earthGroup.visible=false;}
+   else if(sec<13){earthGroup.visible=true;camera.position.set(lerp(2.1,0,smooth((sec-8)/5)),lerp(.8,.15,smooth((sec-8)/5)),lerp(11,7.7,smooth((sec-8)/5)));camera.lookAt(0,0,0);earthGroup.scale.setScalar(lerp(.001,1,smooth((sec-8)/1.2)));galaxyPoints.material.opacity=lerp(.98,.015,smooth((sec-8)/2.6));sunSprite.material.opacity=.85*smooth((sec-10.8)/1.8);}
+   else if(sec<17){earthGroup.visible=true;const dive=smooth((sec-13)/4);earthGroup.scale.setScalar(lerp(1,8.55,dive));earthGroup.position.y=lerp(0,-22.5,dive);camera.position.set(lerp(0,0.2,dive),lerp(.15,0,dive),lerp(7.7,27,dive));camera.lookAt(0,lerp(0,-6.5,dive),0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.85;flashLight.material.opacity=.9*smooth((sec-15.7)/1.3);}
+   else{earthGroup.visible=true;earthGroup.scale.setScalar(8.55);earthGroup.position.y=-22.5;camera.position.set(0,0,27);camera.lookAt(0,-6.5,0);sunSprite.material.opacity=.9;flashLight.material.opacity=lerp(.9,0,smooth((sec-17)/.9));universe.rotation.z=sec*.002;}
    if(sec>=17&&finalPanel&&!finalPanel.classList.contains('visible'))finalPanel.classList.add('visible');
    moon.rotation.y+=.001;asteroidGroup.rotation.y+=.0012;
-   if(sec>=22){progress.style.width='100%';if(sceneLabel)sceneLabel.textContent='YOUR UNIVERSE IS READY';}
+   if(sec>=22){if(progress)progress.style.width='100%';if(sceneLabel)sceneLabel.textContent='YOUR UNIVERSE IS READY';}
    renderer.render(world,camera);
   };
   const resize=()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,coarse?1.25:1.8));renderer.setSize(innerWidth,innerHeight,false);};
