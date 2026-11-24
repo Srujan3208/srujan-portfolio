@@ -11,8 +11,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
 (()=>{
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const touch=window.matchMedia('(pointer: coarse)').matches;
- const loader=document.querySelector('.boot-loader'),pct=document.querySelector('.boot-percent');
- if(loader&&!reduce){let n=0;const timer=setInterval(()=>{n=Math.min(100,n+Math.ceil(Math.random()*12));if(pct)pct.textContent=String(n).padStart(2,'0')+'%';if(n>=100){clearInterval(timer);setTimeout(()=>loader.classList.add('done'),220)}},90)}else loader?.classList.add('done');
+
  const progress=document.querySelector('.scroll-progress i');
  const updateProgress=()=>{const max=document.documentElement.scrollHeight-innerHeight;progress&&(progress.style.width=(max>0?scrollY/max*100:0)+'%')};
  updateProgress();window.addEventListener('scroll',updateProgress,{passive:true});
