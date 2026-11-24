@@ -554,3 +554,43 @@ body.universe-ready main,body.universe-ready header.topbar,body.universe-ready f
 body.universe-revealed main,body.universe-revealed header.topbar,body.universe-revealed footer.site-footer{opacity:1;transform:none;filter:none;transition:opacity 1.25s cubic-bezier(.16,1,.3,1),transform 1.25s cubic-bezier(.16,1,.3,1),filter 1.25s}
 #universe-loader.depart{opacity:0;visibility:hidden;pointer-events:none}
 @media(prefers-reduced-motion:reduce){#universe-loader{display:none}body.universe-ready main,body.universe-ready header.topbar,body.universe-ready footer.site-footer{opacity:1;transform:none;filter:none}}
+
+
+/* Portrait framing update: show the complete hoodie without cropping or color blending */
+.about-visual {
+  min-height: 540px !important;
+  display: flex !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+  background: radial-gradient(ellipse at 50% 42%, rgba(91,33,182,.20), transparent 68%) !important;
+}
+.about-photo {
+  height: 540px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+.about-visual .about-photo img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 22px rgba(168,85,247,.28)) !important;
+}
+@media (max-width: 760px) {
+  .about-visual { min-height: min(620px, 155vw) !important; }
+  .about-photo { height: min(620px, 155vw) !important; }
+  .about-visual .about-photo img { width: 100% !important; height: 100% !important; object-fit: contain !important; object-position: center bottom !important; }
+}
+@media (max-width: 430px) {
+  .about-visual { min-height: 560px !important; }
+  .about-photo { height: 560px !important; }
+}
