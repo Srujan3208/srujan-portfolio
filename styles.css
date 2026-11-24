@@ -673,3 +673,90 @@ body.universe-revealed main,body.universe-revealed header.topbar,body.universe-r
     filter: drop-shadow(0 0 18px rgba(168,85,247,.20)) !important;
   }
 }
+
+
+/* COMPLETE PORTRAIT PRESENTATION — larger hero image, natural aspect ratio, no clipping */
+.hero-art {
+  min-height: 700px !important;
+  overflow: visible !important;
+}
+.hero-art .portrait-wrap {
+  width: min(500px, 96%) !important;
+  height: 650px !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+}
+.hero-art .portrait-wrap img.portrait {
+  display: block !important;
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+}
+.about-visual,
+.about-photo {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+.about-visual .about-photo img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+}
+@media (max-width: 760px) {
+  .hero {
+    min-height: 1120px !important;
+    overflow: visible !important;
+  }
+  .hero-art {
+    min-height: 720px !important;
+    width: 100% !important;
+    overflow: visible !important;
+    margin-top: 12px !important;
+  }
+  .hero-art .portrait-wrap {
+    width: min(420px, 100%) !important;
+    height: clamp(470px, 132vw, 610px) !important;
+    max-width: 100% !important;
+    bottom: 155px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  .hero-art .portrait-wrap img.portrait {
+    width: auto !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+  .about-photo {
+    padding: 12px 8px 50px !important;
+  }
+  .about-visual .about-photo img {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    object-fit: contain !important;
+  }
+}
+@media (max-width: 430px) {
+  .hero { min-height: 1100px !important; }
+  .hero-art { min-height: 690px !important; }
+  .hero-art .portrait-wrap {
+    width: min(390px, 100%) !important;
+    height: clamp(450px, 128vw, 560px) !important;
+    bottom: 155px !important;
+  }
+}
