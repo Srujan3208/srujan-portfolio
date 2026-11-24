@@ -18,7 +18,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    window.setTimeout(()=>loader.remove(),950);
   },1250);
  };
- const minimumTime=1900;
+ const minimumTime=3000;
  const began=performance.now();
  const ready=()=>{
   const elapsed=performance.now()-began;
@@ -27,7 +27,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(document.readyState==='complete')ready();
  else window.addEventListener('load',ready,{once:true});
  /* Fail-safe if a third-party asset never finishes loading */
- window.setTimeout(launch,6500);
+ window.setTimeout(launch,8000);
 })();
 
 /* Cinematic scroll engine: progress, subtle parallax, spatial depth and reveal */
