@@ -70,10 +70,10 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  hero.insertBefore(canvas,hero.firstChild);
  const gl=canvas.getContext('webgl',{alpha:true,antialias:false,powerPreference:'high-performance',premultipliedAlpha:false});
  if(!gl){canvas.remove();return;}
- const vertex=String.raw\`attribute vec2 aPosition;
+ const vertex=String.raw`attribute vec2 aPosition;
  varying vec2 vUv;
- void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.,1.);}\`;
- const fragment=String.raw\`precision highp float;
+ void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.,1.);}`;
+ const fragment=String.raw`precision highp float;
  varying vec2 vUv;
  uniform vec2 uResolution;
  uniform vec2 uMouse;
@@ -111,7 +111,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  color*=.9+.1*sin(uScroll*.004);
  float alpha=clamp((cloud+halo+band+wave+stars)*1.2,0.,.62);
  gl_FragColor=vec4(color,alpha);
- }\`;
+ }`;
  const compile=(type,source)=>{
   const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);
   if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){gl.deleteShader(shader);return null;}return shader;
