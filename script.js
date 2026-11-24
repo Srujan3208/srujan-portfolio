@@ -132,7 +132,7 @@ document.body.classList.add('cinematic-ready');
  const res=gl.getUniformLocation(program,'resolution'),ptr=gl.getUniformLocation(program,'pointer'),tm=gl.getUniformLocation(program,'time'),scr=gl.getUniformLocation(program,'scroll');
  let w=0,h=0,dpr=1,mx=innerWidth*.5,my=innerHeight*.5,start=performance.now(),scroll=0;
  const resize=()=>{dpr=Math.min(devicePixelRatio||1,innerWidth>900?1.6:1.1);w=innerWidth;h=innerHeight;canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);gl.viewport(0,0,canvas.width,canvas.height);gl.uniform2f(res,canvas.width,canvas.height)};
- resize();addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{mx=e.clientX*dpr;my=(h-e.clientY)*dpr},{passive:true});addEventListener('scroll',()=>scroll=scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight,{passive:true});
+ resize();addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{mx=e.clientX*dpr;my=(h-e.clientY)*dpr},{passive:true});addEventListener('scroll',()=>{scroll=scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)},{passive:true});
  let running=true;const frame=now=>{if(!running)return;gl.uniform2f(ptr,mx,my);gl.uniform1f(tm,(now-start)/1000);gl.uniform1f(scr,scroll);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(frame)};
  requestAnimationFrame(frame);
  document.addEventListener('visibilitychange',()=>{if(document.hidden){running=false}else if(!running){running=true;requestAnimationFrame(frame)}});
