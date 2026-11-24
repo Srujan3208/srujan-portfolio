@@ -1208,3 +1208,48 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
  #site-loader .loader-nebula-a,#site-loader .loader-nebula-b{animation:none}
  .project,.certificate-card,.cert-card,.skill-grid>div{transform:none!important}
 }
+
+
+/* MILKY WAY CINEMA — make the procedural galaxy the hero of the loader */
+#site-loader{background:#02020a!important;isolation:isolate;overflow:hidden}
+#site-loader .galaxy-universe{
+ position:absolute;inset:0;width:100%;height:100%;display:block;
+ z-index:0;opacity:1!important;mix-blend-mode:screen;
+ filter:saturate(1.22) contrast(1.12);
+}
+#site-loader:before{
+ z-index:1!important;
+ background:
+  radial-gradient(ellipse at 50% 48%,rgba(4,3,13,.04) 0%,rgba(3,3,12,.10) 44%,rgba(1,2,8,.64) 100%),
+  linear-gradient(90deg,rgba(2,2,10,.18),transparent 24%,transparent 76%,rgba(2,2,10,.18))!important;
+}
+#site-loader .loader-nebula{opacity:.28!important;filter:blur(78px);mix-blend-mode:screen}
+#site-loader .loader-nebula-a{background:radial-gradient(ellipse,rgba(124,58,237,.28),rgba(79,70,229,.10) 44%,transparent 72%)}
+#site-loader .loader-nebula-b{background:radial-gradient(ellipse,rgba(34,211,238,.12),rgba(99,102,241,.08) 40%,transparent 72%)}
+#site-loader .loader-stars{opacity:.34!important}
+#site-loader .loader-orbit{border-color:rgba(196,181,253,.11);box-shadow:0 0 45px rgba(124,58,237,.12)}
+#site-loader .loader-core{
+ background:linear-gradient(145deg,rgba(10,7,26,.48),rgba(4,7,19,.34))!important;
+ border-color:rgba(196,181,253,.24)!important;
+ box-shadow:0 30px 110px rgba(0,0,0,.42),0 0 70px rgba(91,33,182,.12),inset 0 1px rgba(255,255,255,.09)!important;
+ backdrop-filter:blur(12px)!important;
+}
+#site-loader .loader-monogram{box-shadow:0 0 65px rgba(124,58,237,.38),inset 0 0 38px rgba(34,211,238,.12)}
+#site-loader .loader-title{letter-spacing:.24em;text-shadow:0 0 34px rgba(167,139,250,.48)}
+#site-loader .loader-subtitle{color:#c4b5fd}
+#site-loader .loader-terminal{color:#ddd6fe}
+#site-loader .loader-progress{height:3px;box-shadow:0 0 24px rgba(124,58,237,.22)}
+#site-loader.is-launching .galaxy-universe{animation:galaxy-jump .9s cubic-bezier(.18,.72,.2,1) both}
+@keyframes galaxy-jump{0%{transform:scale(1);filter:saturate(1.22) brightness(1)}55%{filter:saturate(1.65) brightness(1.5)}100%{transform:scale(1.24);filter:saturate(1.8) brightness(1.8);opacity:0}}
+@media(min-width:1100px) and (hover:hover){
+ #site-loader .loader-core{width:min(590px,50vw);padding:38px 34px}
+ #site-loader .loader-monogram{width:122px;height:122px}
+ #site-loader .loader-monogram span{font-size:64px}
+}
+@media(max-width:760px){
+ #site-loader .galaxy-universe{filter:saturate(1.05) contrast(1.04)}
+ #site-loader .loader-core{backdrop-filter:blur(8px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #site-loader.is-launching .galaxy-universe{animation:none!important}
+}
