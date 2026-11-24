@@ -1075,3 +1075,8 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 .cert-icon.learning-logo img {width:25px;height:25px;object-fit:contain;display:block;}
 .cert-card:hover .learning-logo img {transform:translateY(-2px) scale(1.1);transition:transform .25s ease;}
 @media(prefers-reduced-motion:reduce) {.project-logo svg,.cert-icon.learning-logo img {transition:none!important;}}
+
+
+/* Reliable inline Generative AI mark — no external image dependency */
+.cert-icon.genai-learning-mark {color:#d6b4ff;background:linear-gradient(145deg,#2b1746,#171124);border-color:#684294;box-shadow:inset 0 0 18px rgba(192,132,252,.14),0 0 18px rgba(147,51,234,.12);}
+.cert-icon.genai-learning-mark svg {display:block;width:27px;height:27px;filter:drop-shadow(0 0 5px rgba(192,132,252,.55));}
