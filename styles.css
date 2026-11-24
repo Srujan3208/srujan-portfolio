@@ -1406,3 +1406,19 @@ body.is-scrolling #portfolio-world{filter:saturate(1.16) contrast(1.08)}
 .cinematic-motion-ready .hero-left .hero-buttons,
 .cinematic-motion-ready .hero-left .socials,
 .cinematic-motion-ready .hero-art .portrait-wrap{animation:none!important}
+
+/* ABOUT VISUAL — replace the S monogram with Srujan's actual portrait */
+.about-geometry-core{
+ width:min(270px,72%);height:310px;display:flex;align-items:flex-end;justify-content:center;
+ border:0;background:transparent;box-shadow:none;border-radius:0;transform:none;
+ animation:geometry-float 5s ease-in-out infinite;overflow:visible;
+}
+.about-geometry-core img{
+ display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;
+ filter:drop-shadow(0 12px 28px rgba(139,92,246,.32));
+}
+.about-geometry-ring{z-index:2;pointer-events:none}
+.geometry-label{z-index:3}
+@media(max-width:760px){
+ .about-geometry-core{width:min(230px,75%);height:250px}
+}
