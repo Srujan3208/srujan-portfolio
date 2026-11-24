@@ -560,3 +560,60 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 @media(prefers-reduced-motion:reduce) {
  .hero-art .orbit-a,.hero-art .orbit-b { animation:none !important; }
 }
+
+
+/* Enhanced orbital energy — brighter moving trails and orbiting satellites */
+.hero-art .orbit-a,.hero-art .orbit-b {
+  overflow:visible !important;
+  filter:drop-shadow(0 0 7px rgba(192,132,252,.7));
+}
+.hero-art .orbit-a {
+  animation:portrait-orbit-a 11s linear infinite,orbit-energy-pulse 2.8s ease-in-out infinite alternate !important;
+  border-image:linear-gradient(90deg,rgba(124,58,237,.18),rgba(233,213,255,1),rgba(168,85,247,.35)) 1;
+}
+.hero-art .orbit-b {
+  animation:portrait-orbit-b 16s linear infinite,orbit-energy-pulse 3.6s ease-in-out infinite alternate-reverse !important;
+}
+.hero-art .orbit-a::before,.hero-art .orbit-b::before {
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border-radius:50%;
+  border:1px solid rgba(192,132,252,.2);
+  box-shadow:0 0 14px rgba(168,85,247,.24);
+  animation:orbit-aura 3s ease-in-out infinite alternate;
+}
+.hero-art .orbit-a::after {
+  animation:orbit-satellite-a 11s linear infinite !important;
+}
+.hero-art .orbit-b::after {
+  animation:orbit-satellite-b 16s linear infinite !important;
+}
+@keyframes orbit-energy-pulse {
+  from { filter:brightness(.85) drop-shadow(0 0 5px rgba(168,85,247,.45)); }
+  to { filter:brightness(1.5) drop-shadow(0 0 17px rgba(192,132,252,.95)); }
+}
+@keyframes orbit-aura {
+  from { opacity:.22; transform:scale(.99); }
+  to { opacity:.8; transform:scale(1.025); }
+}
+@keyframes orbit-satellite-a {
+  0% { transform:translate(-50%,-50%) rotate(0deg) scale(1); }
+  50% { transform:translate(-50%,-50%) rotate(180deg) scale(1.35); }
+  100% { transform:translate(-50%,-50%) rotate(360deg) scale(1); }
+}
+@keyframes orbit-satellite-b {
+  0% { transform:translate(-50%,-50%) scale(1); }
+  50% { transform:translate(-50%,-50%) scale(1.45); }
+  100% { transform:translate(-50%,-50%) scale(1); }
+}
+@media(max-width:760px) {
+ .hero-art .orbit-a { animation-duration:18s,3.2s !important; }
+ .hero-art .orbit-b { animation-duration:24s,4s !important; }
+ .hero-art .orbit-a::after { animation-duration:18s !important; }
+ .hero-art .orbit-b::after { animation-duration:24s !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .hero-art .orbit-a,.hero-art .orbit-b,.hero-art .orbit-a::before,.hero-art .orbit-b::before,
+ .hero-art .orbit-a::after,.hero-art .orbit-b::after { animation:none !important; }
+}
