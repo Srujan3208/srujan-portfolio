@@ -21,6 +21,37 @@
   </div>
   <div class="loader-enter-flash"></div>
 </div>
+<script>
+/* Critical inline loader controller: works even if the main app bundle fails. */
+(function(){
+ var loader=document.getElementById('site-loader'),body=document.body;
+ if(!loader)return;
+ body.classList.add('is-loading');
+ var percent=document.getElementById('loader-percent');
+ var terminal=document.getElementById('loader-terminal-text');
+ var messages=['Initializing universe...','Establishing secure connection...','Compiling creative systems...','Loading projects & experiences...','Welcome to my universe.'];
+ var start=Date.now(),duration=4800,done=false;
+ function reveal(){
+  if(done)return;done=true;
+  if(percent)percent.textContent='100%';
+  if(terminal)terminal.textContent='Universe ready.';
+  loader.classList.add('is-launching');
+  setTimeout(function(){
+   loader.classList.add('is-hidden');
+   body.classList.remove('is-loading');
+   setTimeout(function(){if(loader.parentNode)loader.parentNode.removeChild(loader);},700);
+  },650);
+ }
+ var timer=setInterval(function(){
+  var p=Math.min(100,Math.floor((Date.now()-start)/duration*100));
+  if(percent)percent.textContent=String(p).padStart(2,'0')+'%';
+  if(terminal)terminal.textContent=messages[Math.min(4,Math.floor(p/21))];
+  if(p>=100){clearInterval(timer);reveal();}
+ },50);
+ /* Hard escape hatch: never leave the visitor trapped on the intro. */
+ setTimeout(function(){clearInterval(timer);reveal();},6500);
+})();
+</script>
 
 <div class="noise"></div><div class="cursor-glow"></div>
 <header class="topbar"><a class="brand" href="#home"><span class="brand-mark">S</span><span>Srujan<span class="brand-dot">.dev</span></span></a><nav class="nav"><a class="active" href="#home">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#learning">Learning</a><a href="#certifications">Certifications</a><a href="#contact">Contact</a></nav><div class="top-actions"><button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button><button class="menu-btn" id="menuBtn">☰</button></div></header>
