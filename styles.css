@@ -1253,3 +1253,25 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 @media(prefers-reduced-motion:reduce){
  #site-loader.is-launching .galaxy-universe{animation:none!important}
 }
+
+/* CYBER-UNIVERSE LOADER — first paint is the intro, not the portfolio */
+body.is-loading{overflow:hidden!important;height:100vh}
+body.is-loading>:not(#site-loader){visibility:hidden!important}
+#site-loader{position:fixed!important;inset:0!important;display:grid!important;place-items:center!important;visibility:visible!important;opacity:1!important;z-index:2147483000!important;overflow:hidden!important;background:#02030b!important;isolation:isolate}
+#site-loader.is-hidden{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+#site-loader .galaxy-universe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:0!important;opacity:.92!important}
+#site-loader .loader-matrix{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.7;pointer-events:none;mix-blend-mode:screen}
+#site-loader .loader-nebula,#site-loader .loader-stars{z-index:2!important}
+#site-loader .loader-code-rain{z-index:3!important;opacity:.36!important;mix-blend-mode:screen}
+#site-loader .loader-orbit{z-index:2!important;opacity:.65}
+#site-loader .loader-core{z-index:8!important;position:relative!important;width:min(92vw,560px)!important;padding:34px 26px!important;border:1px solid rgba(167,139,250,.25);border-radius:28px;background:linear-gradient(145deg,rgba(8,7,25,.68),rgba(3,5,17,.54));backdrop-filter:blur(13px);box-shadow:0 0 90px rgba(74,49,180,.24),inset 0 0 50px rgba(90,70,180,.08)}
+#site-loader .loader-title{letter-spacing:.2em!important;text-shadow:0 0 32px rgba(167,139,250,.55)}
+#site-loader .loader-terminal{min-width:250px;justify-content:center}
+#site-loader .loader-progress{height:3px!important;background:rgba(210,200,255,.2)!important}
+#site-loader .loader-progress i{width:100%!important;animation:loader-scan 1.8s ease-in-out infinite!important}
+#site-loader .loader-meta{font-size:9px!important}
+@keyframes loader-scan{0%{transform:scaleX(.08);transform-origin:left}50%{transform:scaleX(.92);transform-origin:left}51%{transform-origin:right}100%{transform:scaleX(.08);transform-origin:right}}
+#site-loader.is-launching .loader-matrix{animation:matrix-exit .9s ease-in forwards}
+@keyframes matrix-exit{to{opacity:0;transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){#site-loader{display:grid!important}.loader-matrix{display:none!important}}
+@media(max-width:760px){#site-loader .loader-core{width:94vw!important;padding:25px 14px!important}.loader-matrix{opacity:.42!important}}
