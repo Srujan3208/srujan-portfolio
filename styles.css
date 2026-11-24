@@ -503,3 +503,6 @@ body.cinematic-ready .hero-art .orbit{animation-duration:9s;}
 @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:bottom}}
 @media(max-width:760px){body.cinematic-ready .project,body.cinematic-ready .timeline article,body.cinematic-ready .skill-grid>div,body.cinematic-ready .cert-card,body.cinematic-ready .certificate-card,body.cinematic-ready .recognition-grid>div{transform:translateY(28px) scale(.99);filter:none;transition-duration:.55s}.hero-art .portrait-wrap{animation-duration:7s}.hero-grid{animation-duration:30s}}
 @media(prefers-reduced-motion:reduce){body.cinematic-ready .section-head,body.cinematic-ready .section-head h2,body.cinematic-ready .project,body.cinematic-ready .timeline article,body.cinematic-ready .skill-grid>div,body.cinematic-ready .cert-card,body.cinematic-ready .certificate-card,body.cinematic-ready .recognition-grid>div{opacity:1;transform:none;filter:none;clip-path:none;transition:none;animation:none}.hero-art .orbit,.hero-art .portrait-wrap,.hero-grid,.about-orbit,.contact-panel::before,.scroll-hint::after{animation:none!important}}
+
+body.cinematic-ready .motion-visible{opacity:1!important;transform:translateY(0) scale(1)!important;filter:blur(0)!important}
+.hero-art{transform:translate3d(0,var(--parallax-y,0),0)}
