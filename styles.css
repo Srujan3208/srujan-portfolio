@@ -330,3 +330,24 @@
 .certificate-tags span{font-size:10px;color:#d7b8ff;padding:6px 9px;border:1px solid rgba(168,85,247,.2);border-radius:100px;background:rgba(124,58,237,.08)}
 @media(max-width:900px){.certificate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.certificate-grid{grid-template-columns:1fr}.certificate-card{padding:20px}.certificate-card h3{font-size:18px}}
+
+
+/* Universal page loader + refined motion system */
+#site-loader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#070711;opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
+#site-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{display:flex;flex-direction:column;align-items:center;gap:18px}
+.loader-mark{width:62px;height:62px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#d8b4fe,#7c3aed);color:#090713;font:900 34px 'Space Grotesk';box-shadow:0 0 45px #9333ea88;animation:loader-breathe 1.3s ease-in-out infinite}
+.loader-track{width:150px;height:3px;border-radius:9px;background:#ffffff18;overflow:hidden}
+.loader-track:after{content:'';display:block;width:40%;height:100%;border-radius:9px;background:linear-gradient(90deg,#7c3aed,#d8b4fe);animation:loader-progress 1.15s ease-in-out infinite}
+.loader-label{font:600 10px 'Space Grotesk';letter-spacing:3px;color:#c4b5fd}
+@keyframes loader-breathe{50%{transform:scale(1.08);box-shadow:0 0 65px #9333eaaa}}
+@keyframes loader-progress{from{transform:translateX(-110%)}to{transform:translateX(260%)}}
+@keyframes soft-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.hero-left .eyebrow{animation:soft-rise .7s .12s both}
+.hero-left h1{animation:soft-rise .8s .22s both}
+.hero-left .roles,.hero-left .hero-copy,.hero-left .hero-buttons,.hero-left .socials{animation:soft-rise .8s .35s both}
+.portrait-wrap{animation:soft-rise 1s .2s both}
+.project,.certificate-card,.skill-grid>div{will-change:transform}
+.project,.certificate-card,.skill-grid>div,.button,.socials a,.nav a{transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s,box-shadow .3s}
+.project:hover,.certificate-card:hover,.skill-grid>div:hover{transform:translateY(-6px)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}#site-loader{display:none!important}}
