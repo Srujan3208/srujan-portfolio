@@ -1027,3 +1027,80 @@ section#about .about-visual .about-photo {
     filter: none !important;
   }
 }
+
+
+/* PORTRAIT FINAL OVERRIDE — transparent cutout, compact sizing */
+.hero-art .portrait-wrap {
+  width: min(320px, 72%) !important;
+  height: 450px !important;
+  top: auto !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  background: transparent !important;
+  background-image: none !important;
+  filter: drop-shadow(0 0 24px rgba(139,92,246,.22)) !important;
+  overflow: visible !important;
+}
+.hero-art .portrait-wrap img.portrait {
+  display: block !important;
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background: transparent !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+}
+#about .about-visual {
+  min-height: 0 !important;
+  background: radial-gradient(circle at 50% 40%, rgba(76,29,149,.34), rgba(10,7,20,.16)) !important;
+}
+#about .about-photo {
+  height: 390px !important;
+  min-height: 0 !important;
+  background: transparent !important;
+}
+#about .about-photo img {
+  display: block !important;
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background: transparent !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+}
+@media (max-width: 760px) {
+  .hero-art {
+    height: 520px !important;
+    min-height: 520px !important;
+    overflow: visible !important;
+  }
+  .hero-art .portrait-wrap {
+    top: 12px !important;
+    bottom: auto !important;
+    width: min(285px, 76vw) !important;
+    height: 425px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: transparent !important;
+    filter: drop-shadow(0 0 20px rgba(139,92,246,.2)) !important;
+  }
+  #about .about-photo {
+    height: 360px !important;
+  }
+}
+@media (max-width: 390px) {
+  .hero-art .portrait-wrap {
+    width: min(260px, 74vw) !important;
+    height: 390px !important;
+  }
+  #about .about-photo {
+    height: 330px !important;
+  }
+}
