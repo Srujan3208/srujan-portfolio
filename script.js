@@ -53,3 +53,29 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  };
  addEventListener('scroll',cinematicScroll,{passive:true});cinematicScroll();
 })();
+
+/* Force the cinematic layer to activate after the DOM is ready */
+document.documentElement.classList.add('cinematic-ready');
+document.body.classList.add('cinematic-ready');
+(()=>{
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduce)return;
+ const cards=document.querySelectorAll('.project,.certificate-card,.cert-card,.recognition-grid>div');
+ const observer=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('motion-visible');observer.unobserve(e.target)}
+ }),{threshold:.12});
+ cards.forEach(card=>observer.observe(card));
+ const hero=document.querySelector('.hero');
+ const art=document.querySelector('.hero-art');
+ const portrait=document.querySelector('.portrait-wrap');
+ let busy=false;
+ addEventListener('scroll',()=>{
+  if(busy)return;busy=true;
+  requestAnimationFrame(()=>{
+   const progress=Math.min(scrollY/(innerHeight||1),1);
+   if(hero){hero.style.setProperty('--scroll-scene',progress)}
+   if(art&&scrollY<innerHeight){art.style.setProperty('--parallax-y',scrollY*.12+'px')}
+   busy=false;
+  });
+ },{passive:true});
+})();
