@@ -821,3 +821,43 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 @keyframes deep-nebula-flow {0%{transform:translate3d(-2%,1%,0) scale(.98) rotate(-2deg)}100%{transform:translate3d(2%,-1%,0) scale(1.08) rotate(3deg)}}
 @keyframes star-layer-drift {from{transform:translate3d(0,0,0)}to{transform:translate3d(-2%,1.5%,0)}}
 @media(max-width:760px){.earth-stage{width:300px!important;height:300px!important;}}
+
+
+/* FULL-SCREEN MILKY WAY CINEMATIC COMPOSITION */
+#site-loader {
+ background:#02030b!important;
+}
+.galaxy-universe {
+ position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;
+ pointer-events:none;opacity:1;
+}
+#site-loader::before {
+ z-index:1!important;opacity:.18!important;
+ background:radial-gradient(ellipse at 50% 48%,rgba(74,35,130,.2),transparent 58%)!important;
+}
+.loader-cosmos {z-index:1;opacity:.22!important;}
+.loader-inner {
+ z-index:3!important;position:absolute!important;left:50%;top:50%;
+ transform:translate(-50%,-50%);width:min(94vw,620px);gap:14px!important;
+}
+.earth-stage {
+ width:clamp(270px,43vw,420px)!important;
+ height:clamp(270px,43vw,420px)!important;
+ margin:0 auto 3px!important;
+}
+.loader-earth-webgl {filter:drop-shadow(0 0 28px rgba(59,130,246,.5))!important;}
+.earth-orbit-one {inset:3%!important;}
+.earth-orbit-two {inset:-5%!important;}
+.loader-brand {margin-top:-3px;}
+.loader-label {text-shadow:0 0 16px rgba(196,181,253,.6);}
+.loader-track {background:rgba(255,255,255,.16)!important;}
+.loader-coordinates {color:rgba(220,215,255,.65)!important;}
+@media(max-width:760px) {
+ .loader-inner {width:100%;gap:12px!important;padding:10px!important;}
+ .earth-stage {width:min(82vw,350px)!important;height:min(82vw,350px)!important;}
+ .loader-brand {font-size:14px!important;}
+ .loader-coordinates {font-size:6px!important;}
+}
+@media(prefers-reduced-motion:reduce) {
+ .galaxy-universe {display:none;}
+}
