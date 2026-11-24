@@ -309,3 +309,157 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)raf=requestAnimationFrame(render);else renderer.render(scene,camera);
  window.addEventListener('beforeunload',()=>{io.disconnect();renderer.dispose();},{once:true});
 })();
+
+
+/* 22-second cinematic universe intro — Three.js procedural CGI sequence */
+(()=>{
+ const root=document.getElementById('site-loader');
+ if(!root||root.dataset.introInit==='1')return;
+ root.dataset.introInit='1';
+ const canvas=root.querySelector('.loader-3d-scene');
+ const sceneLabel=document.getElementById('space-scene-name');
+ const caption=document.getElementById('space-caption');
+ const progress=document.getElementById('space-progress-bar');
+ const finalPanel=document.getElementById('space-final');
+ const flash=document.getElementById('space-flash');
+ const enter=document.getElementById('enter-portfolio');
+ const skip=document.getElementById('space-skip');
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const coarse=window.matchMedia('(pointer:coarse)').matches;
+ let finished=false,started=performance.now(),raf=0,renderer=null,cleanup=()=>{};
+ const finish=()=>{
+  if(finished)return;finished=true;
+  root.classList.add('space-exit');
+  document.body.classList.remove('is-loading');
+  setTimeout(()=>{root.remove();window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));},900);
+ };
+ enter?.addEventListener('click',finish);
+ skip?.addEventListener('click',finish);
+ const scenes=[
+  {at:0,name:'THE BEGINNING OF EVERYTHING',caption:'Somewhere, a universe begins.'},
+  {at:4,name:'THE MILKY WAY',caption:'A billion stars. One extraordinary galaxy.'},
+  {at:8,name:'A BLUE WORLD',caption:'Across the cosmos, a home comes into view.'},
+  {at:13,name:'THE JOURNEY HOME',caption:'Closer to everything that makes us human.'},
+  {at:17,name:'WELCOME TO MY UNIVERSE',caption:'Creativity, technology and everything in between.'}
+ ];
+ let currentScene=-1;
+ const setScene=(index)=>{
+  if(index===currentScene)return;currentScene=index;
+  const item=scenes[index];if(!item)return;
+  if(sceneLabel)sceneLabel.textContent=item.name;
+  if(caption)caption.innerHTML='<span class="space-caption-index">0'+(index+1)+' — 05</span><span>'+item.caption+'</span>';
+  root.dataset.scene=String(index+1);
+  if(index===4){root.classList.add('space-reveal');finalPanel?.setAttribute('aria-hidden','false');}
+ };
+ const THREE=window.THREE;
+ if(!THREE){
+  root.classList.add('space-fallback');
+  setScene(4);finalPanel?.setAttribute('aria-hidden','false');
+  if(progress)progress.style.width='100%';
+  return;
+ }
+ try{
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:!coarse,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,coarse?1.25:1.8));
+  renderer.setSize(innerWidth,innerHeight,false);
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.12;
+  const world=new THREE.Scene();world.background=new THREE.Color(0x01030a);
+  const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,240);
+  camera.position.set(0,0,26);
+  const ambient=new THREE.AmbientLight(0x9ab9d8,.48);world.add(ambient);
+  const sun=new THREE.PointLight(0xdceaff,3.8,100,1.5);sun.position.set(-8,5,12);world.add(sun);
+  const fill=new THREE.PointLight(0x287bff,1.5,70,2);fill.position.set(8,-5,8);world.add(fill);
+  const universe=new THREE.Group();world.add(universe);
+  const makeStars=(count,radius,size,opacity,color=0xc8d9ff)=>{
+   const arr=new Float32Array(count*3),sizes=new Float32Array(count);
+   for(let i=0;i<count;i++){const u=Math.random()*2-1,a=Math.random()*Math.PI*2,r=radius*Math.pow(Math.random(),.42);arr[i*3]=Math.sqrt(1-u*u)*Math.cos(a)*r;arr[i*3+1]=u*r*.68;arr[i*3+2]=Math.sqrt(1-u*u)*Math.sin(a)*r;sizes[i]=.45+Math.random()*1.8;}
+   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(arr,3));geo.setAttribute('aSize',new THREE.BufferAttribute(sizes,1));
+   const points=new THREE.Points(geo,new THREE.PointsMaterial({color,size,transparent:true,opacity,depthWrite:false,sizeAttenuation:true,blending:THREE.AdditiveBlending}));
+   universe.add(points);return points;
+  };
+  const starfield=makeStars(coarse?2800:9000,105,coarse?.095:.12,.88,0xc9e5ff);
+  const galaxy=new THREE.Group();universe.add(galaxy);galaxy.position.set(0,0,-3);
+  const galaxyCount=coarse?18000:52000,positions=new Float32Array(galaxyCount*3),colors=new Float32Array(galaxyCount*3);
+  const colorA=new THREE.Color(0x6d83ff),colorB=new THREE.Color(0xffc6ed),colorC=new THREE.Color(0x69dcff);
+  for(let i=0;i<galaxyCount;i++){
+   const arm=i%5,rad=Math.pow(Math.random(),.56)*10.5,angle=arm*Math.PI*2/5+rad*.72+(Math.random()-.5)*.52;
+   positions[i*3]=Math.cos(angle)*rad+(Math.random()-.5)*(.18+rad*.045);
+   positions[i*3+1]=(Math.random()-.5)*(.22+rad*.065);
+   positions[i*3+2]=Math.sin(angle)*rad*.48+(Math.random()-.5)*(.18+rad*.045);
+   const mix=Math.min(1,rad/10),col=colorA.clone().lerp(colorB,Math.random()*.45).lerp(colorC,Math.random()*.18*mix);
+   const core=Math.max(0,1-rad/3.2);col.lerp(new THREE.Color(0xffe8cf),core*.72);
+   colors[i*3]=col.r;colors[i*3+1]=col.g;colors[i*3+2]=col.b;
+  }
+  const galaxyGeo=new THREE.BufferGeometry();galaxyGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));galaxyGeo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+  const galaxyPoints=new THREE.Points(galaxyGeo,new THREE.PointsMaterial({size:coarse?.055:.072,vertexColors:true,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  galaxy.add(galaxyPoints);
+  const coreGlow=new THREE.Mesh(new THREE.SphereGeometry(1.15,32,32),new THREE.MeshBasicMaterial({color:0xffc9e8,transparent:true,opacity:0}));
+  const glowMat=new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(255,239,224,.9)');g.addColorStop(.18,'rgba(255,165,220,.45)');g.addColorStop(.5,'rgba(112,105,255,.15)');g.addColorStop(1,'rgba(20,40,120,0)');x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);})(),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0});
+  const glow=new THREE.Sprite(glowMat);glow.scale.set(10,10,1);galaxy.add(glow);galaxy.add(coreGlow);
+  const nebulaMat=new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(68,115,255,.28)');g.addColorStop(.38,'rgba(90,50,190,.16)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);})(),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.0});
+  for(let i=0;i<8;i++){const sp=new THREE.Sprite(nebulaMat.clone());sp.position.set((Math.random()-.5)*23,(Math.random()-.5)*11,-4-Math.random()*8);sp.scale.set(9+Math.random()*8,4+Math.random()*5,1);universe.add(sp);}
+  // Procedural Earth surface map: ocean gradients, irregular continent silhouettes and cloud wisps.
+  const makeEarthTexture=()=>{
+   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
+   const grad=x.createLinearGradient(0,0,0,1024);grad.addColorStop(0,'#164b78');grad.addColorStop(.48,'#0c4b7c');grad.addColorStop(1,'#061c42');x.fillStyle=grad;x.fillRect(0,0,2048,1024);
+   const land=[
+    [[160,245],[260,160],[390,145],[470,230],[430,310],[370,345],[330,465],[270,520],[220,430],[180,350]],
+    [[400,525],[490,555],[530,690],[480,860],[410,940],[360,820],[380,680]],
+    [[850,190],[970,140],[1090,185],[1180,245],[1150,325],[1050,345],[1010,425],[940,380],[900,295]],
+    [[1010,410],[1120,430],[1200,540],[1160,710],[1090,840],[1010,760],[980,610]],
+    [[1300,210],[1420,165],[1560,220],[1650,310],[1600,400],[1490,390],[1420,470],[1350,370]],
+    [[1500,600],[1630,565],[1740,650],[1700,760],[1580,800],[1500,720]],
+    [[1780,140],[1900,180],[1950,270],[1880,340],[1810,260]]
+   ];
+   land.forEach((poly,i)=>{x.beginPath();x.moveTo(poly[0][0],poly[0][1]);poly.slice(1).forEach(p=>x.lineTo(p[0],p[1]));x.closePath();const lg=x.createLinearGradient(0,120,0,950);lg.addColorStop(0,'#91ad78');lg.addColorStop(.42,'#477b56');lg.addColorStop(1,'#9b9a6a');x.fillStyle=lg;x.fill();x.strokeStyle='rgba(195,211,166,.22)';x.lineWidth=8;x.stroke();});
+   for(let i=0;i<90;i++){const px=Math.random()*2048,py=Math.random()*1024,r=8+Math.random()*45;x.fillStyle='rgba(222,236,255,'+(Math.random()*.12)+')';x.beginPath();x.ellipse(px,py,r,r*.35,Math.random(),0,Math.PI*2);x.fill();}
+   return new THREE.CanvasTexture(c);
+  };
+  const earthGroup=new THREE.Group();world.add(earthGroup);earthGroup.position.set(0,0,0);
+  const earth=new THREE.Mesh(new THREE.SphereGeometry(2.1,96,96),new THREE.MeshStandardMaterial({map:makeEarthTexture(),roughness:.9,metalness:.02}));
+  earth.rotation.z=.32;earthGroup.add(earth);
+  const cloudCanvas=document.createElement('canvas');cloudCanvas.width=1024;cloudCanvas.height=512;const cx=cloudCanvas.getContext('2d');
+  for(let i=0;i<450;i++){const px=Math.random()*1024,py=Math.random()*512,rx=12+Math.random()*65,ry=3+Math.random()*16;cx.fillStyle='rgba(255,255,255,'+(.025+Math.random()*.12)+')';cx.beginPath();cx.ellipse(px,py,rx,ry,Math.random()*.4,0,Math.PI*2);cx.fill();}
+  const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.135,72,72),new THREE.MeshPhongMaterial({map:new THREE.CanvasTexture(cloudCanvas),transparent:true,opacity:.48,depthWrite:false}));
+  earthGroup.add(clouds);
+  const atmosphere=new THREE.Mesh(new THREE.SphereGeometry(2.23,72,72),new THREE.MeshBasicMaterial({color:0x3eabff,transparent:true,opacity:.22,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false}));earthGroup.add(atmosphere);
+  earthGroup.visible=false;
+  // A small distant moon and a few passing asteroids add scale during approach.
+  const moon=new THREE.Mesh(new THREE.SphereGeometry(.32,32,32),new THREE.MeshStandardMaterial({color:0x9ba8b6,roughness:1}));moon.position.set(4.5,1.8,-1.8);world.add(moon);
+  const asteroidGroup=new THREE.Group();world.add(asteroidGroup);
+  for(let i=0;i<32;i++){const a=new THREE.Mesh(new THREE.IcosahedronGeometry(.045+Math.random()*.09,0),new THREE.MeshStandardMaterial({color:0x647080,roughness:1}));a.position.set((Math.random()-.5)*16,(Math.random()-.5)*10,-2-Math.random()*12);a.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);asteroidGroup.add(a);}
+  const flashLight=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshBasicMaterial({color:0xe7f7ff,transparent:true,opacity:0,depthWrite:false}));flashLight.position.set(0,0,5);camera.add(flashLight);world.add(camera);
+  const lerp=(a,b,t)=>a+(b-a)*Math.max(0,Math.min(1,t));
+  const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
+  const render=(now)=>{
+   raf=requestAnimationFrame(render);
+   const elapsed=(now-started)/1000,sec=Math.min(22,elapsed);
+   if(progress)progress.style.width=(Math.min(100,sec/22*100))+'%';
+   const sceneIndex=sec<4?0:sec<8?1:sec<13?2:sec<17?3:4;setScene(sceneIndex);
+   const fadeIn=smooth(sec/.9),galaxyIn=smooth((sec-3.8)/1.1),earthIn=smooth((sec-8)/1.1);
+   starfield.material.opacity=lerp(.0,.9,fadeIn);
+   galaxyPoints.material.opacity=.98*galaxyIn;glowMat.opacity=.92*galaxyIn;coreGlow.material.opacity=.22*galaxyIn;
+   galaxy.rotation.z=sec*.045;galaxy.rotation.x=.34+Math.sin(sec*.18)*.06;
+   if(sec<4){camera.position.set(0,0,lerp(28,18,smooth(sec/4)));camera.lookAt(0,0,0);earthGroup.visible=false;}
+   else if(sec<8){camera.position.set(lerp(0,1.5,smooth((sec-4)/4)),lerp(0,.4,smooth((sec-4)/4)),lerp(18,10,smooth((sec-4)/4)));camera.lookAt(0,0,-2);earthGroup.visible=false;}
+   else if(sec<13){earthGroup.visible=true;camera.position.set(lerp(1.5,0,smooth((sec-8)/5)),lerp(.4,.25,smooth((sec-8)/5)),lerp(10,7.5,smooth((sec-8)/5)));camera.lookAt(0,0,0);earthGroup.scale.setScalar(lerp(.001,1,smooth((sec-8)/1.2)));galaxyPoints.material.opacity=lerp(.98,.08,smooth((sec-8)/3));}
+   else if(sec<17){earthGroup.visible=true;earthGroup.scale.setScalar(lerp(1,4.6,smooth((sec-13)/4)));camera.position.set(0,.15,lerp(7.5,4.2,smooth((sec-13)/4)));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;flashLight.material.opacity=.18*smooth((sec-15.5)/1.5);}
+   else{earthGroup.visible=true;earthGroup.scale.setScalar(lerp(4.6,12,smooth((sec-17)/1.1)));camera.position.set(0,0,4.2);camera.lookAt(0,0,0);flashLight.material.opacity=lerp(.9,0,smooth((sec-17)/.8));universe.rotation.z=sec*.006;}
+   if(sec>=17&&finalPanel&&!finalPanel.classList.contains('visible'))finalPanel.classList.add('visible');
+   moon.rotation.y+=.001;asteroidGroup.rotation.y+=.0012;
+   if(sec>=22){progress.style.width='100%';if(sceneLabel)sceneLabel.textContent='YOUR UNIVERSE IS READY';}
+   renderer.render(world,camera);
+  };
+  const resize=()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,coarse?1.25:1.8));renderer.setSize(innerWidth,innerHeight,false);};
+  window.addEventListener('resize',resize,{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0;}else if(!document.hidden&&!finished&&!raf){started=performance.now()-Math.min(22,(performance.now()-started)/1000)*1000;raf=requestAnimationFrame(render);}});
+  cleanup=()=>{cancelAnimationFrame(raf);renderer.dispose();world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}});};
+  raf=requestAnimationFrame(render);
+ }catch(error){
+  console.error('Cinematic intro renderer fallback:',error);
+  root.classList.add('space-fallback');setScene(4);finalPanel?.classList.add('visible');
+ }
+ window.addEventListener('beforeunload',cleanup,{once:true});
+})();
