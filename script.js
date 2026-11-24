@@ -194,10 +194,10 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(!canvas||!stage)return;
  const gl=canvas.getContext('webgl',{alpha:true,antialias:true,powerPreference:'high-performance'});
  if(!gl){if(fallback)fallback.style.display='block';return;}
- const vsSource=\`attribute vec2 aPosition;
+ const vsSource=`attribute vec2 aPosition;
  varying vec2 vUv;
- void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.0,1.0);}\`;
- const fsSource=\`precision highp float;
+ void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.0,1.0);}`;
+ const fsSource=`precision highp float;
  varying vec2 vUv;
  uniform vec2 uResolution;
  uniform float uTime;
@@ -248,7 +248,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   col+=vec3(.19,.48,1.0)*atmosphere*.55;
   alpha=max(alpha,atmosphere*.55);
   gl_FragColor=vec4(col,alpha);
- }\`;
+ }`;
  const compile=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){gl.deleteShader(s);return null;}return s;};
  const vs=compile(gl.VERTEX_SHADER,vsSource),fs=compile(gl.FRAGMENT_SHADER,fsSource);
  if(!vs||!fs){if(fallback)fallback.style.display='block';canvas.style.display='none';return;}
