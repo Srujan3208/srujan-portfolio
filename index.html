@@ -3,13 +3,24 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#070711"><meta name="description" content="Srujan — AI Engineer, Full-Stack Developer and CSE student building intelligent products."><title>Srujan — AI Engineer & Builder</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="preload" as="image" href="https://science.nasa.gov/wp-content/uploads/2023/04/m101-jpg.webp"><link rel="preload" as="image" href="https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia11/pia11066/PIA11066.jpg?crop=faces%2Cfocalpoint&amp;fit=clip&amp;h=2036&amp;w=3060"><link rel="stylesheet" href="styles.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 </head><body class="is-loading">
-<div id="site-loader" class="space-intro" role="presentation" aria-hidden="true">
+<div id="site-loader" class="space-intro photo-intro phase-galaxy" role="presentation" aria-hidden="true">
  <div class="space-photo-stars" aria-hidden="true"></div>
  <div class="space-photo-galaxy" aria-hidden="true"></div>
  <div class="space-photo-earth" aria-hidden="true"></div>
  <div class="space-photo-atmosphere" aria-hidden="true"></div>
 </div>
-
+<script>
+(()=>{const el=document.getElementById('site-loader');if(!el)return;
+let done=false;const finish=()=>{if(done)return;done=true;document.body.classList.remove('is-loading');el.classList.add('space-exit');setTimeout(()=>{el.remove();window.scrollTo(0,0)},560)};
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finish();return}
+el.classList.add('phase-galaxy');
+setTimeout(()=>{if(!done)el.classList.add('phase-earth')},3400);
+setTimeout(()=>{if(!done)el.classList.add('phase-zoom')},5600);
+setTimeout(finish,8000);
+el.addEventListener('pointerdown',finish,{once:true});
+window.addEventListener('keydown',e=>{if(e.key==='Escape')finish()},{once:true});
+})();
+</script>
 <canvas id="portfolio-world" aria-hidden="true"></canvas>
 <div class="noise"></div><div class="cursor-glow"></div>
 <header class="topbar"><a class="brand" href="#home"><span class="brand-mark">S</span><span>Srujan<span class="brand-dot">.dev</span></span></a><nav class="nav"><a class="active" href="#home">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#learning">Learning</a><a href="#certifications">Certifications</a><a href="#contact">Contact</a></nav><div class="top-actions"><button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button><button class="menu-btn" id="menuBtn">☰</button></div></header>
