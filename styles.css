@@ -1728,3 +1728,21 @@ main>section{width:100%!important;max-width:100%!important;min-width:0!important
  .space-final{transition:none}
  .space-flash{display:none}
 }
+
+/* Reference-match art direction: uninterrupted space cinema, Earth horizon and minimal chrome */
+#site-loader.space-intro .space-topline{top:22px;left:24px;right:24px;justify-content:flex-end}
+#site-loader.space-intro .space-mark,#site-loader.space-intro .space-scene-name{display:none!important}
+#site-loader.space-intro .space-caption{display:none!important}
+#site-loader.space-intro .space-progress{opacity:0!important}
+#site-loader.space-intro .space-vignette{background:radial-gradient(ellipse at 50% 45%,transparent 28%,rgba(0,0,0,.18) 67%,rgba(0,0,0,.7) 125%),linear-gradient(180deg,rgba(0,0,0,.16),transparent 35%,rgba(0,0,0,.18))}
+#site-loader.space-intro .space-final{top:45%;width:min(92vw,900px)}
+#site-loader.space-intro .space-final h1{font-size:clamp(64px,12vw,118px);letter-spacing:.2em;text-shadow:0 0 22px rgba(120,190,255,.85),0 0 70px rgba(55,135,255,.5)}
+#site-loader.space-intro .space-final-title{letter-spacing:.42em;font-size:clamp(11px,1.6vw,15px);color:#e6f2ff}
+#site-loader.space-intro #enter-portfolio{border-radius:999px;padding:17px 28px;background:linear-gradient(100deg,rgba(2,18,40,.94),rgba(24,16,64,.88));box-shadow:0 0 24px rgba(48,170,255,.55),0 0 50px rgba(132,75,255,.28),inset 0 0 16px rgba(120,220,255,.15);border-color:#72d8ff}
+#site-loader.space-intro.space-reveal .space-vignette{background:linear-gradient(180deg,rgba(0,0,0,.28),transparent 42%,rgba(0,0,0,.08))}
+#site-loader.space-intro.space-exit{transition:opacity .8s ease,visibility .8s ease}
+@media(max-width:700px){
+ #site-loader.space-intro .space-final{top:43%;width:calc(100vw - 28px)}
+ #site-loader.space-intro .space-final h1{font-size:clamp(46px,13vw,72px);letter-spacing:.12em}
+ #site-loader.space-intro .space-final-title{letter-spacing:.22em}
+}
