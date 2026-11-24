@@ -1762,3 +1762,14 @@ main>section{width:100%!important;max-width:100%!important;min-width:0!important
  #site-loader.space-intro .space-final-title{letter-spacing:.2em!important}
  #site-loader.space-intro .space-final p{font-size:9px!important}
 }
+
+/* Final scene: Earth is a visible curved horizon, never pushed out of frame */
+#site-loader.space-intro .space-final{top:35%!important;z-index:12!important}
+#site-loader.space-intro .space-flash{z-index:10!important}
+#site-loader.space-intro .space-final.visible{pointer-events:auto!important}
+#site-loader.space-intro #enter-portfolio{position:relative;z-index:20;pointer-events:auto!important;cursor:pointer!important}
+#site-loader.space-intro.space-exit{pointer-events:none!important}
+@media(max-width:700px){
+ #site-loader.space-intro .space-final{top:31%!important}
+ #site-loader.space-intro .space-final h1{font-size:clamp(48px,13vw,76px)!important}
+}
