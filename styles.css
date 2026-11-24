@@ -407,3 +407,33 @@
   .hero-art .code-window pre { font-size:8px !important; }
   .hero-art .focus-card a { font-size:9px !important; }
 }
+
+
+/* HERO PORTRAIT POSITION — keep the full cutout inside the first screen */
+@media (min-width: 761px) and (max-width: 1500px) {
+  .hero { grid-template-columns: 44% 56% !important; }
+  .hero-art { min-width:0 !important; overflow:visible !important; }
+  .hero-art .portrait-wrap {
+    left:43% !important;
+    width:min(350px,70%) !important;
+    height:460px !important;
+    bottom:34px !important;
+    transform:translateX(-50%) !important;
+  }
+  .hero-art .portrait-wrap img.portrait {
+    max-width:100% !important;
+    object-fit:contain !important;
+    object-position:bottom center !important;
+  }
+  .hero-art .focus-card { right:1% !important; }
+}
+@media (max-width: 760px) {
+  .hero-art .portrait-wrap {
+    left:50% !important;
+    right:auto !important;
+    width:min(68vw,245px) !important;
+    height:330px !important;
+    bottom:0 !important;
+    transform:translateX(-50%) !important;
+  }
+}
