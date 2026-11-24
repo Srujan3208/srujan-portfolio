@@ -1275,3 +1275,8 @@ body.is-loading>:not(#site-loader){visibility:hidden!important}
 @keyframes matrix-exit{to{opacity:0;transform:scale(1.08)}}
 @media(prefers-reduced-motion:reduce){#site-loader{display:grid!important}.loader-matrix{display:none!important}}
 @media(max-width:760px){#site-loader .loader-core{width:94vw!important;padding:25px 14px!important}.loader-matrix{opacity:.42!important}}
+
+/* Loader escape hatch: portfolio content is hidden only while the intro is active. */
+body:not(.is-loading) > #site-loader{display:none!important}
+body.is-loading{overflow:hidden!important}
+#site-loader{display:grid!important;visibility:visible!important;opacity:1!important}
