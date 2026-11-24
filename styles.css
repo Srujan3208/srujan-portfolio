@@ -646,3 +646,16 @@ body.universe-revealed main,body.universe-revealed header.topbar,body.universe-r
   .about-visual { min-height: 0 !important; }
   .about-photo { height: auto !important; padding: 12px 8px 50px !important; }
 }
+
+
+/* Hoodie color enhancement: gently lift dark fabric and restore rich violet tone */
+.about-visual .about-photo img {
+  filter: brightness(1.12) saturate(1.24) contrast(.94)
+    drop-shadow(0 0 20px rgba(168,85,247,.28)) !important;
+}
+@media (max-width: 760px) {
+  .about-visual .about-photo img {
+    filter: brightness(1.12) saturate(1.24) contrast(.94)
+      drop-shadow(0 0 20px rgba(168,85,247,.28)) !important;
+  }
+}
