@@ -295,7 +295,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  ' float bandCenter=.13*sin(g.x*2.2+t)+.035*sin(g.x*7.0-t*2.);',
  ' float band=exp(-pow((g.y-bandCenter)/.22,2.));',
  ' float core=exp(-pow((g.y-bandCenter)/.075,2.))*exp(-abs(g.x)*.48);',
- ' float dust=exp(-pow((g.y-bandCenter-.018*sin(g.x*9.))/0.035,2.))*smoothstep(.9,.1,abs(g.x));',
+ ' float dust=exp(-pow((g.y-bandCenter-.018*sin(g.x*9.))/0.035,2.))*(1.-smoothstep(.1,.9,abs(g.x)));',
  ' col+=vec3(.17,.12,.31)*band*smoothstep(.24,.68,clouds);',
  ' col+=vec3(.46,.28,.72)*core*.55;',
  ' col+=vec3(.35,.48,.85)*band*smoothstep(.52,.82,wisps)*.42;',
