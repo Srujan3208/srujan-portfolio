@@ -536,3 +536,21 @@ body.cinematic-ready .section:not(.in-view) .section-head{transform:translate3d(
 #cinematic-webgl{z-index:0;mix-blend-mode:screen;opacity:.68}
 header.topbar,main,footer.site-footer{position:relative;z-index:2}
 body:before{z-index:-1}
+
+/* cinematic universe intro -> profile reveal */
+#universe-loader{position:fixed;inset:0;z-index:9999;background:#02030b;display:grid;place-items:center;overflow:hidden;opacity:1;visibility:visible;transition:opacity 1.2s cubic-bezier(.2,.7,.1,1),visibility 1.2s}
+#universe-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.universe-title{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;animation:universeTitleIn 1.6s cubic-bezier(.16,1,.3,1) both}
+.universe-kicker{font:10px 'DM Sans',sans-serif;letter-spacing:.45em;color:rgba(190,180,225,.68)}
+.universe-title h1{font:700 clamp(42px,8vw,100px) 'Space Grotesk',sans-serif;letter-spacing:-.08em;color:#fff;margin:0;text-shadow:0 0 35px rgba(139,92,246,.45)}
+.universe-title h1 span{color:#a855f7}
+.universe-line{width:min(240px,55vw);height:1px;background:rgba(160,130,220,.18);overflow:hidden}
+.universe-line i{display:block;width:100%;height:100%;background:linear-gradient(90deg,transparent,#a855f7,#67e8f9,transparent);transform:translateX(-100%);animation:universeProgress 2.65s cubic-bezier(.4,0,.2,1) forwards}
+.universe-title p{font:9px 'DM Sans',sans-serif;letter-spacing:.34em;color:rgba(180,170,220,.55);margin:0;animation:statusPulse 1.6s ease-in-out infinite}
+@keyframes universeTitleIn{from{opacity:0;transform:translateY(22px);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes universeProgress{to{transform:translateX(100%)}}
+@keyframes statusPulse{50%{opacity:.3}}
+body.universe-ready main,body.universe-ready header.topbar,body.universe-ready footer.site-footer{opacity:0;transform:translateY(12px);filter:blur(6px)}
+body.universe-revealed main,body.universe-revealed header.topbar,body.universe-revealed footer.site-footer{opacity:1;transform:none;filter:none;transition:opacity 1.25s cubic-bezier(.16,1,.3,1),transform 1.25s cubic-bezier(.16,1,.3,1),filter 1.25s}
+#universe-loader.depart{opacity:0;visibility:hidden;pointer-events:none}
+@media(prefers-reduced-motion:reduce){#universe-loader{display:none}body.universe-ready main,body.universe-ready header.topbar,body.universe-ready footer.site-footer{opacity:1;transform:none;filter:none}}
