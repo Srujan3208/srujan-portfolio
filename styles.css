@@ -617,3 +617,76 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
  .hero-art .orbit-a,.hero-art .orbit-b,.hero-art .orbit-a::before,.hero-art .orbit-b::before,
  .hero-art .orbit-a::after,.hero-art .orbit-b::after { animation:none !important; }
 }
+
+
+/* UNIVERSAL CINEMATIC EARTH INTRO — launch into the portfolio */
+#site-loader {
+  position:fixed;inset:0;z-index:100000;display:grid;place-items:center;overflow:hidden;
+  isolation:isolate;background:radial-gradient(ellipse at 50% 45%,#171038 0%,#090817 48%,#03030a 100%);
+  opacity:1;visibility:visible;transition:opacity .9s ease,visibility .9s ease;
+}
+#site-loader::before {
+  content:"";position:absolute;inset:-30%;z-index:-1;opacity:.45;
+  background:repeating-radial-gradient(ellipse at center,transparent 0 58px,rgba(168,85,247,.09) 59px,transparent 61px);
+  animation:cosmos-drift 36s linear infinite;
+}
+.loader-cosmos {position:absolute;inset:0;pointer-events:none;opacity:.8;
+ background-image:radial-gradient(1px 1px at 12% 22%,#fff 99%,transparent),radial-gradient(1px 1px at 76% 18%,#c4b5fd 99%,transparent),radial-gradient(2px 2px at 86% 72%,#fff 99%,transparent),radial-gradient(1px 1px at 22% 82%,#d8b4fe 99%,transparent),radial-gradient(1px 1px at 61% 88%,#fff 99%,transparent),radial-gradient(1px 1px at 44% 12%,#fff 99%,transparent);
+ background-size:100% 100%;animation:star-drift 12s ease-in-out infinite alternate;}
+.loader-inner {position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:17px;text-align:center;padding:24px;}
+.earth-stage {position:relative;width:clamp(210px,30vw,300px);height:clamp(210px,30vw,300px);display:grid;place-items:center;margin-bottom:5px;perspective:900px;}
+.earth-globe {position:relative;width:64%;height:64%;border-radius:50%;overflow:hidden;transform-style:preserve-3d;
+ background:radial-gradient(circle at 32% 28%,#9bd8ff 0%,#2879bb 23%,#123d82 52%,#07132f 78%,#020716 100%);
+ box-shadow:inset -24px -12px 38px #02040f,inset 8px 4px 20px #c4edff88,0 0 22px #3b82f688,0 0 65px #7c3aed66,0 0 115px #4f46e544;
+ animation:earth-turn 18s linear infinite,earth-float 5s ease-in-out infinite;}
+.earth-globe::before {content:"";position:absolute;inset:-4%;border-radius:50%;background:
+ radial-gradient(ellipse at 32% 30%,rgba(255,255,255,.65),transparent 22%),
+ linear-gradient(110deg,transparent 24%,rgba(2,8,28,.05) 40%,rgba(1,5,22,.88) 90%);
+ z-index:3;pointer-events:none;}
+.earth-map {position:absolute;inset:0;border-radius:50%;opacity:.94;
+ background:
+ radial-gradient(ellipse 17% 10% at 31% 34%,#65b77b 0 55%,transparent 58%),
+ radial-gradient(ellipse 10% 18% at 39% 55%,#4a9c70 0 55%,transparent 59%),
+ radial-gradient(ellipse 21% 12% at 66% 37%,#6cb77c 0 54%,transparent 58%),
+ radial-gradient(ellipse 12% 19% at 70% 58%,#4e9d6e 0 52%,transparent 57%),
+ radial-gradient(ellipse 8% 7% at 54% 24%,#8bc987 0 55%,transparent 60%),
+ radial-gradient(ellipse 8% 7% at 82% 72%,#6eaf7d 0 50%,transparent 58%);
+ filter:drop-shadow(0 0 3px #6ee7b7);animation:map-shift 18s linear infinite;}
+.earth-clouds {position:absolute;inset:-8%;border-radius:50%;opacity:.3;background:repeating-linear-gradient(165deg,transparent 0 13px,#e0f2fe 14px,transparent 18px 32px);filter:blur(4px);animation:cloud-flow 12s linear infinite;}
+.earth-atmosphere {position:absolute;inset:-7%;border-radius:50%;border:2px solid #93c5fd88;box-shadow:0 0 18px #60a5fa88,inset 0 0 18px #60a5fa66;z-index:4;}
+.earth-orbit {position:absolute;inset:9%;border:1px solid rgba(196,181,253,.65);border-radius:50%;transform-style:preserve-3d;box-shadow:0 0 13px #8b5cf655;}
+.earth-orbit-one {transform:rotateX(68deg) rotateZ(-24deg);animation:earth-orbit-spin 7s linear infinite;}
+.earth-orbit-two {inset:1%;border-color:rgba(96,165,250,.48);transform:rotateX(72deg) rotateZ(56deg);animation:earth-orbit-spin-reverse 11s linear infinite;}
+.earth-orbit i {position:absolute;left:0;top:50%;width:8px;height:8px;border-radius:50%;background:#e9d5ff;box-shadow:0 0 8px 3px #c084fc,0 0 24px 7px #9333ea;transform:translate(-50%,-50%);}
+.earth-orbit-two i {left:50%;top:0;width:6px;height:6px;background:#bfdbfe;box-shadow:0 0 8px 3px #60a5fa,0 0 20px 6px #2563eb;}
+.earth-flare {position:absolute;width:92%;height:18%;border-radius:50%;border-top:2px solid #c4b5fd;filter:blur(5px);transform:rotate(-18deg);box-shadow:0 -5px 24px #9333ea88;animation:flare-pulse 2.4s ease-in-out infinite alternate;}
+.loader-brand {display:flex;align-items:center;gap:10px;color:#f5f3ff;font:700 14px 'Space Grotesk';letter-spacing:4px;}
+.loader-brand>span:last-child span {color:#c084fc;}
+.loader-brand-mark {width:29px;height:29px;display:grid;place-items:center;border-radius:9px;color:#080612;background:linear-gradient(135deg,#e9d5ff,#9333ea);font:900 19px 'Space Grotesk';box-shadow:0 0 24px #9333ea88;}
+.loader-label {font:600 9px 'Space Grotesk';letter-spacing:3px;color:#c4b5fd;}
+.loader-track {width:190px;height:2px;background:#ffffff20;border-radius:10px;overflow:hidden;}
+.loader-track i {display:block;width:36%;height:100%;background:linear-gradient(90deg,#7c3aed,#e9d5ff,#60a5fa);box-shadow:0 0 12px #c084fc;animation:loader-progress 1.2s ease-in-out infinite;}
+.loader-coordinates {font:500 7px 'Space Grotesk';letter-spacing:1.5px;color:#777092;}
+.loader-coordinates b {color:#a78bfa;padding:0 4px;}
+#site-loader.is-launching .earth-stage {animation:earth-launch 1.35s cubic-bezier(.65,0,.2,1) forwards;}
+#site-loader.is-launching .loader-brand,#site-loader.is-launching .loader-label,#site-loader.is-launching .loader-track,#site-loader.is-launching .loader-coordinates {animation:loader-text-out .35s ease forwards;}
+#site-loader.is-hidden {opacity:0;visibility:hidden;pointer-events:none;}
+@keyframes earth-turn {from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+@keyframes earth-float {0%,100%{translate:0 0}50%{translate:0 -7px}}
+@keyframes map-shift {from{transform:translateX(-5%) scaleX(1.15)}to{transform:translateX(5%) scaleX(1.15)}}
+@keyframes cloud-flow {from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes earth-orbit-spin {from{transform:rotateX(68deg) rotateZ(-24deg)}to{transform:rotateX(68deg) rotateZ(336deg)}}
+@keyframes earth-orbit-spin-reverse {from{transform:rotateX(72deg) rotateZ(56deg)}to{transform:rotateX(72deg) rotateZ(-304deg)}}
+@keyframes flare-pulse {from{opacity:.25;scale:.85}to{opacity:.9;scale:1.1}}
+@keyframes cosmos-drift {from{transform:rotate(0) scale(1)}to{transform:rotate(16deg) scale(1.08)}}
+@keyframes star-drift {from{transform:translateY(0);opacity:.45}to{transform:translateY(-14px);opacity:1}}
+@keyframes earth-launch {0%{transform:scale(1);opacity:1}65%{transform:scale(2.5);opacity:1}100%{transform:scale(5.5);opacity:0}}
+@keyframes loader-text-out {to{opacity:0;transform:translateY(12px)}}
+@media(max-width:760px) {
+ .earth-stage {width:230px;height:230px;}
+ .loader-coordinates {font-size:6px;letter-spacing:1px;}
+}
+@media(prefers-reduced-motion:reduce) {
+ #site-loader::before,.loader-cosmos,.earth-globe,.earth-map,.earth-clouds,.earth-orbit,.earth-flare,.loader-track i {animation:none!important;}
+ #site-loader.is-launching .earth-stage {animation:none!important;}
+}
