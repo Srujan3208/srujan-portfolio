@@ -1364,3 +1364,36 @@ body.is-scrolling #portfolio-world{filter:saturate(1.16) contrast(1.08)}
  html{scroll-behavior:auto!important}
  .kinetic-char,.hero h1,.hero-art,.portrait-wrap,.globe,.about-visual,.contact-panel,.contact-orb{will-change:auto!important}
 }
+
+/* RESTORE ORIGINAL HERO COMPOSITION — keep Srujan's home layout unchanged */
+.hero{grid-template-columns:46% 54%;align-items:center}
+.hero-left{grid-column:1;grid-row:1;justify-self:start;text-align:left;transform:none!important}
+.hero-art{grid-column:2;grid-row:1;transform:none!important}
+.hero>.stats{grid-column:1 / -1}
+.hero>.scroll-hint{grid-column:1 / -1}
+.hero-left h1,.hero-left .eyebrow,.hero-left .roles,.hero-left .hero-copy,.hero-left .hero-buttons,.hero-left .socials{margin-left:0;text-align:left}
+.hero-art .portrait-wrap{left:50%;right:auto}
+.about-geometry{position:relative;min-height:390px;display:grid;place-items:center;overflow:hidden;perspective:1000px}
+.about-geometry-core{width:132px;height:132px;display:grid;place-items:center;border-radius:32px;font:700 76px 'Space Grotesk';color:#f5edff;background:radial-gradient(circle at 30% 20%,#bda2ff,#5824b6 60%,#10142e);box-shadow:0 0 90px rgba(139,92,246,.42),inset 0 0 28px rgba(255,255,255,.22);transform:rotateX(16deg) rotateY(-22deg);animation:geometry-float 5s ease-in-out infinite}
+.about-geometry-ring{position:absolute;width:280px;height:110px;border:1px solid rgba(167,139,250,.65);border-radius:50%;box-shadow:0 0 22px rgba(139,92,246,.22)}
+.about-geometry-ring.ring-a{transform:rotateX(68deg) rotateZ(-25deg);animation:geometry-spin 13s linear infinite}
+.about-geometry-ring.ring-b{width:220px;height:160px;border-color:rgba(34,211,238,.48);transform:rotateY(66deg) rotateZ(28deg);animation:geometry-spin 17s linear infinite reverse}
+.geometry-label{position:absolute;bottom:34px;font:600 10px 'Space Grotesk';letter-spacing:3px;color:#c4b5fd}
+@keyframes geometry-float{0%,100%{translate:0 0}50%{translate:0 -16px}}
+@keyframes geometry-spin{to{rotate:360deg}}
+/* Mobile: preserve the previous left-aligned stacked hero, never shift text to the right */
+@media(max-width:760px){
+ .hero{display:flex!important;flex-direction:column!important;align-items:stretch!important;min-height:930px!important;height:auto!important;padding:65px 6% 80px!important;gap:0!important}
+ .hero-left{order:1!important;display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;align-self:stretch!important;justify-self:stretch!important;position:relative!important;left:0!important;right:auto!important;inset-inline:0!important;transform:none!important;text-align:left!important}
+ .hero-left>*{max-width:100%}
+ .hero-left h1{font-size:clamp(66px,16vw,80px)!important;letter-spacing:-4px!important}
+ .hero-left .eyebrow,.hero-left h1,.hero-left .roles,.hero-left .hero-copy,.hero-left .hero-buttons,.hero-left .socials{text-align:left!important;margin-left:0!important}
+ .hero-art{order:2!important;width:100%!important;height:470px!important;min-height:470px!important;max-height:470px!important;margin:25px 0 0!important;left:0!important;right:0!important;transform:none!important;overflow:visible!important}
+ .hero-art .portrait-wrap{left:50%!important;right:auto!important;bottom:0!important;top:auto!important;transform:translateX(-50%)!important;width:min(72vw,280px)!important;height:370px!important}
+ .hero-art .code-window{left:0!important;right:auto!important;top:20px!important}
+ .hero-art .focus-card{left:auto!important;right:0!important;top:110px!important}
+ .hero>.stats{order:3!important;position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;width:100%!important;margin:8px 0 0!important;transform:none!important}
+ .hero>.scroll-hint{order:4!important;position:relative!important;left:auto!important;bottom:auto!important;transform:none!important;margin:18px auto 0!important}
+ .about-geometry{min-height:290px}
+}
+@media(max-width:430px){.hero{padding-top:50px!important}.hero-art{height:420px!important;min-height:420px!important}.hero-art .portrait-wrap{height:335px!important;width:min(70vw,250px)!important}}
