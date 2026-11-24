@@ -245,157 +245,36 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  const root=document.getElementById('site-loader');
  if(!root||root.dataset.introInit==='1')return;
  root.dataset.introInit='1';
- const canvas=root.querySelector('.loader-3d-scene');
- const sceneLabel=document.getElementById('space-scene-name');
- const caption=document.getElementById('space-caption');
- const progress=document.getElementById('space-progress-bar');
- const finalPanel=document.getElementById('space-final');
- const flash=document.getElementById('space-flash');
- const enter=document.getElementById('enter-portfolio');
- const skip=document.getElementById('space-skip');
- const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const coarse=window.matchMedia('(pointer:coarse)').matches;
- let finished=false,started=performance.now(),raf=0,renderer=null,cleanup=()=>{};
+ let finished=false;
  const finish=()=>{
-  if(finished)return;finished=true;
-  root.classList.add('space-exit');
+  if(finished)return;
+  finished=true;
   document.body.classList.remove('is-loading');
+  root.classList.add('space-exit');
   window.setTimeout(()=>{
    root.remove();
    const home=document.getElementById('home');
-   if(home)home.scrollIntoView({behavior:'smooth',block:'start'});
+   if(home)home.scrollIntoView({behavior:'auto',block:'start'});
    window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));
-  },420);
+  },520);
  };
- enter?.addEventListener('click',(event)=>{event.preventDefault();finish();});
- skip?.addEventListener('click',finish);
- window.addEventListener('keydown',(event)=>{if(event.key==='Escape'&&!finished)finish();});
- const scenes=[
-  {at:0,name:'THE BEGINNING OF EVERYTHING',caption:'Somewhere, a universe begins.'},
-  {at:2,name:'THE MILKY WAY',caption:'A billion stars. One extraordinary galaxy.'},
-  {at:4,name:'A BLUE WORLD',caption:'Across the cosmos, a home comes into view.'},
-  {at:7,name:'THE JOURNEY HOME',caption:'Closer to everything that makes us human.'},
-  {at:9,name:'WELCOME TO MY UNIVERSE',caption:'Creativity, technology and everything in between.'}
- ];
- let currentScene=-1;
- const setScene=(index)=>{
-  if(index===currentScene)return;currentScene=index;
-  const item=scenes[index];if(!item)return;
-  if(sceneLabel)sceneLabel.textContent=item.name;
-  if(caption)caption.innerHTML='<span class="space-caption-index">0'+(index+1)+' — 05</span><span>'+item.caption+'</span>';
-  root.dataset.scene=String(index+1);
-  if(index===4){root.classList.add('space-reveal');finalPanel?.classList.add('visible');finalPanel?.setAttribute('aria-hidden','false');}
- };
- const THREE=window.THREE;
- if(!THREE){
-  root.classList.add('space-fallback');
-  setScene(4);finalPanel?.classList.add('visible');finalPanel?.setAttribute('aria-hidden','false');
-  if(progress)progress.style.width='100%';
-  return;
- }
- try{
-  const renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:!coarse,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,coarse?1.25:1.8));
-  renderer.setSize(innerWidth,innerHeight,false);
-  renderer.outputEncoding=THREE.sRGBEncoding;
-  renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.12;
-  const world=new THREE.Scene();world.background=new THREE.Color(0x01030a);
-  const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,240);
-  camera.position.set(0,0,26);
-  const ambient=new THREE.AmbientLight(0x9ab9d8,.48);world.add(ambient);
-  const sun=new THREE.PointLight(0xdceaff,3.8,100,1.5);sun.position.set(-8,5,12);world.add(sun);
-  const fill=new THREE.PointLight(0x287bff,1.5,70,2);fill.position.set(8,-5,8);world.add(fill);
-  const universe=new THREE.Group();world.add(universe);
-  const makeStars=(count,radius,size,opacity,color=0xc8d9ff)=>{
-   const arr=new Float32Array(count*3),sizes=new Float32Array(count);
-   for(let i=0;i<count;i++){const u=Math.random()*2-1,a=Math.random()*Math.PI*2,r=radius*Math.pow(Math.random(),.42);arr[i*3]=Math.sqrt(1-u*u)*Math.cos(a)*r;arr[i*3+1]=u*r*.68;arr[i*3+2]=Math.sqrt(1-u*u)*Math.sin(a)*r;sizes[i]=.45+Math.random()*1.8;}
-   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(arr,3));geo.setAttribute('aSize',new THREE.BufferAttribute(sizes,1));
-   const points=new THREE.Points(geo,new THREE.PointsMaterial({color,size,transparent:true,opacity,depthWrite:false,sizeAttenuation:true,blending:THREE.AdditiveBlending}));
-   universe.add(points);return points;
-  };
-  const starfield=makeStars(coarse?2800:9000,105,coarse?.095:.12,.88,0xc9e5ff);
-  const galaxy=new THREE.Group();universe.add(galaxy);galaxy.position.set(0,0,-3);
-  const galaxyCount=coarse?18000:52000,positions=new Float32Array(galaxyCount*3),colors=new Float32Array(galaxyCount*3);
-  const colorA=new THREE.Color(0x536dff),colorB=new THREE.Color(0xe7a4ff),colorC=new THREE.Color(0x42cfff);
-  for(let i=0;i<galaxyCount;i++){
-   const arm=i%5,rad=Math.pow(Math.random(),.56)*10.5,angle=arm*Math.PI*2/5+rad*.72+(Math.random()-.5)*.52;
-   positions[i*3]=Math.cos(angle)*rad+(Math.random()-.5)*(.18+rad*.045);
-   positions[i*3+1]=Math.sin(angle)*rad*.62+(Math.random()-.5)*(.18+rad*.045);
-   positions[i*3+2]=(Math.random()-.5)*(.22+rad*.065);
-   const mix=Math.min(1,rad/10),col=colorA.clone().lerp(colorB,Math.random()*.45).lerp(colorC,Math.random()*.18*mix);
-   const core=Math.max(0,1-rad/3.2);col.lerp(new THREE.Color(0xffe8cf),core*.72);
-   colors[i*3]=col.r;colors[i*3+1]=col.g;colors[i*3+2]=col.b;
-  }
-  const galaxyGeo=new THREE.BufferGeometry();galaxyGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));galaxyGeo.setAttribute('color',new THREE.BufferAttribute(colors,3));
-  const galaxyPoints=new THREE.Points(galaxyGeo,new THREE.PointsMaterial({size:coarse?.055:.072,vertexColors:true,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
-  galaxy.add(galaxyPoints);
-  const coreGlow=new THREE.Mesh(new THREE.SphereGeometry(1.15,32,32),new THREE.MeshBasicMaterial({color:0xffc9e8,transparent:true,opacity:0}));
-  const glowMat=new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(255,239,224,.9)');g.addColorStop(.18,'rgba(255,165,220,.45)');g.addColorStop(.5,'rgba(112,105,255,.15)');g.addColorStop(1,'rgba(20,40,120,0)');x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);})(),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0});
-  const glow=new THREE.Sprite(glowMat);glow.scale.set(10,10,1);galaxy.add(glow);galaxy.add(coreGlow);
-  const nebulaMat=new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(68,115,255,.28)');g.addColorStop(.38,'rgba(90,50,190,.16)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c);})(),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.0});
-  for(let i=0;i<8;i++){const sp=new THREE.Sprite(nebulaMat.clone());sp.position.set((Math.random()-.5)*23,(Math.random()-.5)*11,-4-Math.random()*8);sp.scale.set(9+Math.random()*8,4+Math.random()*5,1);universe.add(sp);}
-  // High-detail satellite Earth textures (Three.js public planet maps); procedural fallback keeps the intro resilient.
-  const textureLoader=new THREE.TextureLoader();
-  textureLoader.setCrossOrigin('anonymous');
-  const earthMap=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
-  earthMap.encoding=THREE.sRGBEncoding;
-  const earthNormal=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg');
-  const earthCloudMap=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png');
-  const earthGroup=new THREE.Group();world.add(earthGroup);earthGroup.position.set(0,0,0);
-  const earthMaterial=new THREE.MeshPhongMaterial({map:earthMap,normalMap:earthNormal,normalScale:new THREE.Vector2(.7,.7),specular:new THREE.Color(0x263d5a),shininess:18});
-  const earth=new THREE.Mesh(new THREE.SphereGeometry(2.1,128,128),earthMaterial);
-  earth.rotation.z=.32;earthGroup.add(earth);
-  const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.135,96,96),new THREE.MeshPhongMaterial({map:earthCloudMap,transparent:true,opacity:.5,depthWrite:false,blending:THREE.NormalBlending}));
-  earthGroup.add(clouds);
-  const atmosphere=new THREE.Mesh(new THREE.SphereGeometry(2.23,96,96),new THREE.MeshBasicMaterial({color:0x369dff,transparent:true,opacity:.28,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false}));earthGroup.add(atmosphere);
-  const atmosphereRim=new THREE.Mesh(new THREE.SphereGeometry(2.19,96,96),new THREE.MeshBasicMaterial({color:0x7bcfff,transparent:true,opacity:.12,side:THREE.FrontSide,blending:THREE.AdditiveBlending,depthWrite:false}));earthGroup.add(atmosphereRim);
-  // A soft sunrise sprite catches the limb as the camera approaches the horizon.
-  const sunCanvas=document.createElement('canvas');sunCanvas.width=sunCanvas.height=256;
-  const sunCtx=sunCanvas.getContext('2d'),sunGrad=sunCtx.createRadialGradient(128,128,2,128,128,128);
-  sunGrad.addColorStop(0,'rgba(255,255,245,1)');sunGrad.addColorStop(.12,'rgba(255,229,188,.92)');sunGrad.addColorStop(.28,'rgba(255,176,104,.35)');sunGrad.addColorStop(1,'rgba(255,140,60,0)');
-  sunCtx.fillStyle=sunGrad;sunCtx.fillRect(0,0,256,256);
-  const sunSprite=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(sunCanvas),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));
-  sunSprite.scale.set(1.25,1.25,1);sunSprite.position.set(2.35,1.25,1.8);earthGroup.add(sunSprite);
-  earthGroup.visible=false;
-  // A small distant moon and a few passing asteroids add scale during approach.
-  const moonMap=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/moon_1024.jpg');
-  const moon=new THREE.Mesh(new THREE.SphereGeometry(.32,48,48),new THREE.MeshStandardMaterial({map:moonMap,roughness:1}));moon.position.set(4.5,1.8,-1.8);world.add(moon);
-  const asteroidGroup=new THREE.Group();world.add(asteroidGroup);
-  for(let i=0;i<32;i++){const a=new THREE.Mesh(new THREE.IcosahedronGeometry(.045+Math.random()*.09,0),new THREE.MeshStandardMaterial({color:0x647080,roughness:1}));a.position.set((Math.random()-.5)*16,(Math.random()-.5)*10,-2-Math.random()*12);a.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);asteroidGroup.add(a);}
-  const flashLight=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshBasicMaterial({color:0xe7f7ff,transparent:true,opacity:0,depthWrite:false}));flashLight.position.set(0,0,5);camera.add(flashLight);world.add(camera);
-  const lerp=(a,b,t)=>a+(b-a)*Math.max(0,Math.min(1,t));
-  const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
-  const render=(now)=>{
-   raf=requestAnimationFrame(render);
-   const elapsed=(now-started)/1000,sec=Math.min(9,elapsed);
-   if(progress)progress.style.width=(Math.min(100,sec/9*100))+'%';
-   const sceneIndex=sec<1.5?0:sec<3?1:sec<5?2:sec<7?3:4;setScene(sceneIndex);
-   const fadeIn=smooth(sec/.45),galaxyIn=smooth((sec-1.8)/.55),earthIn=smooth((sec-4)/.55);
-   starfield.material.opacity=lerp(.0,.9,fadeIn);
-   galaxyPoints.material.opacity=.98*galaxyIn;glowMat.opacity=.92*galaxyIn;coreGlow.material.opacity=.22*galaxyIn;
-   galaxy.rotation.z=sec*.035;galaxy.rotation.x=.12+Math.sin(sec*.16)*.025;
-   if(sec<2){camera.position.set(0,0,lerp(28,18,smooth(sec/1.5)));camera.lookAt(0,0,0);earthGroup.visible=false;}
-   else if(sec<4){const orbit=smooth((sec-1.5)/1.5)*Math.PI*1.15;camera.position.set(Math.sin(orbit)*12.5,Math.sin(orbit*.72)*4.2,Math.cos(orbit)*12.5+3);camera.lookAt(0,0,-3);earthGroup.visible=false;}
-   else if(sec<7){earthGroup.visible=true;camera.position.set(lerp(2.1,0,smooth((sec-3)/2)),lerp(.8,.15,smooth((sec-4)/3)),lerp(11,7.7,smooth((sec-4)/3)));camera.lookAt(0,0,0);earthGroup.scale.setScalar(lerp(.001,1,smooth((sec-3)/.65)));galaxyPoints.material.opacity=lerp(.98,.015,smooth((sec-3)/1.4));sunSprite.material.opacity=.85*smooth((sec-4.3)/.8);}
-   else if(sec<7.8){earthGroup.visible=true;const approach=smooth((sec-5)/2.8);earthGroup.scale.setScalar(lerp(1,1.2,approach));camera.position.set(0,lerp(.15,0,approach),lerp(7.7,5.2,approach));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.85;}
-   else{earthGroup.visible=true;const reveal=smooth((sec-7.8)/.6);earthGroup.scale.setScalar(lerp(1.2,1.5,reveal));earthGroup.position.set(0,0,0);camera.position.set(0,0,lerp(5.2,4.5,reveal));camera.lookAt(0,0,0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.9;flashLight.material.opacity=sec<8.25?lerp(0,.55,smooth((sec-7.8)/.3)):lerp(.55,0,smooth((sec-8.25)/.7));universe.rotation.z=sec*.002;}
-   if(sec>=7.8&&finalPanel&&!finalPanel.classList.contains('visible')){finalPanel.classList.add('visible');finalPanel.setAttribute('aria-hidden','false');root.classList.add('space-reveal');}
-   moon.rotation.y+=.001;asteroidGroup.rotation.y+=.0012;
-   if(sec>=8){if(progress)progress.style.width='100%';if(sceneLabel)sceneLabel.textContent='YOUR UNIVERSE IS READY';}
-   renderer.render(world,camera);
-  };
-  const resize=()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,coarse?1.25:1.8));renderer.setSize(innerWidth,innerHeight,false);};
-  window.addEventListener('resize',resize,{passive:true});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0;}else if(!document.hidden&&!finished&&!raf){started=performance.now()-Math.min(9,(performance.now()-started)/1000)*1000;raf=requestAnimationFrame(render);}});
-  cleanup=()=>{cancelAnimationFrame(raf);renderer.dispose();world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}});};
-  raf=requestAnimationFrame(render);
-  window.setTimeout(()=>{if(!finished){finalPanel?.classList.add('visible');finalPanel?.setAttribute('aria-hidden','false');root.classList.add('space-reveal');}},8400);
-  // Never leave visitors trapped behind the cinematic intro.
-  window.setTimeout(()=>{if(!finished)finish();},12500);
- }catch(error){
-  console.error('Cinematic intro renderer fallback:',error);
-  root.classList.add('space-fallback');setScene(4);finalPanel?.classList.add('visible');
- }
- window.addEventListener('beforeunload',cleanup,{once:true});
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduced){window.setTimeout(finish,700);return;}
+ // Pure photographic sequence: no particle renderer, fake labels or loading UI.
+ const galaxy=new Image();
+ const earth=new Image();
+ galaxy.src='https://science.nasa.gov/wp-content/uploads/2023/04/m101-jpg.webp';
+ earth.src='https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia11/pia11066/PIA11066.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2036&w=3060';
+ root.classList.add('photo-intro');
+ // Start with the spiral galaxy, then crossfade to the real Earth horizon.
+ window.setTimeout(()=>{if(!finished)root.classList.add('phase-galaxy');},120);
+ window.setTimeout(()=>{if(!finished)root.classList.add('phase-earth');},3500);
+ window.setTimeout(()=>{if(!finished)root.classList.add('phase-zoom');},4900);
+ // Allow the Earth-surface push-in to complete, then reveal the existing portfolio.
+ window.setTimeout(finish,6800);
+ // A tap anywhere skips the cinematic sequence; no extra on-screen copy.
+ root.addEventListener('pointerdown',finish,{once:true});
+ window.addEventListener('keydown',event=>{if(event.key==='Escape')finish();},{once:true});
+ // If remote imagery is slow, never trap the visitor behind the intro.
+ window.setTimeout(finish,8200);
 })();
