@@ -266,7 +266,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
 })();
 
 
-/* Cinematic deep-space renderer: clean star points, spiral Milky Way and midnight-blue nebula */
+/* HIGH-END MILKY WAY RENDERER — procedural spiral galaxy in WebGL */
 (()=>{
  const canvas=document.querySelector('.galaxy-universe'),loader=document.getElementById('site-loader');
  if(!canvas||!loader)return;
@@ -275,58 +275,101 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(!gl)return;
  const vertex=String.raw`attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}`;
  const fragment=String.raw`precision highp float;
- uniform vec2 resolution; uniform float time;
+ uniform vec2 resolution;
+ uniform float time;
  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
- float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
- float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.01+17.3;a*=.5;}return v;}
- float starLayer(vec2 uv,vec2 grid,float threshold,float size){
-  vec2 cell=uv*grid, id=floor(cell), f=fract(cell)-.5;
-  float rnd=hash(id);
-  vec2 offset=vec2(hash(id+17.1),hash(id+41.7))-.5;
-  float radius=size*(.35+hash(id+9.2)*.9);
-  float point=1.-smoothstep(radius,radius+size*.8,length(f-offset*.68));
-  float glow=exp(-length(f-offset*.68)*22.)*.28;
-  float active=step(threshold,rnd);
-  float twinkle=.72+.28*sin(time*(.7+hash(id+4.)*1.8)+rnd*60.);
-  return (point+glow)*active*twinkle;
+ float noise(vec2 p){
+  vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+  return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);
+ }
+ float fbm(vec2 p){
+  float v=0.,a=.52;
+  for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.02+vec2(13.1,7.7);a*=.49;}
+  return v;
+ }
+ float stars(vec2 uv,vec2 grid,float threshold,float radius){
+  vec2 cell=uv*grid,id=floor(cell),f=fract(cell)-.5;
+  float seed=hash(id);
+  vec2 offset=(vec2(hash(id+17.3),hash(id+41.7))-.5)*.72;
+  float d=length(f-offset);
+  float core=1.-smoothstep(radius,radius+radius*.75,d);
+  float bloom=exp(-d*34.)*.24;
+  float twinkle=.62+.38*sin(time*(.65+seed*2.2)+seed*65.);
+  return (core+bloom)*step(threshold,seed)*twinkle;
  }
  void main(){
   vec2 uv=gl_FragCoord.xy/resolution;
-  vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.);
-  float t=time*.012;
-  vec2 warped=p;
-  warped.x+=.045*sin(p.y*4.2+t);
-  warped.y+=.025*sin(p.x*3.1-t*.7);
-  float cloudA=fbm(warped*2.4+vec2(t,-t*.4));
-  float cloudB=fbm(warped*5.4-vec2(t*.8,t*.5));
-  float cloudC=fbm(warped*10.0+vec2(-t*1.3,t));
-  float nebula=smoothstep(.43,.78,cloudA)*smoothstep(.32,.72,cloudB);
-  vec3 col=vec3(.0015,.004,.012);
-  col+=vec3(.012,.027,.064)*smoothstep(.22,.82,cloudA);
-  col+=vec3(.018,.085,.16)*nebula*.75;
-  col+=vec3(.045,.12,.22)*smoothstep(.57,.82,cloudC)*nebula*.35;
-  float angle=-.48;
-  vec2 g=vec2(p.x*cos(angle)-p.y*sin(angle),p.x*sin(angle)+p.y*cos(angle));
-  float arm1=length(vec2(g.x*.72,g.y+.12*sin(g.x*3.0+t)));
-  float arm2=length(vec2(g.x*.72,g.y-.17*sin(g.x*2.5-t)-.12));
-  float spiral=exp(-pow((arm1-.34)/.105,2.))*.45+exp(-pow((arm2-.48)/.12,2.))*.32;
-  float core=exp(-dot(g-vec2(.04,-.01),g-vec2(.04,-.01))*24.);
-  float dustLane=exp(-pow((g.y-.05*sin(g.x*5.0+t))/.025,2.))*smoothstep(.7,.08,abs(g.x));
-  col+=vec3(.012,.055,.11)*spiral;
-  col+=vec3(.035,.13,.24)*spiral*smoothstep(.35,.72,cloudB);
-  col+=vec3(.08,.19,.32)*core*.35;
-  col*=1.-dustLane*.55;
-  float stars=starLayer(uv,vec2(180.,300.),.965,.018);
-  float stars2=starLayer(uv,vec2(360.,600.),.986,.012);
-  float stars3=starLayer(uv,vec2(720.,1200.),.996,.008);
-  col+=vec3(.42,.62,.88)*stars*.8;
-  col+=vec3(.65,.76,.95)*stars2*.72;
-  col+=vec3(.82,.9,1.)*stars3*.62;
-  float vignette=1.-smoothstep(.45,.95,length(p)*.72);
-  col*=.68+.32*vignette;
-  gl_FragColor=vec4(pow(max(col,0.),vec3(.92)),1.);
+  vec2 screen=(uv-.5)*vec2(resolution.x/resolution.y,1.);
+  float t=time*.018;
+  vec3 color=vec3(.0018,.0028,.009);
+  // Deep-space colour clouds, layered at different spatial frequencies.
+  vec2 cloudP=screen*vec2(1.25,2.0);
+  cloudP+=vec2(.025*sin(t*2.+screen.y*3.),.018*cos(t+screen.x*2.));
+  float cloudA=fbm(cloudP*2.0+vec2(t*.4,-t*.2));
+  float cloudB=fbm(cloudP*4.6-vec2(t*.25,t*.32));
+  float cloudC=fbm(cloudP*9.5+vec2(-t*.3,t*.18));
+  float nebula=smoothstep(.38,.78,cloudA)*smoothstep(.30,.72,cloudB);
+  color+=vec3(.045,.012,.12)*smoothstep(.40,.76,cloudA)*.45;
+  color+=vec3(.055,.018,.20)*nebula*.52;
+  color+=vec3(.012,.065,.15)*smoothstep(.54,.82,cloudC)*nebula*.55;
+  color+=vec3(.12,.025,.18)*smoothstep(.64,.84,cloudB)*.12;
+  // Tilted, flattened spiral galaxy with four logarithmic arms.
+  float angle=-.34+.018*sin(t*.8);
+  mat2 rot=mat2(cos(angle),-sin(angle),sin(angle),cos(angle));
+  vec2 g=rot*screen;
+  g.y*=1.68;
+  g+=vec2(-.055*sin(t*.65),.012*cos(t*.7));
+  float r=length(g);
+  float a=atan(g.y,g.x);
+  float spiralPhase=a-2.65*log(r+.055)+t;
+  float armWave=.5+.5*cos(spiralPhase*4.0);
+  float armCore=pow(max(armWave,0.),11.);
+  float armSoft=pow(max(armWave,0.),3.2);
+  float disk=smoothstep(1.02,.08,r)*exp(-r*1.42);
+  float turbulent=fbm(g*18.+vec2(t*.3,-t*.2));
+  float armStructure=(armCore*.9+armSoft*.18)*disk;
+  float cloudsInArms=smoothstep(.34,.78,turbulent)*armSoft*disk;
+  // Dust lanes carve dark detail into the bright spiral arms.
+  float dustNoise=fbm(g*vec2(27.,42.)+vec2(t*.2,0.));
+  float dustLane=smoothstep(.53,.76,dustNoise)*armCore*disk;
+  vec3 armPurple=vec3(.22,.075,.48);
+  vec3 armBlue=vec3(.035,.20,.42);
+  vec3 armPink=vec3(.34,.075,.34);
+  color+=mix(armPurple,armBlue,smoothstep(-.38,.42,g.y))*armStructure*.88;
+  color+=armPink*cloudsInArms*.42;
+  color+=vec3(.10,.22,.42)*armSoft*disk*smoothstep(.4,.8,cloudB)*.24;
+  color*=1.-dustLane*.55;
+  // Bright galactic bulge and luminous central core.
+  float core=exp(-r*r*34.);
+  float innerGlow=exp(-r*r*8.);
+  float corePulse=.96+.04*sin(time*1.25);
+  color+=vec3(.30,.17,.54)*innerGlow*.44;
+  color+=vec3(.75,.48,.92)*core*.52*corePulse;
+  color+=vec3(.96,.82,.98)*exp(-r*r*260.)*.48;
+  // Dense star clusters trace the spiral arms, with distant stars in the field.
+  float cluster=stars(uv+g*.015,vec2(420.,720.),.86,.014);
+  float clusterFine=stars(uv+g*.02,vec2(840.,1440.),.955,.009);
+  float fieldA=stars(uv+vec2(t*.0008,0.),vec2(190.,330.),.966,.014);
+  float fieldB=stars(uv-vec2(t*.0012,t*.0005),vec2(390.,680.),.986,.010);
+  float fieldC=stars(uv,vec2(760.,1320.),.994,.007);
+  float armStarMask=clamp(armSoft*disk*1.8,0.,1.);
+  color+=vec3(.72,.57,1.)*cluster*armStarMask*.72;
+  color+=vec3(.48,.70,1.)*clusterFine*armStarMask*.48;
+  color+=vec3(.63,.73,1.)*fieldA*.82;
+  color+=vec3(.78,.84,1.)*fieldB*.72;
+  color+=vec3(.92,.94,1.)*fieldC*.58;
+  // Soft diffraction on the brightest stars and a cinematic vignette.
+  float vignette=1.-smoothstep(.40,1.12,length(screen)*.72);
+  color*=.56+.44*vignette;
+  color+=vec3(.018,.026,.065)*nebula;
+  color=pow(max(color,0.),vec3(.88));
+  gl_FragColor=vec4(color,1.);
  }`;
- const compile=(type,src)=>{const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){gl.deleteShader(sh);return null;}return sh;};
+ const compile=(type,src)=>{
+  const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);
+  if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.warn('Galaxy shader:',gl.getShaderInfoLog(sh));gl.deleteShader(sh);return null;}
+  return sh;
+ };
  const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);
  if(!vs||!fs){canvas.style.display='none';return;}
  const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);
@@ -335,14 +378,42 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
  const pos=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
- const resolution=gl.getUniformLocation(program,'resolution'),clock=gl.getUniformLocation(program,'time');
- let raf=0,start=performance.now(),last=0,visible=true;
- const resize=()=>{const scale=Math.min(devicePixelRatio||1,1.25);const w=Math.max(1,Math.floor(innerWidth*scale)),h=Math.max(1,Math.floor(innerHeight*scale));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}};
- const draw=now=>{raf=0;if(!visible||!loader.isConnected||document.hidden)return;raf=requestAnimationFrame(draw);if(now-last<(reduced?100:40))return;last=now;resize();gl.useProgram(program);gl.uniform2f(resolution,canvas.width,canvas.height);gl.uniform1f(clock,reduced?0:(now-start)*.001);gl.drawArrays(gl.TRIANGLES,0,6);};
- const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible&&!raf&&!document.hidden)raf=requestAnimationFrame(draw);else if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}});
+ const res=gl.getUniformLocation(program,'resolution'),clock=gl.getUniformLocation(program,'time');
+ let raf=0,start=performance.now(),last=0,visible=true,launchAt=0;
+ const highEnd=matchMedia('(min-width: 1100px) and (hover:hover)').matches;
+ const resize=()=>{
+  const scale=Math.min(devicePixelRatio||1,highEnd?1.75:1.25);
+  const w=Math.max(1,Math.floor(innerWidth*scale)),h=Math.max(1,Math.floor(innerHeight*scale));
+  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}
+ };
+ const draw=now=>{
+  raf=0;
+  if(!visible||!loader.isConnected||document.hidden)return;
+  raf=requestAnimationFrame(draw);
+  if(now-last<(reduced?100:(highEnd?30:45)))return;
+  last=now;resize();
+  gl.useProgram(program);gl.uniform2f(res,canvas.width,canvas.height);
+  const elapsed=(now-start)*.001;
+  gl.uniform1f(clock,reduced?0:elapsed+(launchAt?Math.min(2.5,(now-launchAt)*.004):0));
+  gl.drawArrays(gl.TRIANGLES,0,6);
+ };
+ const launchObserver=new MutationObserver(()=>{
+  if(loader.classList.contains('is-launching')&&!launchAt)launchAt=performance.now();
+ });
+ launchObserver.observe(loader,{attributes:true,attributeFilter:['class']});
+ const observer=new IntersectionObserver(entries=>{
+  visible=entries[0].isIntersecting;
+  if(visible&&!raf&&!document.hidden)raf=requestAnimationFrame(draw);
+  else if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}
+ });
  observer.observe(loader);
- document.addEventListener('visibilitychange',()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}else if(loader.isConnected){visible=true;if(!raf)raf=requestAnimationFrame(draw);}});
- window.addEventListener('resize',resize,{passive:true});resize();raf=requestAnimationFrame(draw);
+ document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}
+  else if(loader.isConnected){visible=true;if(!raf)raf=requestAnimationFrame(draw);}
+ });
+ window.addEventListener('resize',resize,{passive:true});
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();if(raf)cancelAnimationFrame(raf);raf=0;});
+ resize();raf=requestAnimationFrame(draw);
 })();
 
 /* Portfolio guide enhancements: boot counter, decode typography, magnetic UI and spotlight */
@@ -412,30 +483,23 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  }
 })();
 
-/* Cosmic intro renderer: Milky Way starfield, code sequence and portal reveal */
+/* Cinematic loader copy and hero arrival timing */
 (()=>{
- const canvas=document.querySelector('#site-loader .galaxy-universe'),loader=document.getElementById('site-loader');
- if(!loader)return;
- const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,terminal=document.getElementById('loader-terminal-text');
- const lines=['Initializing universe...','Mapping the Milky Way...','Compiling creative ideas...','Rendering Srujan.dev...','Opening your portfolio...'];
- let line=0;if(terminal&&!reduce){const type=()=>{terminal.textContent=lines[line%lines.length];line++;};type();const timer=setInterval(type,620);setTimeout(()=>clearInterval(timer),3100);}
- if(canvas&&!reduce){const ctx=canvas.getContext('2d',{alpha:true});if(ctx){
-  let w=0,h=0,dpr=1,raf=0,started=performance.now(),stars=[],dust=[],running=true,launchStarted=0;
-  const resize=()=>{dpr=Math.min(devicePixelRatio||1,1.6);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const count=Math.min(900,Math.round(w*h/1650));stars=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,z:.15+Math.random()*.85,r:.35+Math.random()*1.25,p:Math.random()*6.28}));dust=Array.from({length:Math.round(count*.36)},()=>({x:Math.random()*w,y:Math.random()*h,a:Math.random()*.2+.04,r:Math.random()*1.7}));};
-  const draw=now=>{if(!running||!document.body.contains(canvas))return;const t=(now-started)*.001,cx=w*.5,cy=h*.49;ctx.clearRect(0,0,w,h);ctx.save();ctx.translate(cx,cy);ctx.rotate(-.38);
-   const mw=ctx.createRadialGradient(0,0,10,0,0,Math.max(w,h)*.58);mw.addColorStop(0,'rgba(124,58,237,.17)');mw.addColorStop(.25,'rgba(91,33,182,.11)');mw.addColorStop(.58,'rgba(34,211,238,.035)');mw.addColorStop(1,'rgba(5,4,13,0)');ctx.fillStyle=mw;ctx.fillRect(-w,-h,w*2,h*2);
-   for(let i=0;i<7;i++){ctx.beginPath();ctx.ellipse(0,0,w*(.18+i*.055),h*(.08+i*.022),0,0,Math.PI*2);ctx.strokeStyle='rgba(167,139,250,'+(.035-i*.003)+')';ctx.lineWidth=1;ctx.stroke();}ctx.restore();
-   for(const d of dust){ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fillStyle='rgba(196,181,253,'+d.a+')';ctx.fill();}
-   const warp=launchStarted?Math.min(1,(now-launchStarted)/800):0;
-   for(const s of stars){const tw=.5+.5*Math.sin(t*1.6+s.p),x=cx+(s.x-cx)*(1+warp*3.8),y=cy+(s.y-cy)*(1+warp*3.8);ctx.beginPath();ctx.arc(x,y,s.r*(.65+tw*.55),0,Math.PI*2);ctx.fillStyle='rgba('+(s.z>.72?'220,210,255':'157,145,220')+','+(.22+tw*.68)+')';ctx.fill();if(s.z>.88){ctx.strokeStyle='rgba(196,181,253,'+(tw*.28)+')';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(x-4*s.r,y);ctx.lineTo(x+4*s.r,y);ctx.moveTo(x,y-4*s.r);ctx.lineTo(x,y+4*s.r);ctx.stroke();}}
-   const core=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(w,h)*.18);core.addColorStop(0,'rgba(167,139,250,.08)');core.addColorStop(1,'rgba(167,139,250,0)');ctx.fillStyle=core;ctx.fillRect(0,0,w,h);raf=requestAnimationFrame(draw);};
-  const stop=()=>{running=false;cancelAnimationFrame(raf);};const launchObserver=new MutationObserver(()=>{if(loader.classList.contains('is-launching')&&!launchStarted)launchStarted=performance.now();});launchObserver.observe(loader,{attributes:true,attributeFilter:['class']});loader.addEventListener('transitionend',e=>{if(e.propertyName==='opacity'&&loader.classList.contains('is-hidden'))stop();});resize();addEventListener('resize',resize,{passive:true});raf=requestAnimationFrame(draw);
- }}
- if(!reduce){const hero=document.querySelector('.hero');if(hero){hero.classList.add('cosmic-arrival');setTimeout(()=>hero.classList.add('cosmic-arrived'),900);}}
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const loader=document.getElementById('site-loader');
+ const terminal=document.getElementById('loader-terminal-text');
+ const lines=['Initializing deep space...','Tracing the Milky Way...','Illuminating spiral arms...','Compiling creative ideas...','Opening Srujan.dev...'];
+ if(terminal&&!reduce){
+  let i=0;terminal.textContent=lines[0];
+  const timer=setInterval(()=>{i++;if(i<lines.length)terminal.textContent=lines[i];else clearInterval(timer);},720);
+  loader?.addEventListener('transitionend',()=>clearInterval(timer),{once:true});
+ }
+ if(!reduce){
+  const hero=document.querySelector('.hero');
+  if(hero){hero.classList.add('cosmic-arrival');setTimeout(()=>hero.classList.add('cosmic-arrived'),900);}
+ }
 })();
-
-
-/* CINEMATIC MOTION SYSTEM — GSAP choreography with native-scroll fallback */
+\n\n/* CINEMATIC MOTION SYSTEM — GSAP choreography with native-scroll fallback */
 (()=>{
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
