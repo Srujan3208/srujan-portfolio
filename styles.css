@@ -1155,3 +1155,18 @@ section#about .about-visual .about-photo {
   }
   #about .about-photo { height: 285px !important; }
 }
+
+/* Mobile current-focus placement: keep it in the text flow, not over the portrait */
+.mobile-focus{display:none}
+@media(max-width:760px){
+ .mobile-focus{display:block;position:relative;width:100%;margin-top:22px;padding:14px 16px;border-radius:16px;z-index:6;opacity:1;transform:none}
+ .mobile-focus .card-label{margin-bottom:10px;font-size:10px;letter-spacing:1.4px;color:#d2a5ff}
+ .mobile-focus-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+ .mobile-focus-links a{display:flex;align-items:center;justify-content:space-between;min-width:0;padding:10px 9px;border:1px solid rgba(192,132,252,.16);border-radius:10px;background:rgba(255,255,255,.025);color:#f0e9ff;text-decoration:none;font-size:11px;white-space:nowrap}
+ .hero-art .focus-card{display:none!important}
+ .hero-art{margin-top:18px}
+}
+@media(max-width:390px){
+ .mobile-focus-links{gap:7px}
+ .mobile-focus-links a{font-size:10px;padding:9px 7px}
+}
