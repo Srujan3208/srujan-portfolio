@@ -990,3 +990,40 @@ section#about .about-visual .about-photo img {
     width: 96% !important;
   }
 }
+
+
+/* Portrait fabric visibility — apply consistently to both Home and About.
+   The image's transparent pixels now reveal a near-black backing instead of
+   the purple page canvas. Keep the source image colours unfiltered. */
+.hero-art .portrait-wrap {
+  background: radial-gradient(ellipse at 50% 58%, #08070d 0%, #08070d 54%, transparent 76%) !important;
+}
+.hero-art .portrait-wrap img.portrait,
+section#about .about-visual .about-photo img {
+  background-color: #08070d !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+.hero-art .portrait-wrap img.portrait {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+}
+section#about .about-visual .about-photo {
+  background-color: #08070d !important;
+  background-image: radial-gradient(ellipse at 50% 48%, #100b1c 0%, #08070d 76%) !important;
+}
+@media (max-width: 760px) {
+  .hero-art .portrait-wrap {
+    background: radial-gradient(ellipse at 50% 58%, #08070d 0%, #08070d 54%, transparent 76%) !important;
+  }
+  .hero-art .portrait-wrap img.portrait,
+  section#about .about-visual .about-photo img {
+    background-color: #08070d !important;
+    opacity: 1 !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+  }
+}
