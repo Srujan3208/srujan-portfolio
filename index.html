@@ -37,10 +37,11 @@
  var percent=document.getElementById('loader-percent');
  var terminal=document.getElementById('loader-terminal-text');
  var messages=['Initializing universe...','Establishing secure connection...','Compiling creative systems...','Loading projects & experiences...','Welcome to my universe.'];
- var start=Date.now(),duration=2400,done=false;
+ var start=Date.now(),duration=2400,done=false,bar=loader.querySelector('.loader-progress i');
+ if(bar)bar.style.width='0%';
  function reveal(){
   if(done)return;done=true;
-  if(percent)percent.textContent='100%';
+  if(percent)percent.textContent='100%';if(bar)bar.style.width='100%';
   if(terminal)terminal.textContent='Universe ready.';
   loader.classList.add('is-launching');
   setTimeout(function(){
@@ -51,7 +52,7 @@
  }
  var timer=setInterval(function(){
   var p=Math.min(100,Math.floor((Date.now()-start)/duration*100));
-  if(percent)percent.textContent=String(p).padStart(2,'0')+'%';
+  if(percent)percent.textContent=String(p).padStart(2,'0')+'%';if(bar)bar.style.width=p+'%';
   if(terminal)terminal.textContent=messages[Math.min(4,Math.floor(p/21))];
   if(p>=100){clearInterval(timer);reveal();}
  },50);
