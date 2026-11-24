@@ -350,7 +350,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   sunGrad.addColorStop(0,'rgba(255,255,245,1)');sunGrad.addColorStop(.12,'rgba(255,229,188,.92)');sunGrad.addColorStop(.28,'rgba(255,176,104,.35)');sunGrad.addColorStop(1,'rgba(255,140,60,0)');
   sunCtx.fillStyle=sunGrad;sunCtx.fillRect(0,0,256,256);
   const sunSprite=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(sunCanvas),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));
-  sunSprite.scale.set(5.5,5.5,1);sunSprite.position.set(2.35,1.25,1.8);earthGroup.add(sunSprite);
+  sunSprite.scale.set(1.25,1.25,1);sunSprite.position.set(2.35,1.25,1.8);earthGroup.add(sunSprite);
   earthGroup.visible=false;
   // A small distant moon and a few passing asteroids add scale during approach.
   const moonMap=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/moon_1024.jpg');
@@ -372,8 +372,8 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    if(sec<4){camera.position.set(0,0,lerp(28,18,smooth(sec/4)));camera.lookAt(0,0,0);earthGroup.visible=false;}
    else if(sec<8){const orbit=smooth((sec-4)/4)*Math.PI*1.15;camera.position.set(Math.sin(orbit)*12.5,Math.sin(orbit*.72)*4.2,Math.cos(orbit)*12.5+3);camera.lookAt(0,0,-3);earthGroup.visible=false;}
    else if(sec<13){earthGroup.visible=true;camera.position.set(lerp(2.1,0,smooth((sec-8)/5)),lerp(.8,.15,smooth((sec-8)/5)),lerp(11,7.7,smooth((sec-8)/5)));camera.lookAt(0,0,0);earthGroup.scale.setScalar(lerp(.001,1,smooth((sec-8)/1.2)));galaxyPoints.material.opacity=lerp(.98,.015,smooth((sec-8)/2.6));sunSprite.material.opacity=.85*smooth((sec-10.8)/1.8);}
-   else if(sec<17){earthGroup.visible=true;const dive=smooth((sec-13)/4);earthGroup.scale.setScalar(lerp(1,8.55,dive));earthGroup.position.y=lerp(0,-22.5,dive);camera.position.set(lerp(0,0.2,dive),lerp(.15,0,dive),lerp(7.7,27,dive));camera.lookAt(0,lerp(0,-6.5,dive),0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.85;flashLight.material.opacity=.9*smooth((sec-15.7)/1.3);}
-   else{earthGroup.visible=true;earthGroup.scale.setScalar(8.55);earthGroup.position.y=-22.5;camera.position.set(0,0,27);camera.lookAt(0,-6.5,0);sunSprite.material.opacity=.9;flashLight.material.opacity=lerp(.9,0,smooth((sec-17)/.9));universe.rotation.z=sec*.002;}
+   else if(sec<17){earthGroup.visible=true;const dive=smooth((sec-13)/4);earthGroup.scale.setScalar(lerp(1,8.55,dive));earthGroup.position.y=lerp(0,-22.5,dive);camera.position.set(lerp(0,0.2,dive),lerp(.15,0,dive),lerp(7.7,27,dive));camera.lookAt(0,lerp(0,3,dive),0);earth.rotation.y+=.0018;clouds.rotation.y+=.0025;sunSprite.material.opacity=.85;flashLight.material.opacity=.9*smooth((sec-15.7)/1.3);}
+   else{earthGroup.visible=true;earthGroup.scale.setScalar(8.55);earthGroup.position.y=-22.5;camera.position.set(0,0,27);camera.lookAt(0,3,0);sunSprite.material.opacity=.9;flashLight.material.opacity=lerp(.9,0,smooth((sec-17)/.9));universe.rotation.z=sec*.002;}
    if(sec>=17&&finalPanel&&!finalPanel.classList.contains('visible'))finalPanel.classList.add('visible');
    moon.rotation.y+=.001;asteroidGroup.rotation.y+=.0012;
    if(sec>=22){if(progress)progress.style.width='100%';if(sceneLabel)sceneLabel.textContent='YOUR UNIVERSE IS READY';}
