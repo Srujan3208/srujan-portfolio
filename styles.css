@@ -418,3 +418,45 @@ a{text-underline-offset:4px}
 .hero-art{animation-delay:.12s}.stats{animation-delay:.2s}
 @keyframes portfolioEntry{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.hero .hero-left,.hero-art,.stats{animation:none!important}}
+
+/* CINEMATIC SCROLL EXPERIENCE */
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{--cinema-progress:0}
+.hero{min-height:100svh;overflow:hidden;isolation:isolate}
+.hero-grid{transform:translate3d(0,var(--hero-grid-y,0),0);will-change:transform}
+.hero-left{will-change:transform,opacity}
+.hero-art{will-change:transform}
+.hero h1{font-size:clamp(4.2rem,10vw,9rem);line-height:.92;position:relative}
+.hero h1 .name-glow{display:inline-block;animation:namePulse 5s ease-in-out infinite}
+@keyframes namePulse{0%,100%{filter:drop-shadow(0 0 5px rgba(168,85,247,.18))}50%{filter:drop-shadow(0 0 25px rgba(168,85,247,.5))}}
+.section{position:relative;isolation:isolate}
+.section::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at var(--section-x,50%) var(--section-y,40%),rgba(124,58,237,.075),transparent 45%);opacity:0;transition:opacity .8s}
+.section.in-view::before{opacity:1}
+.section-head{transform:translateY(0);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal{opacity:0;transform:translateY(45px) scale(.985);filter:blur(4px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1),filter .85s}
+.reveal.revealed{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+.section.reveal.revealed{transition-delay:.05s}
+.project.reveal{transition-duration:.75s}
+.project-grid .project:nth-child(2){transition-delay:.08s}.project-grid .project:nth-child(3){transition-delay:.16s}.project-grid .project:nth-child(4){transition-delay:.24s}.project-grid .project:nth-child(5){transition-delay:.32s}.project-grid .project:nth-child(6){transition-delay:.4s}
+.project{overflow:hidden}
+.project .project-number{transition:transform .5s,color .5s}
+.project:hover .project-number{transform:translateX(4px);color:#c4b5fd}
+.project .project-icon{transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .5s}
+.project:hover .project-icon{transform:translateY(-4px) rotate(-7deg) scale(1.08);filter:drop-shadow(0 0 14px rgba(168,85,247,.35))}
+.section-head h2{overflow:visible}
+.section-head h2 em{display:inline-block;position:relative}
+.section-head h2 em::after{content:"";position:absolute;left:0;bottom:-.08em;width:100%;height:2px;background:linear-gradient(90deg,#a855f7,#22d3ee);transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.section.in-view .section-head h2 em::after{transform:scaleX(1)}
+.about-visual,.contact-panel,.hero-art .code-window,.hero-art .focus-card{transform-style:preserve-3d}
+.about-photo img{transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.about-visual:hover .about-photo img{transform:scale(1.035)}
+.timeline article{transition:transform .65s cubic-bezier(.2,.7,.2,1),opacity .65s}
+.timeline article:hover{transform:translateX(8px)}
+.skill-grid>div,.certificate-card,.recognition-grid>div,.contact-links>a{will-change:transform}
+.contact-panel{overflow:hidden}
+.contact-orb{animation:contactOrb 16s ease-in-out infinite alternate}
+@keyframes contactOrb{from{transform:translate(0,0) scale(1)}to{transform:translate(-28px,-18px) scale(1.12)}}
+.scroll-hint{animation:scrollHint 2s ease-in-out infinite}
+@keyframes scrollHint{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(6px);opacity:1}}
+@media(max-width:760px){.hero h1{font-size:clamp(3.8rem,18vw,6rem)}.reveal{transform:translateY(24px);filter:none;transition-duration:.6s}.project-grid .project:nth-child(n){transition-delay:0s}.timeline article:hover{transform:none}.hero-grid{transform:none!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;filter:none;transition:none}.section::before,.section-head h2 em::after,.contact-orb,.scroll-hint,.hero h1 .name-glow{animation:none!important;transition:none!important}.project,.project .project-icon,.about-photo img,.timeline article{transition:none!important}}
