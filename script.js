@@ -119,12 +119,12 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  float wave=exp(-pow((p.y+.16*sin(p.x*4.4-t*.8)+.19),2.)*180.)*.18;
  float stars=step(.998,hash(floor((uv+vec2(t*.01,0.))*vec2(480.,270.))));
  stars*=.3+.7*sin(uTime*1.7+hash(floor(uv*280.))*6.2831)*sin(uTime*1.7+hash(floor(uv*280.))*6.2831);
- vec3 purple=vec3(.018,.075,.19);
- vec3 pink=vec3(.035,.24,.43);
- vec3 blue=vec3(.025,.12,.32);
+ vec3 purple=vec3(.22,.045,.012);
+ vec3 pink=vec3(.95,.20,.055);
+ vec3 blue=vec3(.72,.36,.08);
  vec3 color=mix(purple,blue,smoothstep(.2,.8,warp))*(cloud+halo);
  color+=pink*band+blue*wave;
- color+=vec3(.48,.68,.94)*stars*.8;
+ color+=vec3(1.,.72,.38)*stars*.8;
  color*=.9+.1*sin(uScroll*.004);
  float alpha=clamp((cloud+halo+band+wave+stars)*1.2,0.,.62);
  gl_FragColor=vec4(color,alpha);
