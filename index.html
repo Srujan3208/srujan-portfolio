@@ -3,63 +3,24 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#070711"><meta name="description" content="Srujan — AI Engineer, Full-Stack Developer and CSE student building intelligent products."><title>Srujan — AI Engineer & Builder</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 </head><body class="is-loading">
-<div id="site-loader" role="status" aria-label="Opening Srujan's portfolio">
-  <canvas class="galaxy-universe" aria-hidden="true"></canvas>
-  <canvas class="loader-3d-scene" aria-hidden="true"></canvas>
-  <canvas class="loader-matrix" aria-hidden="true"></canvas>
-  <div class="loader-nebula loader-nebula-a"></div><div class="loader-nebula loader-nebula-b"></div>
-  <div class="loader-stars" aria-hidden="true"></div>
-  <div class="loader-orbit orbit-one"><i></i></div><div class="loader-orbit orbit-two"><i></i></div>
-  <div class="loader-code-rain" aria-hidden="true"><span>const srujan = await build();</span><span>import { imagination } from 'universe';</span><span>while (ideas) create();</span><span>return &lt;Portfolio /&gt;;</span></div>
-  <div class="loader-hud loader-hud-left"><b>SYS / 01</b><code>const srujan = {<br> role: "AI Engineer",<br> focus: "AI & Systems",<br> build: () =&gt; "Impact"<br>};</code><i>SECURE BUILD CHANNEL</i></div>
-  <div class="loader-hud loader-hud-right"><b>CORE MODULES</b><span>01&nbsp; AI / GENAI</span><span>02&nbsp; WEB SYSTEMS</span><span>03&nbsp; PRODUCT DESIGN</span><span>04&nbsp; DEPLOYMENT</span><i>ALL SYSTEMS NOMINAL</i></div>
-  <div class="loader-bracket bracket-a"></div><div class="loader-bracket bracket-b"></div>
-  <div class="loader-floor-grid"></div>
-  <div class="loader-core">
-    <div class="loader-core-top"><span>BOOT SEQUENCE / 2026</span><span>GPU LINK <b>ACTIVE</b></span></div>
-    <div class="loader-kicker"><i></i> A PERSONAL DIGITAL UNIVERSE <i></i></div>
-    <div class="loader-monogram"><span>S</span><b></b><i></i></div>
-    <div class="loader-title">SRUJAN<span>.DEV</span></div>
-    <div class="loader-subtitle">ENGINEERING IDEAS INTO REALITY</div>
-    <div class="loader-terminal"><span class="terminal-prompt">›</span><span id="loader-terminal-text">Initializing universe...</span><span class="terminal-caret">_</span></div>
-    <div class="loader-progress"><i></i></div>
-    <div class="loader-meta"><span>DESIGN <b>✳</b> CODE <b>✳</b> CREATE</span><span id="loader-percent">00%</span></div>
-    <div class="loader-core-bottom"><span>ENCRYPTED CONNECTION</span><span>BUILD ID&nbsp; SRJ-026</span></div>
-  </div>
-  <div class="loader-enter-flash"></div>
+<div id="site-loader" class="space-intro" role="dialog" aria-modal="true" aria-label="Srujan developer portfolio cinematic introduction">
+ <canvas class="loader-3d-scene" aria-hidden="true"></canvas>
+ <div class="space-vignette" aria-hidden="true"></div>
+ <div class="space-grain" aria-hidden="true"></div>
+ <div class="space-topline"><span class="space-mark">S / UNIVERSE</span><span class="space-scene-name" id="space-scene-name">THE BEGINNING OF EVERYTHING</span><button type="button" class="space-skip" id="space-skip">SKIP INTRO ↗</button></div>
+ <div class="space-caption" id="space-caption"><span class="space-caption-index">01 — 05</span><span>Somewhere, a universe begins.</span></div>
+ <div class="space-progress" aria-hidden="true"><i id="space-progress-bar"></i></div>
+ <div class="space-final" id="space-final" aria-hidden="true">
+  <div class="space-final-kicker"><i></i> A PERSONAL DIGITAL UNIVERSE <i></i></div>
+  <div class="space-final-title">EXPLORE MY UNIVERSE</div>
+  <h1>SRUJAN<span>.</span></h1>
+  <p>AI DEVELOPER <b>·</b> SOFTWARE ENGINEER</p>
+  <button type="button" id="enter-portfolio">ENTER MY PORTFOLIO <span>→</span></button>
+  <small>IDEAS INTO REALITY · ONE BUILD AT A TIME</small>
+ </div>
+ <div class="space-flash" id="space-flash" aria-hidden="true"></div>
 </div>
-<script>
-/* Critical inline loader controller: works even if the main app bundle fails. */
-(function(){
- var loader=document.getElementById('site-loader'),body=document.body;
- if(!loader)return;
- body.classList.add('is-loading');
- var percent=document.getElementById('loader-percent');
- var terminal=document.getElementById('loader-terminal-text');
- var messages=['Initializing universe...','Establishing secure connection...','Compiling creative systems...','Loading projects & experiences...','Welcome to my universe.'];
- var start=Date.now(),duration=2400,done=false,bar=loader.querySelector('.loader-progress i');
- if(bar)bar.style.width='0%';
- function reveal(){
-  if(done)return;done=true;
-  if(percent)percent.textContent='100%';if(bar)bar.style.width='100%';
-  if(terminal)terminal.textContent='Universe ready.';
-  loader.classList.add('is-launching');
-  setTimeout(function(){
-   loader.classList.add('is-hidden');
-   body.classList.remove('is-loading');
-   setTimeout(function(){if(loader.parentNode)loader.parentNode.removeChild(loader);},700);
-  },650);
- }
- var timer=setInterval(function(){
-  var p=Math.min(100,Math.floor((Date.now()-start)/duration*100));
-  if(percent)percent.textContent=String(p).padStart(2,'0')+'%';if(bar)bar.style.width=p+'%';
-  if(terminal)terminal.textContent=messages[Math.min(4,Math.floor(p/21))];
-  if(p>=100){clearInterval(timer);reveal();}
- },50);
- /* Hard escape hatch: never leave the visitor trapped on the intro. */
- setTimeout(function(){clearInterval(timer);reveal();},3200);
-})();
-</script>
+
 
 <canvas id="portfolio-world" aria-hidden="true"></canvas>
 <div class="noise"></div><div class="cursor-glow"></div>
