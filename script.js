@@ -790,7 +790,25 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   });
  };
  if(!reduce){
+  const heroTimeline=gsap.timeline({defaults:{ease:'power4.out'}});
+  const heroEyebrow=document.querySelector('.hero-left .eyebrow');
   const heroTitle=document.querySelector('.hero h1');
+  const heroRoles=document.querySelector('.hero-left .roles');
+  const heroCopy=document.querySelector('.hero-left .hero-copy');
+  const heroButtons=document.querySelector('.hero-left .hero-buttons');
+  const heroSocials=document.querySelector('.hero-left .socials');
+  const heroPortrait=document.querySelector('.hero-art .portrait-wrap');
+  if(heroEyebrow)heroTimeline.fromTo(heroEyebrow,{y:24,opacity:0,filter:'blur(8px)'},{y:0,opacity:1,filter:'blur(0)',duration:.65},0);
+  if(heroTitle)heroTimeline.fromTo(heroTitle,{y:70,opacity:0,rotateX:-28,filter:'blur(12px)'},{y:0,opacity:1,rotateX:0,filter:'blur(0px)',duration:1.05},.08);
+  if(heroRoles)heroTimeline.fromTo(heroRoles,{y:22,opacity:0},{y:0,opacity:1,duration:.62},.32);
+  if(heroCopy)heroTimeline.fromTo(heroCopy,{y:28,opacity:0},{y:0,opacity:1,duration:.7},.42);
+  if(heroButtons)heroTimeline.fromTo(heroButtons,{y:24,opacity:0,scale:.97},{y:0,opacity:1,scale:1,duration:.62},.55);
+  if(heroSocials)heroTimeline.fromTo(heroSocials,{y:18,opacity:0},{y:0,opacity:1,duration:.55},.68);
+  if(heroPortrait)heroTimeline.fromTo(heroPortrait,{y:52,opacity:0,scale:.94,filter:'blur(8px)'},{y:0,opacity:1,scale:1,filter:'blur(0)',duration:1.1,ease:'power3.out'},.3);
+  if(desktop){
+   const homeCards=document.querySelectorAll('.hero-art .code-window,.hero-art .focus-card,.hero>.stats');
+   if(homeCards.length)heroTimeline.fromTo(homeCards,{y:30,opacity:0,rotateY:8},{y:0,opacity:1,rotateY:0,duration:.8,stagger:.13},.48);
+  }
   if(heroTitle){
    // Keep the accent dot visually intact while animating the title as a single kinetic unit.
    gsap.fromTo(heroTitle,{y:70,opacity:0,rotateX:-28,filter:'blur(12px)'},{y:0,opacity:1,rotateX:0,filter:'blur(0px)',duration:1.25,delay:.08,ease:'power4.out'});
