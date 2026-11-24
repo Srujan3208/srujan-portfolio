@@ -137,3 +137,22 @@ document.body.classList.add('cinematic-ready');
  requestAnimationFrame(frame);
  document.addEventListener('visibilitychange',()=>{if(document.hidden){running=false}else if(!running){running=true;requestAnimationFrame(frame)}});
 })();
+
+/* CINEMATIC UNIVERSE INTRO — GPU-friendly 3D particle galaxy */
+(()=>{
+ const loader=document.getElementById('universe-loader'),canvas=document.getElementById('universe-canvas');
+ if(!loader||!canvas||matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('universe-revealed');loader?.remove();return}
+ document.body.classList.add('universe-ready');
+ const ctx=canvas.getContext('2d',{alpha:false});
+ let w=0,h=0,dpr=1,particles=[],start=performance.now(),pointerX=0,pointerY=0;
+ const resize=()=>{dpr=Math.min(devicePixelRatio||1,1.5);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);particles=[];const count=Math.min(1800,Math.floor(w*h/650));for(let i=0;i<count;i++){const arm=Math.floor(Math.random()*4),radius=Math.pow(Math.random(),.65)*Math.min(w,h)*.47,angle=arm*Math.PI/2+radius*.006+(Math.random()-.5)*.5;particles.push({r:radius,a:angle,z:(Math.random()-.5)*2,arm,size:Math.random()*1.5+.2,phase:Math.random()*6.28,alpha:Math.random()*.65+.15})}};
+ resize();addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{pointerX=(e.clientX/w-.5)*2;pointerY=(e.clientY/h-.5)*2},{passive:true});
+ const draw=now=>{if(!loader.isConnected)return;const t=(now-start)/1000;ctx.fillStyle='#02030b';ctx.fillRect(0,0,w,h);
+ const cx=w/2+pointerX*12,cy=h/2+pointerY*12,scale=1+Math.min(t,3)*.045;
+ const neb=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(w,h)*.5);neb.addColorStop(0,'rgba(85,35,180,.18)');neb.addColorStop(.45,'rgba(25,20,80,.09)');neb.addColorStop(1,'rgba(2,3,11,0)');ctx.fillStyle=neb;ctx.fillRect(0,0,w,h);
+ for(const p of particles){const spin=t*.12+p.r*.0004;const a=p.a+spin;const x=cx+Math.cos(a)*p.r*scale;const y=cy+Math.sin(a)*p.r*.58*scale+p.z*p.r*.22;const fade=1-p.r/(Math.min(w,h)*.52);const tw=.5+.5*Math.sin(t*2+p.phase);ctx.fillStyle=p.arm%2?'rgba(115,170,255,'+(p.alpha*fade*tw)+')':'rgba(190,120,255,'+(p.alpha*fade*tw)+')';ctx.beginPath();ctx.arc(x,y,p.size*(.5+tw*.5),0,Math.PI*2);ctx.fill()}
+ const core=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(w,h)*.16);core.addColorStop(0,'rgba(220,205,255,.85)');core.addColorStop(.08,'rgba(160,100,255,.55)');core.addColorStop(.28,'rgba(110,45,220,.18)');core.addColorStop(1,'rgba(40,15,100,0)');ctx.fillStyle=core;ctx.beginPath();ctx.arc(cx,cy,Math.min(w,h)*.16,0,Math.PI*2);ctx.fill();
+ if(t<3.25)requestAnimationFrame(draw);else{loader.classList.add('depart');document.body.classList.add('universe-revealed');setTimeout(()=>loader.remove(),1400)}
+ };
+ requestAnimationFrame(draw);
+})();
