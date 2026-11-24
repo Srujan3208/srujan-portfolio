@@ -1148,3 +1148,63 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 .button-primary:hover{box-shadow:0 12px 45px rgba(124,58,237,.4),0 0 22px rgba(34,211,238,.15)}
 @media(max-width:760px){.loader-core{gap:12px;padding:20px 8px}.loader-monogram{width:88px;height:88px}.loader-monogram span{font-size:48px}.loader-orbit{width:110vw!important;height:48vw!important}.loader-code-rain{opacity:.11}}
 @media(prefers-reduced-motion:reduce){.loader-nebula,.loader-stars,.loader-orbit i,.loader-monogram,.loader-monogram:before,.loader-monogram:after,.loader-progress i,.loader-code-rain span{animation:none!important}.loader-core{opacity:1!important;transform:none!important}}
+
+
+/* CINEMATIC PURPLE COSMOS — loader colour, depth and spatial atmosphere */
+#site-loader{
+ background:
+  radial-gradient(ellipse at 50% 48%,rgba(48,24,94,.44),transparent 43%),
+  radial-gradient(ellipse at 18% 18%,rgba(43,72,150,.2),transparent 42%),
+  radial-gradient(ellipse at 84% 78%,rgba(24,122,155,.12),transparent 38%),
+  #03030b;
+ color:#f7f3ff;
+ isolation:isolate;
+}
+#site-loader:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at center,transparent 30%,rgba(1,2,9,.68) 100%)}
+#site-loader .galaxy-universe{z-index:0;opacity:.98;filter:saturate(1.22) contrast(1.08)}
+#site-loader .loader-nebula{filter:blur(54px);mix-blend-mode:screen;opacity:.72}
+#site-loader .loader-nebula-a{background:radial-gradient(ellipse,rgba(124,58,237,.42),rgba(79,70,229,.16) 42%,transparent 72%);width:70vw;height:54vh;left:5%;top:8%;animation:cosmic-drift-a 12s ease-in-out infinite alternate}
+#site-loader .loader-nebula-b{background:radial-gradient(ellipse,rgba(34,211,238,.19),rgba(99,102,241,.13) 38%,transparent 72%);width:65vw;height:48vh;right:0;bottom:0;animation:cosmic-drift-b 15s ease-in-out infinite alternate}
+#site-loader .loader-stars{opacity:.5;background-image:radial-gradient(1px 1px at 20% 30%,#fff 98%,transparent),radial-gradient(1px 1px at 72% 16%,#c4b5fd 98%,transparent),radial-gradient(2px 2px at 82% 68%,#fff 98%,transparent),radial-gradient(1px 1px at 34% 78%,#67e8f9 98%,transparent);background-size:310px 260px,390px 330px,470px 390px,290px 310px}
+#site-loader .loader-core{z-index:3;width:min(560px,88vw);padding:34px 28px;border:1px solid rgba(196,181,253,.2);border-radius:30px;background:linear-gradient(145deg,rgba(15,10,34,.48),rgba(5,8,22,.24));box-shadow:0 28px 100px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(16px);text-align:center}
+#site-loader .loader-kicker{color:#c4b5fd;letter-spacing:3px;text-shadow:0 0 18px rgba(167,139,250,.6)}
+#site-loader .loader-kicker i{background:linear-gradient(90deg,#8b5cf6,#67e8f9);box-shadow:0 0 12px #8b5cf6}
+#site-loader .loader-monogram{filter:drop-shadow(0 0 28px rgba(139,92,246,.55))}
+#site-loader .loader-monogram span{background:linear-gradient(145deg,#fff 8%,#d8b4fe 46%,#818cf8 78%,#67e8f9);background-clip:text;-webkit-background-clip:text;color:transparent}
+#site-loader .loader-title{color:#f5f3ff;text-shadow:0 0 35px rgba(167,139,250,.36);letter-spacing:.2em}
+#site-loader .loader-title span{color:#a78bfa}
+#site-loader .loader-subtitle{color:#a5b4fc;letter-spacing:.24em}
+#site-loader .loader-terminal{color:#d8b4fe;border-color:rgba(167,139,250,.18);background:rgba(7,8,22,.65)}
+#site-loader .terminal-prompt,#site-loader .terminal-caret{color:#67e8f9}
+#site-loader .loader-progress{background:rgba(196,181,253,.14);box-shadow:0 0 18px rgba(124,58,237,.14)}
+#site-loader .loader-progress i{background:linear-gradient(90deg,#6d28d9,#a78bfa 48%,#67e8f9);box-shadow:0 0 20px rgba(139,92,246,.7)}
+#site-loader .loader-meta{color:#8b83a8}
+#site-loader .loader-meta b{color:#67e8f9}
+#site-loader .loader-meta #loader-percent{color:#e9d5ff}
+#site-loader .loader-orbit{border-color:rgba(167,139,250,.18);box-shadow:0 0 28px rgba(124,58,237,.16)}
+#site-loader .loader-orbit i{background:#67e8f9;box-shadow:0 0 14px #67e8f9}
+#site-loader .loader-code-rain{z-index:2;color:rgba(196,181,253,.3);text-shadow:0 0 18px rgba(124,58,237,.22)}
+#site-loader .loader-enter-flash{background:radial-gradient(circle,#c4b5fd 0%,#7c3aed 16%,rgba(34,211,238,.3) 32%,transparent 68%);mix-blend-mode:screen}
+@keyframes cosmic-drift-a{from{transform:translate3d(-4%,0,0) scale(.92)}to{transform:translate3d(9%,8%,0) scale(1.12)}}
+@keyframes cosmic-drift-b{from{transform:translate3d(5%,5%,0) scale(1.08)}to{transform:translate3d(-8%,-6%,0) scale(.92)}}
+/* Scroll progress and chapter transitions */
+#motion-progress{position:fixed;top:0;left:0;width:100%;height:2px;z-index:100;background:linear-gradient(90deg,#7c3aed,#a78bfa,#67e8f9);transform:scaleX(var(--motion-progress,0));transform-origin:left;box-shadow:0 0 14px rgba(167,139,250,.65);pointer-events:none}
+.section-head h2{text-wrap:balance}
+.section-head h2 em{background:linear-gradient(100deg,#d8b4fe,#a78bfa 55%,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.project,.certificate-card,.cert-card,.skill-grid>div{transform-style:preserve-3d;backface-visibility:hidden}
+.project:after,.certificate-card:after,.cert-card:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(280px circle at var(--spot-x,50%) var(--spot-y,50%),rgba(167,139,250,.16),transparent 70%);transition:opacity .3s}
+.project:hover:after,.certificate-card:hover:after,.cert-card:hover:after{opacity:1}
+.timeline{position:relative}
+.timeline:before{content:"";position:absolute;left:132px;top:24px;bottom:24px;width:1px;background:linear-gradient(180deg,transparent,rgba(167,139,250,.48),rgba(34,211,238,.35),transparent)}
+.timeline article{position:relative}
+.timeline-icon{box-shadow:0 0 24px rgba(124,58,237,.16)}
+@media(max-width:760px){
+ #site-loader .loader-core{padding:26px 18px;width:min(480px,91vw);border-radius:23px}
+ #site-loader .loader-code-rain{opacity:.35}
+ #site-loader .loader-title{letter-spacing:.13em}
+ .timeline:before{left:82px}
+}
+@media(prefers-reduced-motion:reduce){
+ #site-loader .loader-nebula-a,#site-loader .loader-nebula-b{animation:none}
+ .project,.certificate-card,.cert-card,.skill-grid>div{transform:none!important}
+}
