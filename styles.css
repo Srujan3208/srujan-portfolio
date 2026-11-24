@@ -1746,3 +1746,19 @@ main>section{width:100%!important;max-width:100%!important;min-width:0!important
  #site-loader.space-intro .space-final h1{font-size:clamp(46px,13vw,72px);letter-spacing:.12em}
  #site-loader.space-intro .space-final-title{letter-spacing:.22em}
 }
+
+/* Cinematic reference correction: face-on spiral galaxy, uncluttered horizon reveal */
+#site-loader.space-intro{background:#01030a!important}
+#site-loader.space-intro .space-vignette{background:radial-gradient(ellipse at 50% 45%,transparent 34%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.62) 120%)!important}
+#site-loader.space-intro .space-final{top:39%!important;width:min(92vw,900px)!important;text-shadow:0 2px 24px rgba(0,0,0,.65)}
+#site-loader.space-intro .space-final-title{margin-top:12px!important;letter-spacing:.36em!important}
+#site-loader.space-intro .space-final h1{margin-top:12px!important;font-size:clamp(58px,11vw,112px)!important;letter-spacing:.16em!important}
+#site-loader.space-intro .space-final p{margin:12px 0 22px!important}
+#site-loader.space-intro #enter-portfolio{padding:15px 30px!important;min-height:54px;border-radius:999px!important}
+#site-loader.space-intro .space-final-kicker{color:#d9efff!important}
+@media(max-width:700px){
+ #site-loader.space-intro .space-final{top:35%!important;width:calc(100vw - 32px)!important}
+ #site-loader.space-intro .space-final h1{font-size:clamp(48px,13vw,76px)!important;letter-spacing:.1em!important}
+ #site-loader.space-intro .space-final-title{letter-spacing:.2em!important}
+ #site-loader.space-intro .space-final p{font-size:9px!important}
+}
