@@ -25,9 +25,9 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  const scene=new THREE.Scene();
  scene.fog=new THREE.FogExp2(0x050513,.035);
  const camera=new THREE.PerspectiveCamera(46,innerWidth/innerHeight,.1,120);
- camera.position.set(0,0,11);
- const ambient=new THREE.AmbientLight(0x8792ff,.82);scene.add(ambient);
- const key=new THREE.PointLight(0x9a58ff,3.2,34);key.position.set(-4,3,6);scene.add(key);
+ camera.position.set(0,0,coarse?15.5:13.5);
+ const ambient=new THREE.AmbientLight(0x8cbfcf,.72);scene.add(ambient);
+ const key=new THREE.PointLight(0x397dff,2.6,34);key.position.set(-4,3,6);scene.add(key);
  const cyan=new THREE.PointLight(0x24d9ff,2.4,28);cyan.position.set(5,-2,4);scene.add(cyan);
  const root=new THREE.Group();scene.add(root);
  const groups={};
@@ -45,32 +45,35 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   add(g,points);return points;
  };
  const makeGroup=(id)=>{const g=new THREE.Group();g.visible=false;root.add(g);groups[id]=g;return g;};
- // HOME — orbital planet, satellite rings and a dense star field.
+ // HOME — compact orbital data planet, offset away from the text.
  {
-  const g=makeGroup('home');sphere(g,2.15,dark,0,0,-1,64);
-  const globe=sphere(g,2.12,mat(0x1a1551,.5,.48,0x24116e),0,0,-1,64);
-  const shell=new THREE.Mesh(new THREE.SphereGeometry(2.2,48,48),new THREE.MeshBasicMaterial({color:0x754aff,wireframe:true,transparent:true,opacity:.11}));shell.position.z=-1;add(g,shell);
-  torus(g,3.05,.025,violet,0,0,-.8,.35,.12,.15);torus(g,3.45,.012,cyanMat,0,0,-1.1,-.45,.1,-.2);
-  sphere(g,.17,cyanMat,2.7,.8,.1,20);particles(g,1500,18);
-  g.userData.spin=[globe,shell];
+  const g=makeGroup('home');g.position.set(4.4,-1.05,-.4);g.scale.setScalar(.78);
+  sphere(g,1.52,dark,0,0,-1,64);
+  const globe=sphere(g,1.49,mat(0x123a55,.5,.48,0x0b4a62),0,0,-1,64);
+  const shell=new THREE.Mesh(new THREE.SphereGeometry(1.56,48,48),new THREE.MeshBasicMaterial({color:0x26c6da,wireframe:true,transparent:true,opacity:.13}));shell.position.z=-1;add(g,shell);
+  torus(g,2.1,.018,cyanMat,0,0,-.8,.35,.12,.15);torus(g,2.35,.012,violet,0,0,-1.1,-.45,.1,-.2);
+  sphere(g,.12,cyanMat,1.85,.65,.1,20);particles(g,900,14);g.userData.spin=[globe,shell];
  }
- // ABOUT — holographic atom and rotating torus-knot sculpture.
+ // ABOUT — compact holographic atom, not a giant foreground object.
  {
-  const g=makeGroup('about');const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.35,.36,220,24,2,5),violet);add(g,knot);
-  knot.add(wire(new THREE.TorusKnotGeometry(1.35,.36,90,10,2,5),0x52dfff,.35));
-  for(let i=0;i<3;i++)torus(g,2.45+i*.22,.018,i===1?cyanMat:violet,0,0,0,Math.PI/2.4,i*Math.PI/3,0);
-  sphere(g,.4,silver,0,0,0,28);particles(g,950,16);
-  g.userData.spin=[knot];
+  const g=makeGroup('about');g.position.set(4.2,-.4,-.5);g.scale.setScalar(.66);
+  const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.2,.23,180,18,2,5),violet);add(g,knot);
+  knot.add(wire(new THREE.TorusKnotGeometry(1.2,.23,80,8,2,5),0x52dfff,.3));
+  for(let i=0;i<3;i++)torus(g,2.05+i*.18,.014,i===1?cyanMat:violet,0,0,0,Math.PI/2.4,i*Math.PI/3,0);
+  sphere(g,.28,silver,0,0,0,28);particles(g,500,13);g.userData.spin=[knot];
  }
- // PROJECTS — floating product cubes and stacked 3D interface panels.
+ // PROJECTS — holographic code panels instead of random floating cubes.
  {
-  const g=makeGroup('projects');
-  for(let i=0;i<7;i++){
-   const geo=new THREE.BoxGeometry(1.05,1.05,1.05);
-   const cube=new THREE.Mesh(geo,[purple,blue,violet,cyanMat][i%4]);cube.position.set((i%3-1)*2.15,Math.floor(i/3)*1.65-1.6,(i%2)*.6);cube.rotation.set(.35*i,.4*i,.15*i);add(g,cube);add(g,wire(geo,0x8c74ff,.6)).position.copy(cube.position);
-   torus(g,.68,.012,i%2?cyanMat:violet,cube.position.x,cube.position.y,cube.position.z,Math.PI/2,.4*i,0);
+  const g=makeGroup('projects');g.position.set(4.1,-.2,-.5);g.scale.setScalar(.72);
+  for(let i=0;i<4;i++){
+   const w=2.2+(i%2)*.35,h=1.12;
+   const panel=new THREE.Mesh(new THREE.BoxGeometry(w,h,.075),i%2?dark:blue);
+   panel.position.set((i%2?1:-1)*.95,1.15-Math.floor(i/2)*1.7,(i%2)*.18);panel.rotation.y=(i%2?-.16:.16);add(g,panel);
+   add(g,wire(panel.geometry,i%2?0x31d6e8:0x9b70ff,.62)).position.copy(panel.position);
+   for(let line=0;line<3;line++){const bar=new THREE.Mesh(new THREE.BoxGeometry(w*.62,.035,.02),line===0?cyanMat:silver);bar.position.set(panel.position.x-w*.12,panel.position.y-.18-line*.2,.09);add(g,bar);}
+   sphere(g,.055,i%2?cyanMat:violet,panel.position.x-w*.38,panel.position.y+.38,.12,12);
   }
-  particles(g,1100,17);
+  torus(g,2.75,.014,cyanMat,0,0,-.7,.15,.12,0);particles(g,520,13);
  }
  // EXPERIENCE — dimensional timeline with illuminated nodes and connecting rails.
  {
@@ -147,7 +150,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   }
   camera.position.x+=(mouseX*.38-camera.position.x)*.025;
   camera.position.y+=(-mouseY*.28-camera.position.y)*.025;
-  camera.position.z=11+Math.sin(t*.18)*.16;
+  camera.position.z=(coarse?15.5:13.5)+Math.sin(t*.18)*.12;
   camera.lookAt(0,0,0);key.position.x=Math.sin(t*.45)*5;cyan.position.y=Math.cos(t*.38)*3;
   renderer.render(scene,camera);
  };
@@ -248,4 +251,38 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  // Refresh after fonts/images settle so scroll scenes use accurate geometry.
  window.addEventListener('load',()=>{ST.refresh();setTimeout(()=>ST.refresh(),450);},{once:true});
  window.addEventListener('resize',()=>ST.refresh(),{passive:true});
+})();
+
+/* Matrix rain for the loader: actual code glyphs, not a flat purple gradient */
+(()=>{
+ const canvas=document.querySelector('.loader-matrix'),loader=document.getElementById('site-loader');
+ if(!canvas||!loader)return;
+ const ctx=canvas.getContext('2d');if(!ctx)return;
+ const glyphs='0101 1010 0x7F 0xFF 0xA1 0xB4 <> {} [] () => const let async await function return class import export npm git push commit deploy';
+ let cols=[],font=15,raf=0,last=0,active=true;
+ const resize=()=>{
+  const dpr=Math.min(devicePixelRatio||1,1.5);
+  canvas.width=Math.floor(innerWidth*dpr);canvas.height=Math.floor(innerHeight*dpr);
+  canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
+  font=Math.max(12,Math.min(17,innerWidth/88));
+  cols=Array.from({length:Math.ceil(innerWidth/font)+1},(_,i)=>({x:i*font,y:Math.random()*-innerHeight,speed:.55+Math.random()*1.15,trail:10+Math.random()*20}));
+ };
+ const draw=now=>{
+  raf=0;if(!active||!loader.isConnected||document.hidden)return;
+  raf=requestAnimationFrame(draw);if(now-last<38)return;last=now;
+  ctx.fillStyle='rgba(2,8,16,.13)';ctx.fillRect(0,0,innerWidth,innerHeight);
+  ctx.font=font+'px monospace';ctx.textAlign='center';
+  for(const c of cols){
+   for(let n=0;n<c.trail;n++){
+    const y=c.y-n*font;if(y<0||y>innerHeight)continue;
+    const alpha=Math.max(.035,.5-n/c.trail*.46);
+    ctx.fillStyle=n===0?'rgba(103,255,218,.98)':(n%5===0?'rgba(52,211,153,'+alpha+')':'rgba(75,160,185,'+alpha+')');
+    ctx.fillText(glyphs[Math.floor(Math.random()*glyphs.length)],c.x,y);
+   }
+   c.y+=font*c.speed;if(c.y-c.trail*font>innerHeight)c.y=-Math.random()*innerHeight*.4;
+  }
+ };
+ const io=new IntersectionObserver(entries=>{active=entries[0].isIntersecting;if(active&&!raf&&!document.hidden)raf=requestAnimationFrame(draw);else if(!active&&raf){cancelAnimationFrame(raf);raf=0;}});
+ io.observe(loader);document.addEventListener('visibilitychange',()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}else if(active&&loader.isConnected&&!raf)raf=requestAnimationFrame(draw);});
+ window.addEventListener('resize',resize,{passive:true});resize();raf=requestAnimationFrame(draw);
 })();
