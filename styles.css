@@ -717,3 +717,62 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 @keyframes loader-content-fade {to{opacity:0;transform:translateY(-24px);filter:blur(8px)}}
 @media(max-width:760px){.earth-stage{width:260px!important;height:260px!important}.loader-coordinates{font-size:6px!important;letter-spacing:1px!important}}
 @media(prefers-reduced-motion:reduce){.earth-stage::before,.earth-stage::after{animation:none!important}}
+
+
+/* COSMIC UNIVERSE ART DIRECTION — remove abstract stripe look */
+#site-loader {
+ background:
+  radial-gradient(ellipse at 50% 48%,rgba(53,27,112,.34) 0%,transparent 34%),
+  radial-gradient(ellipse at 15% 22%,rgba(30,64,175,.19) 0%,transparent 32%),
+  radial-gradient(ellipse at 84% 72%,rgba(126,34,206,.2) 0%,transparent 34%),
+  radial-gradient(ellipse at 50% 100%,rgba(30,27,75,.3) 0%,transparent 48%),
+  #03040d!important;
+}
+#site-loader::before {
+ inset:-15%!important;opacity:.7!important;
+ background:
+  radial-gradient(ellipse at 22% 36%,rgba(59,130,246,.12),transparent 26%),
+  radial-gradient(ellipse at 78% 24%,rgba(147,51,234,.13),transparent 29%),
+  radial-gradient(ellipse at 68% 78%,rgba(79,70,229,.12),transparent 28%),
+  radial-gradient(ellipse at 38% 70%,rgba(14,165,233,.08),transparent 32%)!important;
+ filter:blur(34px);animation:nebula-breathe 9s ease-in-out infinite alternate!important;
+}
+.loader-cosmos {
+ opacity:1!important;
+ background-image:
+  radial-gradient(2px 2px at 8% 16%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 18% 62%,#c4b5fd 98%,transparent),
+  radial-gradient(2px 2px at 28% 28%,#bfdbfe 98%,transparent),
+  radial-gradient(1px 1px at 39% 84%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 52% 12%,#ddd6fe 98%,transparent),
+  radial-gradient(1px 1px at 67% 38%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 78% 18%,#c4b5fd 98%,transparent),
+  radial-gradient(1px 1px at 91% 58%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 84% 88%,#bfdbfe 98%,transparent),
+  radial-gradient(1px 1px at 12% 91%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 58% 72%,#c4b5fd 98%,transparent),
+  radial-gradient(1px 1px at 46% 48%,#fff 98%,transparent)!important;
+ background-size:100% 100%!important;
+ animation:starfield-drift 22s linear infinite!important;
+}
+.earth-stage {width:clamp(300px,40vw,420px)!important;height:clamp(300px,40vw,420px)!important;}
+.loader-earth-webgl {z-index:3;mix-blend-mode:screen;}
+.earth-globe-fallback {
+ display:block!important;position:absolute!important;left:50%!important;top:50%!important;
+ width:64%!important;height:64%!important;transform:translate(-50%,-50%)!important;
+ z-index:2!important;opacity:1!important;
+}
+.earth-globe-fallback .earth-map {background:
+ radial-gradient(ellipse 23% 14% at 28% 30%,#75bd82 0 54%,transparent 60%),
+ radial-gradient(ellipse 13% 22% at 38% 55%,#4c9e70 0 53%,transparent 60%),
+ radial-gradient(ellipse 25% 15% at 68% 35%,#78bd83 0 54%,transparent 60%),
+ radial-gradient(ellipse 14% 22% at 69% 62%,#4a966c 0 52%,transparent 60%),
+ radial-gradient(ellipse 9% 9% at 52% 20%,#9bcf91 0 52%,transparent 60%)!important;
+}
+.earth-globe-fallback .earth-clouds {opacity:.34!important;}
+.earth-orbit-one {inset:2%!important;}
+.earth-orbit-two {inset:-7%!important;}
+.loader-brand {margin-top:4px;}
+@keyframes nebula-breathe {0%{transform:scale(.94) rotate(-3deg);opacity:.55}100%{transform:scale(1.08) rotate(4deg);opacity:1}}
+@keyframes starfield-drift {from{transform:translate3d(0,0,0)}to{transform:translate3d(-1.5%,2%,0)}}
+@media(max-width:760px){.earth-stage{width:300px!important;height:300px!important;}}
