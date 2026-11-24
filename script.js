@@ -245,36 +245,41 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  const root=document.getElementById('site-loader');
  if(!root||root.dataset.introInit==='1')return;
  root.dataset.introInit='1';
- let finished=false;
+ let finished=false, timers=[];
+ const later=(fn,ms)=>timers.push(window.setTimeout(fn,ms));
  const finish=()=>{
   if(finished)return;
-  finished=true;
+  finished=true;timers.forEach(clearTimeout);
   document.body.classList.remove('is-loading');
   root.classList.add('space-exit');
-  window.setTimeout(()=>{
-   root.remove();
-   const home=document.getElementById('home');
-   if(home)home.scrollIntoView({behavior:'auto',block:'start'});
-   window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));
-  },520);
+  later(()=>{root.remove();window.scrollTo(0,0);window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));},560);
  };
- const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- if(reduced){window.setTimeout(finish,700);return;}
- // Pure photographic sequence: no particle renderer, fake labels or loading UI.
- const galaxy=new Image();
- const earth=new Image();
- galaxy.src='https://science.nasa.gov/wp-content/uploads/2023/04/m101-jpg.webp';
- earth.src='https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia11/pia11066/PIA11066.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2036&w=3060';
  root.classList.add('photo-intro');
- // Start with the spiral galaxy, then crossfade to the real Earth horizon.
- window.setTimeout(()=>{if(!finished)root.classList.add('phase-galaxy');},120);
- window.setTimeout(()=>{if(!finished)root.classList.add('phase-earth');},3500);
- window.setTimeout(()=>{if(!finished)root.classList.add('phase-zoom');},4900);
- // Allow the Earth-surface push-in to complete, then reveal the existing portfolio.
- window.setTimeout(finish,6800);
- // A tap anywhere skips the cinematic sequence; no extra on-screen copy.
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduced){finish();return;}
+ const sources=[
+  'https://science.nasa.gov/wp-content/uploads/2023/04/m101-jpg.webp',
+  'https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia11/pia11066/PIA11066.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2036&w=3060'
+ ];
+ // Do not start a transition until both real photographs are decoded.
+ const loadImage=url=>new Promise(resolve=>{
+  const image=new Image();image.onload=()=>resolve(true);image.onerror=()=>resolve(false);image.src=url;
+ });
+ let sequenceStarted=false;
+ const startSequence=()=>{
+  if(sequenceStarted||finished)return;sequenceStarted=true;
+  root.classList.add('phase-galaxy');
+  later(()=>{if(!finished)root.classList.add('phase-earth');},2600);
+  later(()=>{if(!finished)root.classList.add('phase-zoom');},4200);
+  later(finish,6100);
+ };
+ // A failed or blocked image must never leave a blank/green screen or hide the site.
+ later(finish,7200);
+ Promise.all(sources.map(loadImage)).then(results=>{
+  if(finished)return;
+  if(results.every(Boolean))startSequence();
+  else finish();
+ });
  root.addEventListener('pointerdown',finish,{once:true});
  window.addEventListener('keydown',event=>{if(event.key==='Escape')finish();},{once:true});
- // If remote imagery is slow, never trap the visitor behind the intro.
- window.setTimeout(finish,8200);
 })();
