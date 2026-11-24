@@ -1059,3 +1059,19 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
  .skill-grid .skill-logo img {width:25px;height:25px;}
  .skill-grid .skill-logo-card span {font-size:10px;}
 }
+
+
+/* Correct, consistent identity marks for Learning and Selected Projects */
+.project-icon.project-logo {width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#211536,#100e1c);border:1px solid #563879;color:#c69aff;box-shadow:inset 0 0 18px rgba(168,85,247,.09),0 5px 18px rgba(0,0,0,.2);margin:22px 0 12px;}
+.project-icon.project-logo svg {width:27px;height:27px;display:block;overflow:visible;}
+.project-logo.railnova-mark {color:#8fc7ff;border-color:#294c78;background:linear-gradient(145deg,#101f35,#11101e);}
+.project-logo.orgi-mark {color:#8bd89b;border-color:#315b43;background:linear-gradient(145deg,#10251d,#11101e);}
+.project-logo.cine-mark {color:#f0b5ff;border-color:#654078;}
+.project-logo.devmind-mark {color:#91c5ff;border-color:#31517b;background:linear-gradient(145deg,#101f35,#11101e);}
+.project-logo.navio-mark {color:#a9d4ff;border-color:#31517b;background:linear-gradient(145deg,#101f35,#11101e);}
+.project-logo svg {transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .35s;}
+.project:hover .project-logo svg {transform:scale(1.12) rotate(-4deg);filter:drop-shadow(0 0 8px currentColor);}
+.cert-icon.learning-logo {display:grid;place-items:center;}
+.cert-icon.learning-logo img {width:25px;height:25px;object-fit:contain;display:block;}
+.cert-card:hover .learning-logo img {transform:translateY(-2px) scale(1.1);transition:transform .25s ease;}
+@media(prefers-reduced-motion:reduce) {.project-logo svg,.cert-icon.learning-logo img {transition:none!important;}}
