@@ -460,3 +460,46 @@ body{--cinema-progress:0}
 @keyframes scrollHint{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(6px);opacity:1}}
 @media(max-width:760px){.hero h1{font-size:clamp(3.8rem,18vw,6rem)}.reveal{transform:translateY(24px);filter:none;transition-duration:.6s}.project-grid .project:nth-child(n){transition-delay:0s}.timeline article:hover{transform:none}.hero-grid{transform:none!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;filter:none;transition:none}.section::before,.section-head h2 em::after,.contact-orb,.scroll-hint,.hero h1 .name-glow{animation:none!important;transition:none!important}.project,.project .project-icon,.about-photo img,.timeline article{transition:none!important}}
+
+/* CINEMATIC UPGRADE — visible scroll choreography */
+body.cinematic-ready .section-head{opacity:0;transform:translateY(42px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+body.cinematic-ready .section.in-view .section-head{opacity:1;transform:translateY(0)}
+body.cinematic-ready .section-head h2{clip-path:inset(0 0 100% 0);transition:clip-path 1s cubic-bezier(.16,1,.3,1) .15s}
+body.cinematic-ready .section.in-view .section-head h2{clip-path:inset(0 0 0 0)}
+body.cinematic-ready .project,body.cinematic-ready .timeline article,body.cinematic-ready .skill-grid>div,body.cinematic-ready .cert-card,body.cinematic-ready .certificate-card,body.cinematic-ready .recognition-grid>div{opacity:0;transform:translateY(65px) scale(.96);filter:blur(8px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1),filter .85s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
+body.cinematic-ready .in-view .project,body.cinematic-ready .in-view .timeline article,body.cinematic-ready .in-view .skill-grid>div,body.cinematic-ready .in-view .cert-card,body.cinematic-ready .in-view .certificate-card,body.cinematic-ready .in-view .recognition-grid>div,body.cinematic-ready .project.revealed,body.cinematic-ready .timeline article.revealed,body.cinematic-ready .skill-grid>div.revealed,body.cinematic-ready .cert-card.revealed,body.cinematic-ready .certificate-card.revealed,body.cinematic-ready .recognition-grid>div.revealed{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+body.cinematic-ready .project:nth-child(2),body.cinematic-ready .timeline article:nth-child(2),body.cinematic-ready .skill-grid>div:nth-child(2),body.cinematic-ready .certificate-card:nth-child(2){transition-delay:.08s}
+body.cinematic-ready .project:nth-child(3),body.cinematic-ready .timeline article:nth-child(3),body.cinematic-ready .skill-grid>div:nth-child(3),body.cinematic-ready .certificate-card:nth-child(3){transition-delay:.16s}
+body.cinematic-ready .project:nth-child(4),body.cinematic-ready .timeline article:nth-child(4),body.cinematic-ready .skill-grid>div:nth-child(4),body.cinematic-ready .certificate-card:nth-child(4){transition-delay:.24s}
+body.cinematic-ready .project:nth-child(5),body.cinematic-ready .skill-grid>div:nth-child(5),body.cinematic-ready .certificate-card:nth-child(5){transition-delay:.32s}
+body.cinematic-ready .project:nth-child(6),body.cinematic-ready .skill-grid>div:nth-child(6),body.cinematic-ready .certificate-card:nth-child(6){transition-delay:.4s}
+body.cinematic-ready .hero-left{animation:cinemaHeroIn 1.15s cubic-bezier(.16,1,.3,1) both}
+body.cinematic-ready .hero-art{animation:cinemaArtIn 1.5s cubic-bezier(.16,1,.3,1) .12s both}
+body.cinematic-ready .stats{animation:cinemaStatsIn 1s cubic-bezier(.16,1,.3,1) .4s both}
+@keyframes cinemaHeroIn{from{opacity:0;transform:translate3d(-45px,35px,0);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes cinemaArtIn{from{opacity:0;transform:translate3d(55px,20px,0) scale(.82) rotate(-5deg);filter:blur(12px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes cinemaStatsIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+body.cinematic-ready .hero-art .orbit{animation-duration:9s;}
+.hero-art .orbit{animation:orbitCinema 24s linear infinite}
+.hero-art .orbit-b{animation:orbitCinemaReverse 32s linear infinite}
+@keyframes orbitCinema{from{transform:translate(-50%,-50%) rotate(-17deg)}to{transform:translate(-50%,-50%) rotate(343deg)}}
+@keyframes orbitCinemaReverse{from{transform:translate(-50%,-50%) rotate(12deg)}to{transform:translate(-50%,-50%) rotate(-348deg)}}
+.hero-art .portrait-wrap{animation:portraitCinema 5.8s ease-in-out infinite}
+@keyframes portraitCinema{0%,100%{transform:translateX(-50%) translateY(0) rotate(0)}50%{transform:translateX(-50%) translateY(-15px) rotate(.6deg)}}
+.hero-grid{background-image:linear-gradient(rgba(168,85,247,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.08) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 78%);animation:gridCinema 18s linear infinite}
+@keyframes gridCinema{to{background-position:52px 52px}}
+.section.in-view{--section-x:50%;--section-y:35%}
+.project{transform-style:preserve-3d;perspective:900px}
+.project:hover .project-icon{transform:translateZ(24px) rotate(-8deg) scale(1.1)}
+.project:hover h3,.project:hover .project-number{transform:translateZ(12px)}
+.project h3,.project-number{transition:transform .4s}
+.about-orbit{animation:aboutOrbitFloat 7s ease-in-out infinite}
+@keyframes aboutOrbitFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(2deg)}}
+.contact-panel{transform:translateZ(0)}
+.contact-panel::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 20%,rgba(168,85,247,.18),rgba(34,211,238,.12),transparent 80%);background-size:220% 100%;animation:contactSweep 8s linear infinite;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;padding:1px}
+@keyframes contactSweep{to{background-position:-220% 0}}
+.scroll-hint{position:relative}
+.scroll-hint::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:45px;background:linear-gradient(#a855f7,transparent);animation:scrollLine 1.8s ease-in-out infinite}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:bottom}}
+@media(max-width:760px){body.cinematic-ready .project,body.cinematic-ready .timeline article,body.cinematic-ready .skill-grid>div,body.cinematic-ready .cert-card,body.cinematic-ready .certificate-card,body.cinematic-ready .recognition-grid>div{transform:translateY(28px) scale(.99);filter:none;transition-duration:.55s}.hero-art .portrait-wrap{animation-duration:7s}.hero-grid{animation-duration:30s}}
+@media(prefers-reduced-motion:reduce){body.cinematic-ready .section-head,body.cinematic-ready .section-head h2,body.cinematic-ready .project,body.cinematic-ready .timeline article,body.cinematic-ready .skill-grid>div,body.cinematic-ready .cert-card,body.cinematic-ready .certificate-card,body.cinematic-ready .recognition-grid>div{opacity:1;transform:none;filter:none;clip-path:none;transition:none;animation:none}.hero-art .orbit,.hero-art .portrait-wrap,.hero-grid,.about-orbit,.contact-panel::before,.scroll-hint::after{animation:none!important}}
