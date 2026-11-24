@@ -1842,3 +1842,42 @@ body.is-loading{overflow:hidden!important}
 #site-loader.photo-intro.phase-earth .space-photo-galaxy{opacity:0!important;transition:opacity .9s ease!important}
 #site-loader.photo-intro.phase-zoom .space-photo-earth{animation:earthSurfaceDive 2.1s cubic-bezier(.45,0,.16,1) both!important}
 @media(max-width:700px){#site-loader.photo-intro .space-photo-galaxy,#site-loader.photo-intro .space-photo-earth{background-size:cover!important;background-position:center!important}}
+
+
+/* CINEMATIC UNIVERSE INTRO — photographic layers with graceful visual fallbacks */
+#site-loader.space-intro.photo-intro{
+ position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;
+ overflow:hidden!important;z-index:999999!important;display:block!important;visibility:visible!important;
+ background:#02030b!important;opacity:1;isolation:isolate;pointer-events:auto;
+}
+#site-loader.photo-intro .space-photo-stars{
+ position:absolute;inset:-8%;z-index:0;opacity:.8;
+ background-image:radial-gradient(1px 1px at 10% 18%,#fff 50%,transparent 100%),radial-gradient(1px 1px at 74% 28%,#c7d9ff 50%,transparent 100%),radial-gradient(1.5px 1.5px at 42% 72%,#fff 50%,transparent 100%),radial-gradient(1px 1px at 89% 86%,#9ec8ff 50%,transparent 100%);
+ background-size:190px 220px,260px 280px,320px 350px,410px 430px;animation:universeStars 7s linear infinite;
+}
+#site-loader.photo-intro .space-photo-galaxy{
+ position:absolute;inset:-12%;z-index:1;opacity:1!important;
+ background-color:#03030e;
+ background-image:linear-gradient(90deg,rgba(1,2,12,.12),rgba(1,2,12,.02) 45%,rgba(1,2,12,.16)),url("https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=2400&q=90"),radial-gradient(ellipse at 52% 50%,rgba(255,205,164,.9) 0%,rgba(126,75,205,.55) 9%,rgba(39,55,145,.45) 24%,transparent 52%),radial-gradient(ellipse at 30% 60%,rgba(81,39,150,.45),transparent 42%),#02030b;
+ background-size:cover,cover,cover,cover,cover;background-position:center;
+ transform:scale(1.08);will-change:transform,opacity,filter;
+}
+#site-loader.photo-intro.phase-galaxy .space-photo-galaxy{animation:galaxyFlythrough 3.65s cubic-bezier(.18,.68,.18,1) both!important}
+#site-loader.photo-intro .space-photo-earth{
+ position:absolute;inset:-12%;z-index:2;opacity:0;background-color:#02030b;
+ background-image:linear-gradient(180deg,rgba(1,3,12,.03),rgba(1,3,12,.08)),url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2400&q=90"),radial-gradient(ellipse at 50% 85%,#2777d7 0%,#123c79 28%,transparent 57%);
+ background-size:cover,cover,cover;background-position:center 52%;
+ transform:scale(1.08);will-change:transform,opacity,filter;
+}
+#site-loader.photo-intro.phase-earth .space-photo-earth{opacity:1!important;animation:earthOrbitArrival 2.6s cubic-bezier(.2,.72,.16,1) both!important}
+#site-loader.photo-intro.phase-earth .space-photo-galaxy{opacity:0!important;transition:opacity .85s ease!important}
+#site-loader.photo-intro.phase-zoom .space-photo-earth{animation:earthSurfaceRush 2.1s cubic-bezier(.38,0,.14,1) both!important}
+#site-loader.photo-intro .space-photo-atmosphere{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 78%,rgba(65,167,255,.24),transparent 45%),linear-gradient(180deg,transparent 55%,rgba(2,7,20,.28))}
+#site-loader.photo-intro.phase-earth .space-photo-atmosphere{opacity:1;transition:opacity .8s ease}
+#site-loader.photo-intro.space-exit{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .55s ease,visibility .55s ease!important}
+@keyframes universeStars{from{transform:translate3d(0,0,0)}to{transform:translate3d(-2%,1%,0)}}
+@keyframes galaxyFlythrough{0%{transform:scale(1.08) rotate(-1.5deg);filter:brightness(.62) saturate(1.08)}45%{transform:scale(1.32) rotate(.8deg);filter:brightness(1.02) saturate(1.2)}100%{transform:scale(1.72) rotate(2.3deg);filter:brightness(1.14) saturate(1.3)}}
+@keyframes earthOrbitArrival{0%{transform:scale(1.5) translateY(5%);filter:brightness(.48) saturate(.85)}55%{transform:scale(1.15) translateY(0);filter:brightness(1.02) saturate(1.08)}100%{transform:scale(1.22) translateY(-1%);filter:brightness(1.1) saturate(1.16)}}
+@keyframes earthSurfaceRush{0%{transform:scale(1.22) translateY(-1%);filter:brightness(1.08)}65%{transform:scale(2.25) translateY(-4%);filter:brightness(1.18)}100%{transform:scale(3.25) translateY(-8%);filter:brightness(1.28)}}
+@media(max-width:700px){#site-loader.photo-intro .space-photo-galaxy{background-position:52% center;background-size:cover,auto 100%,cover,cover,cover}#site-loader.photo-intro .space-photo-earth{background-position:center center;background-size:cover,auto 100%,cover}}
+@media(prefers-reduced-motion:reduce){#site-loader.photo-intro .space-photo-galaxy,#site-loader.photo-intro .space-photo-earth,#site-loader.photo-intro .space-photo-stars{animation:none!important}}
