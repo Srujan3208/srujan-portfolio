@@ -335,3 +335,71 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  window.addEventListener('resize',resize,{passive:true});
  resize();raf=requestAnimationFrame(draw);
 })();
+
+
+/* Portfolio guide enhancements: boot counter, decode typography, magnetic UI and spotlight */
+(()=>{
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const loader=document.getElementById('site-loader');
+ const counter=document.getElementById('loader-percent');
+ if(loader&&counter&&!reduce){
+  const began=performance.now(),duration=2900;
+  const tick=now=>{
+   if(!document.getElementById('site-loader'))return;
+   const p=Math.min(96,Math.floor(((now-began)/duration)*96));
+   counter.textContent=String(p).padStart(2,'0')+'%';
+   requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+ }
+ const heading=document.querySelector('.hero-left h1');
+ if(heading&&!reduce){
+  const name=heading.firstChild;
+  if(name&&name.nodeType===Node.TEXT_NODE){
+   const target=name.textContent.trim();
+   const glyphs='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/{}[]';
+   let frame=0;
+   const total=22;
+   const decode=()=>{
+    frame++;
+    const resolved=Math.floor((frame/total)*target.length);
+    let out='';
+    for(let i=0;i<target.length;i++)out+=i<resolved?target[i]:glyphs[Math.floor(Math.random()*glyphs.length)];
+    name.textContent=out;
+    if(frame<total)setTimeout(decode,38);
+    else name.textContent=target;
+   };
+   name.textContent=target.split('').map(()=>glyphs[Math.floor(Math.random()*glyphs.length)]).join('');
+   setTimeout(decode,280);
+  }
+ }
+ const role=document.querySelector('.hero-left .roles span:nth-of-type(2)');
+ if(role&&!reduce){
+  const roles=['Full-Stack Developer','Hackathon Builder','AI Product Creator'];
+  let index=0;
+  const original=role.textContent.trim();
+  role.textContent=original;
+  setInterval(()=>{
+   index=(index+1)%roles.length;
+   const next=roles[index];
+   role.classList.add('role-changing');
+   setTimeout(()=>{role.textContent=next;role.classList.remove('role-changing');},180);
+  },3100);
+ }
+ if(matchMedia('(hover:hover) and (pointer:fine)').matches&&!reduce){
+  document.querySelectorAll('.button').forEach(el=>{
+   el.addEventListener('pointermove',e=>{
+    const r=el.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+    el.style.transform='translate('+x*.10+'px,'+y*.16+'px)';
+   });
+   el.addEventListener('pointerleave',()=>{el.style.transform='';});
+  });
+  document.querySelectorAll('.project,.certificate-card,.skill-grid>div').forEach(card=>{
+   card.addEventListener('pointermove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--spot-x',(e.clientX-r.left)+'px');
+    card.style.setProperty('--spot-y',(e.clientY-r.top)+'px');
+   },{passive:true});
+  });
+ }
+})();
