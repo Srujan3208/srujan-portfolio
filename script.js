@@ -5,29 +5,25 @@ const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isInters
 const glow=document.querySelector('.cursor-glow');window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const sections=[...document.querySelectorAll('main section[id]')],links=[...document.querySelectorAll('.nav a')];window.addEventListener('scroll',()=>{let current='home';sections.forEach(s=>{if(scrollY>=s.offsetTop-180)current=s.id});links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current))},{passive:true});
 
-/* Universal cinematic Earth loader: wait for page assets, then launch into the portfolio */
+/* Reliable universal loader: never block access to the portfolio */
 (()=>{
  const loader=document.getElementById('site-loader');
  if(!loader)return;
- let launched=false;
- const launch=()=>{
-  if(launched)return;launched=true;
+ let finished=false;
+ const finish=()=>{
+  if(finished)return;
+  finished=true;
   loader.classList.add('is-launching');
   window.setTimeout(()=>{
    loader.classList.add('is-hidden');
    window.setTimeout(()=>loader.remove(),950);
-  },1250);
+  },850);
  };
- const minimumTime=3000;
- const began=performance.now();
- const ready=()=>{
-  const elapsed=performance.now()-began;
-  window.setTimeout(launch,Math.max(0,minimumTime-elapsed));
- };
- if(document.readyState==='complete')ready();
- else window.addEventListener('load',ready,{once:true});
- /* Fail-safe if a third-party asset never finishes loading */
- window.setTimeout(launch,8000);
+ /* The script is loaded at the end of body; start the intro immediately.
+    Do not wait for every image/font/network request to finish. */
+ window.setTimeout(finish,3200);
+ window.setTimeout(finish,5200);
+ window.addEventListener('pageshow',()=>window.setTimeout(finish,5200),{once:true});
 })();
 
 /* Cinematic scroll engine: progress, subtle parallax, spatial depth and reveal */
