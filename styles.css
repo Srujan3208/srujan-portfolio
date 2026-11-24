@@ -1397,3 +1397,12 @@ body.is-scrolling #portfolio-world{filter:saturate(1.16) contrast(1.08)}
  .about-geometry{min-height:290px}
 }
 @media(max-width:430px){.hero{padding-top:50px!important}.hero-art{height:420px!important;min-height:420px!important}.hero-art .portrait-wrap{height:335px!important;width:min(70vw,250px)!important}}
+
+/* GSAP owns the hero entrance; avoid competing legacy CSS keyframes */
+.cinematic-motion-ready .hero-left .eyebrow,
+.cinematic-motion-ready .hero-left h1,
+.cinematic-motion-ready .hero-left .roles,
+.cinematic-motion-ready .hero-left .hero-copy,
+.cinematic-motion-ready .hero-left .hero-buttons,
+.cinematic-motion-ready .hero-left .socials,
+.cinematic-motion-ready .hero-art .portrait-wrap{animation:none!important}
