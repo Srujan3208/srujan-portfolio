@@ -532,3 +532,7 @@ body.cinematic-ready .section:not(.in-view) .section-head{transform:translate3d(
 .project:hover::before,.certificate-card:hover::before{opacity:1;transform:translateX(120%)}
 @media(max-width:760px){#cinematic-webgl{opacity:.5}.hero-grid{opacity:.45}}
 @media(prefers-reduced-motion:reduce){#cinematic-webgl{display:none}}
+
+#cinematic-webgl{z-index:0;mix-blend-mode:screen;opacity:.68}
+header.topbar,main,footer.site-footer{position:relative;z-index:2}
+body:before{z-index:-1}
