@@ -1821,3 +1821,14 @@ main>section{width:100%!important;max-width:100%!important;min-width:0!important
 @media(prefers-reduced-motion:reduce){
  #site-loader.photo-intro .space-photo-galaxy,#site-loader.photo-intro .space-photo-earth{animation:none!important}
 }
+
+
+/* Final intro stability fix: remove legacy HUD/overlay layers and prevent blank transition frames. */
+#site-loader.space-intro.photo-intro::before,
+#site-loader.space-intro.photo-intro::after{content:none!important;display:none!important}
+#site-loader.space-intro.photo-intro .space-photo-stars{background-color:#01020a!important}
+#site-loader.space-intro.photo-intro .space-photo-galaxy,
+#site-loader.space-intro.photo-intro .space-photo-earth{background-color:#01020a!important;backface-visibility:hidden;transform-origin:center center}
+#site-loader.space-intro.photo-intro .space-photo-atmosphere{background:radial-gradient(ellipse at 50% 55%,rgba(52,145,255,.12),transparent 52%)!important}
+#site-loader.space-intro.photo-intro.space-exit{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+body.is-loading{overflow:hidden!important}
