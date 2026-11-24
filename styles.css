@@ -365,3 +365,17 @@
 @keyframes cardSweep{to{transform:translateX(100%)}}
 .section-head h2{background:linear-gradient(180deg,var(--text),#c4a5ff);-webkit-background-clip:text;color:transparent}
 @media(prefers-reduced-motion:reduce){.hero-art .globe,.hero-art .globe-lines,.hero-art .globe-dots,.hero-art .orbit,.hero-art .portrait-wrap{animation:none!important}}
+
+/* CLEAN FOOTER — responsive, semantic and consistent with the portfolio */
+.site-footer{position:relative;z-index:2;border-top:1px solid rgba(168,85,247,.12);padding:28px clamp(20px,5vw,80px) 18px;background:rgba(5,5,13,.72);overflow:hidden}
+.footer-inner{max-width:1480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.site-footer .footer-email,.site-footer .footer-bottom a{color:#bfa0e8;text-decoration:none}
+.site-footer .footer-email{font-size:12px;display:flex;align-items:center;gap:8px}
+.site-footer .footer-brand{font-size:18px}
+.footer-tagline{font-size:11px;color:var(--muted);letter-spacing:.3px}
+.footer-tagline i{font-style:normal;color:#a855f7;margin:0 5px}
+.site-footer .footer-social{display:flex;gap:9px}
+.site-footer .footer-social a{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--border);border-radius:10px;color:#c9a4f5;text-decoration:none;background:rgba(124,58,237,.08)}
+.footer-bottom{max-width:1480px;margin:22px auto 0;padding-top:14px;border-top:1px solid rgba(168,85,247,.1);display:flex;justify-content:space-between;gap:12px;color:#817891;font-size:10px}
+.footer-bottom a{white-space:nowrap}
+@media(max-width:760px){.site-footer{padding:26px 22px 18px}.footer-inner{flex-direction:column;align-items:center;text-align:center;gap:15px}.site-footer .footer-email{order:1}.footer-brand{order:2}.footer-tagline{order:3}.site-footer .footer-social{order:4}.footer-bottom{flex-direction:column;align-items:center;text-align:center;gap:8px;margin-top:18px}.site-footer .footer-email span{overflow-wrap:anywhere}.site-footer .footer-brand{font-size:18px}}
