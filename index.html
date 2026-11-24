@@ -30,7 +30,7 @@
  var percent=document.getElementById('loader-percent');
  var terminal=document.getElementById('loader-terminal-text');
  var messages=['Initializing universe...','Establishing secure connection...','Compiling creative systems...','Loading projects & experiences...','Welcome to my universe.'];
- var start=Date.now(),duration=4800,done=false;
+ var start=Date.now(),duration=2400,done=false;
  function reveal(){
   if(done)return;done=true;
   if(percent)percent.textContent='100%';
@@ -49,7 +49,7 @@
   if(p>=100){clearInterval(timer);reveal();}
  },50);
  /* Hard escape hatch: never leave the visitor trapped on the intro. */
- setTimeout(function(){clearInterval(timer);reveal();},6500);
+ setTimeout(function(){clearInterval(timer);reveal();},3200);
 })();
 </script>
 
