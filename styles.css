@@ -411,3 +411,10 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;back
 a{text-underline-offset:4px}
 @media(max-width:760px){body:after{background-size:48px 48px;animation:none}.cursor-glow{display:none}.project{transform:none!important}.boot-lines{font-size:9px}}
 @media(prefers-reduced-motion:reduce){body:after,.boot-logo,.boot-lines span,.boot-progress i,.hero h1,.type-cursor{animation:none!important}.boot-loader{transition:none}.project,.button,.hero-buttons a{transition:none!important}.project:hover,.skill-grid>div:hover,.certificate-card:hover,.recognition-grid>div:hover,.contact-links>a:hover{transform:none!important}}
+
+/* Loader removed: let the portfolio appear immediately */
+.boot-loader{display:none!important}
+.hero .hero-left,.hero-art,.stats{animation:portfolioEntry .7s cubic-bezier(.2,.8,.2,1) both}
+.hero-art{animation-delay:.12s}.stats{animation-delay:.2s}
+@keyframes portfolioEntry{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.hero .hero-left,.hero-art,.stats{animation:none!important}}
