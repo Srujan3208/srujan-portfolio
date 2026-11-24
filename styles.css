@@ -506,3 +506,5 @@ body.cinematic-ready .hero-art .orbit{animation-duration:9s;}
 
 body.cinematic-ready .motion-visible{opacity:1!important;transform:translateY(0) scale(1)!important;filter:blur(0)!important}
 .hero-art{transform:translate3d(0,var(--parallax-y,0),0)}
+
+.hero-art{transform:translate3d(0,var(--parallax-y,0),0)}
