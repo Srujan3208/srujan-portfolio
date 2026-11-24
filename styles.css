@@ -508,3 +508,55 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 .hero .hero-art .portrait-wrap,.hero .hero-art .globe,.hero .hero-art .orbit,.hero .hero-art .code-window,.hero .hero-art .focus-card { position:absolute; }
 @media (max-width:760px) { .hero .cinematic-webgl { display:none !important; } }
 @media (prefers-reduced-motion:reduce) { .hero .cinematic-webgl { display:none !important; } }
+
+
+/* TRUE ORBITAL RINGS — continuous 3D rotation around the hero portrait */
+.hero-art .orbit {
+  transform-style:preserve-3d !important;
+  transform-origin:50% 50% !important;
+  will-change:transform,filter;
+  backface-visibility:visible;
+  border-width:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(192,132,252,.10) 48%,transparent 100%);
+}
+.hero-art .orbit-a {
+  animation:portrait-orbit-a 16s linear infinite !important;
+  border-color:rgba(216,180,254,.92);
+  box-shadow:0 0 12px rgba(168,85,247,.85),inset 0 0 12px rgba(168,85,247,.16),0 0 38px rgba(124,58,237,.32);
+}
+.hero-art .orbit-b {
+  animation:portrait-orbit-b 23s linear infinite !important;
+  border-color:rgba(124,58,237,.72);
+  box-shadow:0 0 10px rgba(124,58,237,.7),0 0 30px rgba(124,58,237,.22);
+}
+.hero-art .orbit-a::after,.hero-art .orbit-b::after {
+  content:"";
+  position:absolute;
+  width:11px;height:11px;border-radius:50%;
+  top:50%;left:0;
+  transform:translate(-50%,-50%);
+  background:#f5d0fe;
+  box-shadow:0 0 8px 3px #d8b4fe,0 0 24px 8px rgba(168,85,247,.85);
+}
+.hero-art .orbit-b::after {
+  width:7px;height:7px;left:50%;top:0;
+  background:#a5b4fc;
+  box-shadow:0 0 8px 3px #818cf8,0 0 20px 7px rgba(99,102,241,.75);
+}
+@keyframes portrait-orbit-a {
+  from { transform:translate(-50%,-50%) rotateX(66deg) rotateZ(0deg) rotateY(-10deg); }
+  to { transform:translate(-50%,-50%) rotateX(66deg) rotateZ(360deg) rotateY(-10deg); }
+}
+@keyframes portrait-orbit-b {
+  from { transform:translate(-50%,-50%) rotateX(73deg) rotateZ(360deg) rotateY(18deg); }
+  to { transform:translate(-50%,-50%) rotateX(73deg) rotateZ(0deg) rotateY(18deg); }
+}
+@media(max-width:760px) {
+ .hero-art .orbit-a { animation-duration:24s !important; }
+ .hero-art .orbit-b { animation-duration:31s !important; }
+ .hero-art .orbit-a::after { width:8px;height:8px; }
+ .hero-art .orbit-b::after { width:6px;height:6px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .hero-art .orbit-a,.hero-art .orbit-b { animation:none !important; }
+}
