@@ -351,3 +351,59 @@
 .project,.certificate-card,.skill-grid>div,.button,.socials a,.nav a{transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s,box-shadow .3s}
 .project:hover,.certificate-card:hover,.skill-grid>div:hover{transform:translateY(-6px)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}#site-loader{display:none!important}}
+
+
+/* MOBILE HERO LAYOUT — final override */
+@media (max-width: 760px) {
+  html, body { width:100%; max-width:100%; overflow-x:hidden !important; }
+  body { position:relative; }
+  .topbar { width:100%; max-width:100%; }
+  main, section { max-width:100%; }
+  .hero {
+    width:100% !important; min-height:0 !important; height:auto !important;
+    display:flex !important; flex-direction:column !important; align-items:stretch !important;
+    gap:0 !important; padding:58px 6% 30px !important; overflow:hidden !important;
+  }
+  .hero-left { width:100% !important; max-width:100% !important; min-width:0 !important; order:0 !important; }
+  .hero h1 { font-size:clamp(58px,16vw,76px) !important; letter-spacing:-3px !important; }
+  .roles { display:flex !important; flex-wrap:wrap !important; gap:8px !important; line-height:1.7; }
+  .hero-copy { max-width:100% !important; overflow-wrap:anywhere; }
+  .hero-buttons { flex-wrap:wrap !important; }
+  .hero-art {
+    order:1 !important; width:100% !important; min-width:0 !important; height:450px !important;
+    min-height:450px !important; max-height:450px !important; margin:24px 0 0 !important;
+    position:relative !important; left:auto !important; right:auto !important;
+    transform:none !important; overflow:hidden !important; isolation:isolate !important;
+  }
+  .hero-art .globe { width:min(82vw,330px) !important; height:min(82vw,330px) !important; top:48px !important; left:50% !important; transform:translateX(-50%) !important; }
+  .hero-art .orbit { width:min(92vw,350px) !important; height:90px !important; left:50% !important; top:64% !important; }
+  .hero-art .portrait-wrap {
+    position:absolute !important; left:50% !important; right:auto !important; top:auto !important;
+    bottom:0 !important; transform:translateX(-50%) !important;
+    width:min(72vw,270px) !important; height:360px !important; z-index:8 !important;
+  }
+  .hero-art .portrait { width:100% !important; height:100% !important; object-fit:contain !important; object-position:bottom center !important; }
+  .hero-art .code-window { left:0 !important; top:8px !important; width:min(48%,185px) !important; z-index:9 !important; transform:rotate(-3deg) !important; }
+  .hero-art .focus-card { left:auto !important; right:0 !important; top:24px !important; bottom:auto !important; width:min(48%,185px) !important; z-index:9 !important; transform:none !important; padding:12px !important; }
+  .hero-art .focus-card a { font-size:10px !important; padding:7px 0 !important; }
+  .hero > .stats {
+    position:relative !important; left:auto !important; right:auto !important; bottom:auto !important;
+    transform:none !important; order:2 !important; width:100% !important; margin:8px 0 0 !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:0 !important;
+  }
+  .hero > .stats > div { padding:10px 4px !important; }
+  .hero > .stats > div:nth-child(2) { border-right:0 !important; }
+  .hero > .stats > div:nth-child(-n+2) { border-bottom:1px solid var(--border) !important; }
+  .scroll-hint { position:relative !important; left:auto !important; bottom:auto !important; transform:none !important; order:3 !important; margin:18px auto 0 !important; }
+  .section { width:100% !important; padding-left:6% !important; padding-right:6% !important; }
+  .about-grid, .project-grid, .certificate-grid { min-width:0 !important; }
+}
+@media (max-width:430px) {
+  .hero { padding-top:42px !important; }
+  .hero-art { height:410px !important; min-height:410px !important; }
+  .hero-art .portrait-wrap { width:min(68vw,245px) !important; height:330px !important; }
+  .hero-art .code-window { width:46% !important; }
+  .hero-art .focus-card { width:46% !important; }
+  .hero-art .code-window pre { font-size:8px !important; }
+  .hero-art .focus-card a { font-size:9px !important; }
+}
