@@ -379,3 +379,35 @@
 .footer-bottom{max-width:1480px;margin:22px auto 0;padding-top:14px;border-top:1px solid rgba(168,85,247,.1);display:flex;justify-content:space-between;gap:12px;color:#817891;font-size:10px}
 .footer-bottom a{white-space:nowrap}
 @media(max-width:760px){.site-footer{padding:26px 22px 18px}.footer-inner{flex-direction:column;align-items:center;text-align:center;gap:15px}.site-footer .footer-email{order:1}.footer-brand{order:2}.footer-tagline{order:3}.site-footer .footer-social{order:4}.footer-bottom{flex-direction:column;align-items:center;text-align:center;gap:8px;margin-top:18px}.site-footer .footer-email span{overflow-wrap:anywhere}.site-footer .footer-brand{font-size:18px}}
+
+/* Reference guide: restrained neon HUD motion */
+:root{--cyan:#22d3ee}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(168,85,247,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.045) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,transparent,black 15%,black 75%,transparent);animation:gridDrift 24s linear infinite}
+@keyframes gridDrift{to{background-position:64px 64px}}
+.scroll-progress{position:fixed;top:0;left:0;width:100%;height:2px;z-index:100;background:transparent;pointer-events:none}
+.scroll-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#8b5cf6,#22d3ee);box-shadow:0 0 12px #22d3ee;transition:width .08s linear}
+.boot-loader{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#070711;color:#c8a8ff;font:12px 'JetBrains Mono',monospace;letter-spacing:1px;transition:opacity .55s,visibility .55s}
+.boot-loader.done{opacity:0;visibility:hidden}
+.boot-logo{width:58px;height:58px;border:1px solid rgba(168,85,247,.55);border-radius:18px;display:grid;place-items:center;font:700 30px 'Space Grotesk';background:linear-gradient(145deg,#c084fc,#7c3aed);color:#090713;box-shadow:0 0 38px rgba(168,85,247,.35);animation:bootPulse 1.2s ease-in-out infinite}
+.boot-lines{display:flex;flex-direction:column;gap:7px;color:#9e8bbd;font-size:10px}
+.boot-lines span{opacity:0;animation:bootLine .25s forwards}
+.boot-lines span:nth-child(1){animation-delay:.12s}.boot-lines span:nth-child(2){animation-delay:.32s}.boot-lines span:nth-child(3){animation-delay:.52s}
+.boot-progress{width:min(240px,70vw);height:2px;background:#241a38;overflow:hidden}
+.boot-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#a855f7,#22d3ee);box-shadow:0 0 10px #22d3ee;animation:bootFill 1.15s ease forwards}
+.boot-percent{font-size:10px;color:#e9d5ff}
+@keyframes bootLine{to{opacity:1}}@keyframes bootFill{to{width:100%}}@keyframes bootPulse{50%{transform:scale(1.05);box-shadow:0 0 55px rgba(168,85,247,.55)}}
+.hero h1{animation:headlineGlow 4.5s ease-in-out infinite}
+@keyframes headlineGlow{0%,100%{text-shadow:0 0 35px rgba(168,85,247,.1)}50%{text-shadow:0 0 48px rgba(168,85,247,.28)}}
+.typed-role{color:#c4a5ff}.type-cursor{color:#22d3ee;animation:cursorBlink .75s steps(2) infinite;font-weight:700}
+@keyframes cursorBlink{50%{opacity:0}}
+.button,.hero-buttons a{transition:transform .2s ease,box-shadow .25s,border-color .25s}
+.button:hover,.hero-buttons a:hover{box-shadow:0 10px 32px rgba(124,58,237,.28)}
+.project{transform-style:preserve-3d;will-change:transform;transition:transform .25s ease,border-color .25s,box-shadow .25s}
+.project::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(350px circle at var(--spot-x,50%) var(--spot-y,50%),rgba(34,211,238,.09),transparent 45%);transition:opacity .25s}
+.project:hover::after{opacity:1}
+.project:hover{border-color:rgba(34,211,238,.28);box-shadow:0 18px 48px rgba(0,0,0,.25),0 0 28px rgba(124,58,237,.12)}
+.skill-grid>div,.certificate-card,.recognition-grid>div,.contact-links>a{transition:transform .25s ease,border-color .25s,box-shadow .25s}
+.skill-grid>div:hover,.certificate-card:hover,.recognition-grid>div:hover,.contact-links>a:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.32);box-shadow:0 12px 28px rgba(124,58,237,.12)}
+a{text-underline-offset:4px}
+@media(max-width:760px){body:after{background-size:48px 48px;animation:none}.cursor-glow{display:none}.project{transform:none!important}.boot-lines{font-size:9px}}
+@media(prefers-reduced-motion:reduce){body:after,.boot-logo,.boot-lines span,.boot-progress i,.hero h1,.type-cursor{animation:none!important}.boot-loader{transition:none}.project,.button,.hero-buttons a{transition:none!important}.project:hover,.skill-grid>div:hover,.certificate-card:hover,.recognition-grid>div:hover,.contact-links>a:hover{transform:none!important}}
