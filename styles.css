@@ -497,3 +497,14 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
   .reveal { opacity:1; transform:none; filter:none; transition:none; }
   .hero-art .globe,.hero-art .orbit,.hero-art .orbit-b,.hero-left h1 .name-glow { animation:none !important; }
 }
+
+
+/* High-end desktop WebGL cinematic layer */
+.hero { position:relative; isolation:isolate; }
+.hero .cinematic-webgl { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.9; mix-blend-mode:screen; }
+.hero .hero-grid { z-index:0; pointer-events:none; opacity:.48; }
+.hero .hero-left,.hero .hero-art,.hero .stats,.hero .scroll-hint { position:relative; z-index:2; }
+.hero .hero-art { position:relative; }
+.hero .hero-art .portrait-wrap,.hero .hero-art .globe,.hero .hero-art .orbit,.hero .hero-art .code-window,.hero .hero-art .focus-card { position:absolute; }
+@media (max-width:760px) { .hero .cinematic-webgl { display:none !important; } }
+@media (prefers-reduced-motion:reduce) { .hero .cinematic-webgl { display:none !important; } }
