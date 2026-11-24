@@ -14,6 +14,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(!canvas||!sections.length)return;
  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const coarse=matchMedia('(pointer:coarse)').matches;
+ if(coarse){canvas.classList.add('mobile-scene-disabled');return;}
  const THREE=window.THREE;
  if(!THREE){canvas.classList.add('world-fallback');return;}
  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:!coarse,powerPreference:'high-performance'});
@@ -44,10 +45,10 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   const points=new THREE.Points(geo,new THREE.PointsMaterial({size:.035,color,vertexColors:true,transparent:true,opacity:.86,blending:THREE.AdditiveBlending,depthWrite:false}));
   add(g,points);return points;
  };
- const makeGroup=(id)=>{const g=new THREE.Group();g.visible=false;root.add(g);groups[id]=g;return g;};
+ const makeGroup=(id)=>{const g=new THREE.Group();g.visible=false;g.userData.basePosition=new THREE.Vector3();root.add(g);groups[id]=g;return g;};
  // HOME — compact orbital data planet, offset away from the text.
  {
-  const g=makeGroup('home');g.position.set(4.4,-1.05,-.4);g.scale.setScalar(.78);
+  const g=makeGroup('home');g.userData.basePosition.set(3.6,-.7,-.4);g.scale.setScalar(.72);
   sphere(g,1.52,dark,0,0,-1,64);
   const globe=sphere(g,1.49,mat(0x123a55,.5,.48,0x0b4a62),0,0,-1,64);
   const shell=new THREE.Mesh(new THREE.SphereGeometry(1.56,48,48),new THREE.MeshBasicMaterial({color:0x26c6da,wireframe:true,transparent:true,opacity:.13}));shell.position.z=-1;add(g,shell);
@@ -56,7 +57,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  }
  // ABOUT — compact holographic atom, not a giant foreground object.
  {
-  const g=makeGroup('about');g.position.set(4.2,-.4,-.5);g.scale.setScalar(.66);
+  const g=makeGroup('about');g.userData.basePosition.set(3.5,-.35,-.5);g.scale.setScalar(.62);
   const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.2,.23,180,18,2,5),violet);add(g,knot);
   knot.add(wire(new THREE.TorusKnotGeometry(1.2,.23,80,8,2,5),0x52dfff,.3));
   for(let i=0;i<3;i++)torus(g,2.05+i*.18,.014,i===1?cyanMat:violet,0,0,0,Math.PI/2.4,i*Math.PI/3,0);
@@ -64,7 +65,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  }
  // PROJECTS — holographic code panels instead of random floating cubes.
  {
-  const g=makeGroup('projects');g.position.set(4.1,-.2,-.5);g.scale.setScalar(.72);
+  const g=makeGroup('projects');g.userData.basePosition.set(3.6,-.2,-.5);g.scale.setScalar(.68);
   for(let i=0;i<4;i++){
    const w=2.2+(i%2)*.35,h=1.12;
    const panel=new THREE.Mesh(new THREE.BoxGeometry(w,h,.075),i%2?dark:blue);
@@ -144,8 +145,9 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   if(g){
    g.rotation.y+=.0018;
    g.rotation.x=Math.sin(t*.24)*.055;
-   g.position.x+=(mouseX*.55-g.position.x)*.025;
-   g.position.y+=(-mouseY*.42-g.position.y)*.025;
+   const base=g.userData.basePosition||new THREE.Vector3();
+   g.position.x+=(base.x+mouseX*.55-g.position.x)*.025;
+   g.position.y+=(base.y-mouseY*.42-g.position.y)*.025;
    const spin=g.userData.spin||[];spin.forEach((m,i)=>{m.rotation.y=t*(.16+i*.06);m.rotation.x=t*(.08+i*.035);});
   }
   camera.position.x+=(mouseX*.38-camera.position.x)*.025;
@@ -170,82 +172,31 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  gsap.defaults({ease:'power3.out'});
  const desktop=matchMedia('(min-width: 900px) and (hover:hover)').matches;
  document.documentElement.classList.add('cinematic-motion-ready');
- // Kinetic typography: each visible character arrives with a compact, staggered lift.
- const splitText=el=>{
-  if(el.dataset.kinetic==='done')return;
-  const original=el.textContent.trim();if(!original)return;
-  el.dataset.kinetic='done';el.setAttribute('aria-label',original);
-  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
-  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-  nodes.forEach(node=>{
-   const fragment=document.createDocumentFragment();
-   [...node.textContent].forEach((char,i)=>{
-    const span=document.createElement('span');span.className='kinetic-char';
-    span.textContent=char===' '?'\\u00a0':char;span.style.setProperty('--char-index',i);
-    fragment.appendChild(span);
-   });
-   node.parentNode.replaceChild(fragment,node);
+ // Animate complete headings without splitting Unicode spaces into visible escape text.
+  document.querySelectorAll('.section-head h2').forEach(h=>{
+   gsap.fromTo(h,{y:34,opacity:0,filter:'blur(5px)'},{y:0,opacity:1,filter:'blur(0px)',duration:.8,ease:'power3.out',scrollTrigger:{trigger:h,start:'top 84%',once:true}});
   });
- };
- if(!reduce){
-  const heroTimeline=gsap.timeline({defaults:{ease:'power4.out'}});
-  const heroEyebrow=document.querySelector('.hero-left .eyebrow');
-  const heroTitle=document.querySelector('.hero h1');
-  const heroRoles=document.querySelector('.hero-left .roles');
-  const heroCopy=document.querySelector('.hero-left .hero-copy');
-  const heroButtons=document.querySelector('.hero-left .hero-buttons');
-  const heroSocials=document.querySelector('.hero-left .socials');
-  const heroPortrait=document.querySelector('.hero-art .portrait-wrap');
-  if(heroEyebrow)heroTimeline.fromTo(heroEyebrow,{y:24,opacity:0,filter:'blur(8px)'},{y:0,opacity:1,filter:'blur(0)',duration:.65},0);
-  if(heroTitle)heroTimeline.fromTo(heroTitle,{y:70,opacity:0,rotateX:-28,filter:'blur(12px)'},{y:0,opacity:1,rotateX:0,filter:'blur(0px)',duration:1.05},.08);
-  if(heroRoles)heroTimeline.fromTo(heroRoles,{y:22,opacity:0},{y:0,opacity:1,duration:.62},.32);
-  if(heroCopy)heroTimeline.fromTo(heroCopy,{y:28,opacity:0},{y:0,opacity:1,duration:.7},.42);
-  if(heroButtons)heroTimeline.fromTo(heroButtons,{y:24,opacity:0,scale:.97},{y:0,opacity:1,scale:1,duration:.62},.55);
-  if(heroSocials)heroTimeline.fromTo(heroSocials,{y:18,opacity:0},{y:0,opacity:1,duration:.55},.68);
-  if(heroPortrait)heroTimeline.fromTo(heroPortrait,{y:52,opacity:0,scale:.94,filter:'blur(8px)'},{y:0,opacity:1,scale:1,filter:'blur(0)',duration:1.1,ease:'power3.out'},.3);
-  if(desktop){
-   const homeCards=document.querySelectorAll('.hero-art .code-window,.hero-art .focus-card,.hero>.stats');
-   if(homeCards.length)heroTimeline.fromTo(homeCards,{y:30,opacity:0,rotateY:8},{y:0,opacity:1,rotateY:0,duration:.8,stagger:.13},.48);
-  }
-  if(heroTitle){
-   // Keep the accent dot visually intact while animating the title as a single kinetic unit.
-   gsap.fromTo(heroTitle,{y:70,opacity:0,rotateX:-28,filter:'blur(12px)'},{y:0,opacity:1,rotateX:0,filter:'blur(0px)',duration:1.25,delay:.08,ease:'power4.out'});
-  }
-  document.querySelectorAll('.section-head h2').forEach((h,i)=>{
-   splitText(h);
-   gsap.fromTo(h.querySelectorAll('.kinetic-char'),{yPercent:115,rotateX:-65,opacity:0},{yPercent:0,rotateX:0,opacity:1,duration:.72,stagger:.022,ease:'back.out(1.35)',scrollTrigger:{trigger:h,start:'top 84%',once:true}});
-  });
-  // Chapter-by-chapter scroll reveals, each with its own visual rhythm.
+  // Chapter-by-chapter scroll reveals with stable, readable typography.
   document.querySelectorAll('main section').forEach((section,index)=>{
    const head=section.querySelector('.section-head');
-   const copy=section.querySelector('.about-copy,.hero-copy,.contact-panel>div:first-child');
-   if(head)gsap.fromTo(head,{y:64,opacity:0,filter:'blur(10px)'},{y:0,opacity:1,filter:'blur(0px)',duration:1,scrollTrigger:{trigger:section,start:'top 78%',once:true}});
-   if(copy&&section.id!=='home')gsap.fromTo(copy,{y:36,opacity:0},{y:0,opacity:1,duration:.9,delay:.08,scrollTrigger:{trigger:copy,start:'top 88%',once:true}});
+   const copy=section.querySelector('.about-text,.hero-copy,.contact-panel>div:first-child');
+   if(head)gsap.fromTo(head,{y:34,opacity:0},{y:0,opacity:1,duration:.85,scrollTrigger:{trigger:section,start:'top 78%',once:true}});
+   if(copy&&section.id!=='home')gsap.fromTo(copy,{y:24,opacity:0},{y:0,opacity:1,duration:.8,delay:.06,scrollTrigger:{trigger:copy,start:'top 88%',once:true}});
    const cards=section.querySelectorAll('.project,.timeline article,.skill-grid>div,.certificate-card,.recognition-grid>div');
-   if(cards.length)gsap.fromTo(cards,{y:58,opacity:0,rotateX:desktop?12:0,rotateY:desktop?index%2?7:-7:0,scale:.94,transformPerspective:1200},{y:0,opacity:1,rotateX:0,rotateY:0,scale:1,duration:1,stagger:.095,ease:'power3.out',scrollTrigger:{trigger:cards[0].parentElement,start:'top 82%',once:true}});
+   if(cards.length)gsap.fromTo(cards,{y:38,opacity:0,rotateX:desktop?7:0,scale:.98,transformPerspective:1100},{y:0,opacity:1,rotateX:0,scale:1,duration:.8,stagger:.075,ease:'power3.out',scrollTrigger:{trigger:cards[0].parentElement,start:'top 84%',once:true}});
   });
-  // Multi-plane parallax: foreground subject, interface panels and orbit move at different speeds.
+  // Parallax and depth only on larger screens; mobile remains readable and stable.
   if(desktop){
-   const parallax=[
-    ['.hero-art',-90],['.portrait-wrap',-48],['.globe',35],['.about-visual',-58],
-    ['.contact-orb',75],['.contact-panel',-22]
-   ];
-   parallax.forEach(([selector,amount])=>document.querySelectorAll(selector).forEach(el=>{
-    gsap.to(el,{y:amount,ease:'none',scrollTrigger:{trigger:el.closest('section')||el,start:'top bottom',end:'bottom top',scrub:1.15}});
-   }));
-   // Layered 3D tilt on section feature visuals, tied to the scroll position.
+   [['.hero-art',-46],['.portrait-wrap',-22],['.about-visual',-24],['.contact-orb',35]].forEach(([selector,amount])=>{
+    document.querySelectorAll(selector).forEach(el=>gsap.to(el,{y:amount,ease:'none',scrollTrigger:{trigger:el.closest('section')||el,start:'top bottom',end:'bottom top',scrub:1.2}}));
+   });
    document.querySelectorAll('.about-visual,.contact-panel,.hero-art').forEach(el=>{
-    gsap.fromTo(el,{rotateX:4,rotateY:-3,transformPerspective:1400},{rotateX:-2,rotateY:3,ease:'none',scrollTrigger:{trigger:el.closest('section'),start:'top bottom',end:'bottom top',scrub:1.4}});
+    gsap.fromTo(el,{rotateX:2,rotateY:-1.5,transformPerspective:1300},{rotateX:-1,rotateY:1.5,ease:'none',scrollTrigger:{trigger:el.closest('section'),start:'top bottom',end:'bottom top',scrub:1.4}});
    });
   }
-  // Scroll-driven chapter progress line.
-  document.querySelectorAll('.timeline').forEach(el=>{
-   gsap.fromTo(el,{ '--timeline-progress':0 },{'--timeline-progress':1,ease:'none',scrollTrigger:{trigger:el,start:'top 72%',end:'bottom 58%',scrub:true}});
-  });
-  // Ambient scroll-linked motion in the project gallery.
+  document.querySelectorAll('.timeline').forEach(el=>gsap.fromTo(el,{'--timeline-progress':0},{'--timeline-progress':1,ease:'none',scrollTrigger:{trigger:el,start:'top 72%',end:'bottom 58%',scrub:true}}));
   const gallery=document.querySelector('.project-grid');
-  if(gallery&&desktop)gsap.to(gallery,{y:-34,ease:'none',scrollTrigger:{trigger:gallery,start:'top bottom',end:'bottom top',scrub:1.1}});
- }
+  if(gallery&&desktop)gsap.to(gallery,{y:-18,ease:'none',scrollTrigger:{trigger:gallery,start:'top bottom',end:'bottom top',scrub:1.2}});
  // Fluid page navigation: native scroll remains available, but links glide to chapters.
  document.documentElement.style.scrollBehavior=reduce?'auto':'smooth';
  // Refresh after fonts/images settle so scroll scenes use accurate geometry.
