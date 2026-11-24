@@ -5,43 +5,6 @@ const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isInters
 const glow=document.querySelector('.cursor-glow');window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const sections=[...document.querySelectorAll('main section[id]')],links=[...document.querySelectorAll('.nav a')];window.addEventListener('scroll',()=>{let current='home';sections.forEach(s=>{if(scrollY>=s.offsetTop-180)current=s.id});links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current))},{passive:true});
 
-/* FIRST-PAINT INTRO — guaranteed visible before portfolio content */
-(()=>{
- const loader=document.getElementById('site-loader');
- if(!loader)return;
- const body=document.body;
- body.classList.add('is-loading');
- let finished=false,progress=0;
- const percent=document.getElementById('loader-percent');
- const terminal=document.getElementById('loader-terminal-text');
- const messages=['Initializing universe...','Establishing secure connection...','Compiling creative systems...','Loading projects & experiences...','Welcome to my universe.'];
- const started=performance.now(),duration=5200;
- const tick=now=>{
-  if(finished)return;
-  const elapsed=now-started;
-  progress=Math.min(100,Math.floor((elapsed/duration)*100));
-  if(percent)percent.textContent=String(progress).padStart(2,'0')+'%';
-  if(terminal)terminal.textContent=messages[Math.min(messages.length-1,Math.floor(progress/22))];
-  if(elapsed>=duration){finish();return;}
-  requestAnimationFrame(tick);
- };
- const finish=()=>{
-  if(finished)return;
-  finished=true;
-  if(percent)percent.textContent='100%';
-  if(terminal)terminal.textContent='Universe ready.';
-  loader.classList.add('is-launching');
-  window.setTimeout(()=>{
-   loader.classList.add('is-hidden');
-   body.classList.remove('is-loading');
-   window.setTimeout(()=>loader.remove(),650);
-  },900);
- };
- requestAnimationFrame(tick);
- /* Safety fallback if a browser throttles animation frames during startup. */
- window.setTimeout(finish,7600);
-})();
- 
 /* Cinematic scroll engine: progress, subtle parallax, spatial depth and reveal */
 (()=> {
   const root=document.documentElement;
