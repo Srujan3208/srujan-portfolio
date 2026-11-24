@@ -863,11 +863,11 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 }
 
 
-/* Iceland / sci-fi portfolio design system from the supplied effects guide */
-:root { --font-display:'Iceland',sans-serif; --font-body:'Space Grotesk',sans-serif; --font-mono:'JetBrains Mono',monospace; }
-.hero-left h1,.section-head h2,.project h3,.stats strong,.brand {font-family:var(--font-display)!important;letter-spacing:.045em;}
-.hero-left h1 {font-size:clamp(4.2rem,9vw,7.4rem);line-height:.9;text-transform:uppercase;text-shadow:0 0 26px rgba(168,85,247,.22);}
-.section-head>span,.eyebrow,.card-label,.project-number,.project-type,.loader-label,.loader-coordinates {font-family:var(--font-mono)!important;}
+/* Preserve the original portfolio typography: Space Grotesk headings, DM Sans body */
+.hero-left h1,.section-head h2,.project h3,.stats strong,.brand {font-family:'Space Grotesk',sans-serif!important;letter-spacing:inherit;}
+.hero-left h1 {font-size:clamp(72px,9vw,126px);line-height:.95;text-transform:none;letter-spacing:-7px;text-shadow:none;}
+.section-head>span,.eyebrow,.card-label,.project-number,.project-type,.loader-label,.loader-coordinates {font-family:'Space Grotesk',sans-serif!important;}
+#loader-percent {font-family:'Space Grotesk',sans-serif!important;}
 .hero-grid {background-size:54px 54px!important;animation:grid-drift 32s linear infinite;}
 @keyframes grid-drift {from{background-position:0 0}to{background-position:54px 54px}}
 .hero-left h1:hover {animation:name-glitch .28s steps(2,end);}
