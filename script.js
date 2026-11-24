@@ -777,13 +777,17 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   if(el.dataset.kinetic==='done')return;
   const original=el.textContent.trim();if(!original)return;
   el.dataset.kinetic='done';el.setAttribute('aria-label',original);
-  const fragment=document.createDocumentFragment();
-  [...original].forEach((char,i)=>{
-   const span=document.createElement('span');span.className='kinetic-char';
-   span.textContent=char===' '?'\u00a0':char;span.style.setProperty('--char-index',i);
-   fragment.appendChild(span);
+  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  nodes.forEach(node=>{
+   const fragment=document.createDocumentFragment();
+   [...node.textContent].forEach((char,i)=>{
+    const span=document.createElement('span');span.className='kinetic-char';
+    span.textContent=char===' '?'\\u00a0':char;span.style.setProperty('--char-index',i);
+    fragment.appendChild(span);
+   });
+   node.parentNode.replaceChild(fragment,node);
   });
-  el.replaceChildren(fragment);
  };
  if(!reduce){
   const heroTitle=document.querySelector('.hero h1');
@@ -820,7 +824,6 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   }
   // Scroll-driven chapter progress line.
   document.querySelectorAll('.timeline').forEach(el=>{
-   const line=el.querySelector('::before');
    gsap.fromTo(el,{ '--timeline-progress':0 },{'--timeline-progress':1,ease:'none',scrollTrigger:{trigger:el,start:'top 72%',end:'bottom 58%',scrub:true}});
   });
   // Ambient scroll-linked motion in the project gallery.
