@@ -21,7 +21,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  };
  /* The script is loaded at the end of body; start the intro immediately.
     Do not wait for every image/font/network request to finish. */
- const introDuration=22000;
+ const introDuration=9000;
  window.setTimeout(finish,introDuration);
  window.addEventListener('pageshow',()=>window.setTimeout(finish,introDuration),{once:true});
  document.getElementById('skip-intro')?.addEventListener('click',finish);
