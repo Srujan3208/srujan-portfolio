@@ -1888,7 +1888,7 @@ body.is-loading>:not(#site-loader){visibility:visible!important}
 body.is-loading{min-height:100vh;overflow-x:hidden!important}
 #site-loader.space-intro.photo-intro{
  background:#02030b url("https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=2400&q=90") center/cover no-repeat!important;
- animation:portfolioIntroFailsafe 0.65s ease 6.5s forwards;
+ animation:portfolioIntroFailsafe 0.65s ease 8s forwards;
 }
 #site-loader.photo-intro .space-photo-galaxy{
  background-color:#03030e!important;
@@ -1902,3 +1902,63 @@ body.is-loading{min-height:100vh;overflow-x:hidden!important}
 }
 @keyframes portfolioIntroFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media(prefers-reduced-motion:reduce){#site-loader.space-intro.photo-intro{animation:none!important;opacity:0!important;visibility:hidden!important}}
+
+
+/* DESKTOP THEATRE MODE — full-bleed 16:9 cinematic composition */
+@media (min-width: 900px) and (min-height: 560px) {
+  #site-loader.space-intro.photo-intro {
+    position:fixed!important;inset:0!important;
+    width:100vw!important;height:100vh!important;height:100dvh!important;
+    display:block!important;overflow:hidden!important;
+    background:#01030a!important;isolation:isolate;
+  }
+  #site-loader.photo-intro .space-photo-stars {
+    inset:-12%!important;opacity:.72!important;
+    background-size:150px 170px,230px 250px,300px 330px,390px 410px!important;
+  }
+  #site-loader.photo-intro .space-photo-galaxy {
+    position:absolute!important;inset:-5%!important;
+    width:110%!important;height:110%!important;
+    background-position:50% 48%!important;
+    background-size:cover!important;
+    transform-origin:50% 50%!important;
+    filter:contrast(1.08) saturate(1.16);
+  }
+  #site-loader.photo-intro .space-photo-earth {
+    position:absolute!important;inset:-5%!important;
+    width:110%!important;height:110%!important;
+    background-position:50% 52%!important;
+    background-size:cover!important;
+    transform-origin:50% 52%!important;
+    filter:contrast(1.08) saturate(1.12);
+  }
+  #site-loader.photo-intro .space-photo-atmosphere {
+    background:
+      radial-gradient(ellipse at 50% 48%,transparent 38%,rgba(0,0,0,.22) 78%,rgba(0,0,0,.48) 120%),
+      linear-gradient(90deg,rgba(0,0,0,.16),transparent 18%,transparent 82%,rgba(0,0,0,.16))!important;
+  }
+  #site-loader.photo-intro.phase-galaxy .space-photo-galaxy {
+    animation:desktopTheatreGalaxy 3.45s cubic-bezier(.18,.72,.18,1) both!important;
+  }
+  #site-loader.photo-intro.phase-earth .space-photo-earth {
+    animation:desktopTheatreEarth 2.5s cubic-bezier(.2,.72,.16,1) both!important;
+  }
+  #site-loader.photo-intro.phase-zoom .space-photo-earth {
+    animation:desktopEarthDive 2.15s cubic-bezier(.38,0,.14,1) both!important;
+  }
+}
+@keyframes desktopTheatreGalaxy {
+  0%{transform:scale(1.04) translate3d(0,0,0);filter:brightness(.58) contrast(1.08) saturate(1.1)}
+  45%{transform:scale(1.22) translate3d(-.8%,.3%,0);filter:brightness(1.02) contrast(1.1) saturate(1.18)}
+  100%{transform:scale(1.48) translate3d(1%,-.5%,0);filter:brightness(1.12) contrast(1.12) saturate(1.22)}
+}
+@keyframes desktopTheatreEarth {
+  0%{transform:scale(1.55) translate3d(0,3%,0);filter:brightness(.5) saturate(.9)}
+  60%{transform:scale(1.08) translate3d(0,0,0);filter:brightness(1.04) saturate(1.1)}
+  100%{transform:scale(1.12) translate3d(0,-.5%,0);filter:brightness(1.12) saturate(1.16)}
+}
+@keyframes desktopEarthDive {
+  0%{transform:scale(1.12) translate3d(0,-.5%,0);filter:brightness(1.08)}
+  70%{transform:scale(2.15) translate3d(0,-3%,0);filter:brightness(1.2)}
+  100%{transform:scale(3.45) translate3d(0,-8%,0);filter:brightness(1.32)}
+}
