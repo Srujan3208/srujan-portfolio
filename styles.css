@@ -2135,3 +2135,12 @@ body.intro-complete{overflow-x:hidden}
  #site-loader.cinematic-intro{display:block!important;visibility:visible!important;opacity:1!important}
  .space-intro{display:block!important;visibility:visible!important}
 }
+
+
+/* Always-visible cinematic fallback beneath the transparent WebGL canvas. */
+#site-loader.cinematic-intro{background:#03020b!important;background-image:radial-gradient(ellipse at 50% 48%,rgba(61,36,112,.62) 0%,rgba(18,14,48,.8) 38%,#03020b 82%)!important}
+#site-loader.cinematic-intro:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 22%,#fff9 45%,transparent 70%),radial-gradient(1px 1px at 26% 74%,#c9b8ffbb 45%,transparent 70%),radial-gradient(2px 2px at 78% 18%,#fff9 45%,transparent 70%),radial-gradient(1px 1px at 88% 68%,#d8caffbb 45%,transparent 70%),radial-gradient(1px 1px at 56% 82%,#fff8 45%,transparent 70%),radial-gradient(1px 1px at 42% 14%,#fff8 45%,transparent 70%);background-size:100% 100%;animation:cosmicTwinkle 5s ease-in-out infinite alternate}
+#site-loader.cinematic-intro #intro-cosmos{z-index:1!important;background:transparent!important}
+#site-loader.cinematic-intro .intro-hud{z-index:3!important}
+@keyframes cosmicTwinkle{from{opacity:.45;transform:scale(1)}to{opacity:1;transform:scale(1.015)}}
+@media(prefers-reduced-motion:reduce){#site-loader.cinematic-intro:before{animation:none}}
