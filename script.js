@@ -91,7 +91,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  if(!root||!canvas)return;
  const fill=document.getElementById('intro-progress-fill'),percent=document.getElementById('intro-percent'),status=root.querySelector('.intro-status'),skip=document.getElementById('intro-skip');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- let gl=null,program=null,raf=0,start=0,finished=false,skipRequested=false;
+ let gl=null,program=null,raf=0,startTime=0,finished=false;
  const vertex='attribute vec2 aPosition; varying vec2 vUv; void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.0,1.0);}';
  const fragment=`
  precision highp float;
@@ -176,14 +176,14 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  let px=0,py=0;window.addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*-2;},{passive:true});
  const finish=()=>{if(finished)return;finished=true;if(raf)cancelAnimationFrame(raf);root.classList.add('intro-exit');setTimeout(()=>{root.remove();window.scrollTo(0,0);window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));},1100);};
  const render=now=>{
-  raf=requestAnimationFrame(render);const elapsed=Math.min(22,(now-start)/1000),phase=elapsed<8?0:elapsed<15?(elapsed-8)/7:1,zoom=elapsed<15?0:Math.min(1,(elapsed-15)/7);
+  raf=requestAnimationFrame(render);const elapsed=Math.min(22,(now-startTime)/1000),phase=elapsed<8?0:elapsed<15?(elapsed-8)/7:1,zoom=elapsed<15?0:Math.min(1,(elapsed-15)/7);
   if(gl&&program){gl.useProgram(program);gl.uniform1f(canvas._uniforms.time,elapsed);gl.uniform1f(canvas._uniforms.phase,phase);gl.uniform1f(canvas._uniforms.zoom,zoom);gl.uniform2f(canvas._uniforms.pointer,px,py);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
   const p=Math.min(100,elapsed/22*100);if(fill)fill.style.width=p+'%';if(percent)percent.textContent=String(Math.floor(p)).padStart(2,'0')+'%';
   if(status)status.textContent=elapsed<8?'TRAVERSING THE MILKY WAY':elapsed<15?'APPROACHING PLANET EARTH':'DESCENDING TO THE SURFACE';
   if(elapsed>=22)finish();
  };
- const start=()=>{if(reduced){finish();return;}if(!init())root.classList.add('intro-fallback');start=performance.now();raf=requestAnimationFrame(render);};
+ const boot=()=>{if(reduced){finish();return;}if(!init())root.classList.add('intro-fallback');startTime=performance.now();raf=requestAnimationFrame(render);};
  if(skip)skip.addEventListener('click',finish);root.addEventListener('pointerdown',e=>{if(e.target===root)finish();});
  window.addEventListener('keydown',e=>{if(e.key==='Escape')finish();},{once:true});
- start();
+ boot();
 })();
