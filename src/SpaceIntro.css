@@ -1,13 +1,15 @@
-.si{position:relative;width:100%;height:100%;background:#000;overflow:hidden}
-.si--fixed{position:fixed;inset:0;z-index:2147483000}
-.si__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000}
-.si__seam{position:absolute;left:0;right:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;background:linear-gradient(to bottom,rgba(2,4,14,0),rgba(2,4,14,.85) 50%,rgba(2,4,14,0))}
+.si{position:relative;width:100%;height:100%;min-height:100svh;background:#02020a;overflow:hidden;isolation:isolate}
+.si--fixed{position:fixed;inset:0;width:100vw;height:100vh;height:100svh;z-index:2147483000}
+.si__video{position:absolute;display:block;max-width:none;object-fit:cover;background:#02020a}
+.si__seam{position:absolute;left:0;right:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;background:linear-gradient(to bottom,transparent,rgba(2,4,14,.82) 50%,transparent)}
 .si__seam.is-on{opacity:1}
 .si__cta{position:absolute;border-radius:999px;display:block;cursor:pointer;pointer-events:none;transition:box-shadow .35s ease,background .35s ease,transform .35s ease}
 .si__cta.is-ready{pointer-events:auto}
-.si__cta.is-ready:hover,.si__cta:focus-visible{background:rgba(110,130,255,.14);box-shadow:0 0 42px rgba(120,140,255,.65),inset 0 0 26px rgba(150,160,255,.3);transform:translateY(-2px);outline:none}
+.si__cta.is-ready:hover,.si__cta:focus-visible{background:rgba(110,130,255,.14);box-shadow:0 0 42px rgba(120,140,255,.65),inset 0 0 26px rgba(150,160,255,.3);transform:translateY(-2px);outline:2px solid rgba(180,195,255,.75);outline-offset:3px}
 .si__tap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;border:1px solid rgba(150,170,255,.6);background:rgba(20,30,90,.45);color:#fff;font-size:28px;cursor:pointer;backdrop-filter:blur(8px)}
-.si__ctl{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;z-index:3}
-.si__ctl button{background:rgba(0,0,0,.35);border:1px solid rgba(160,180,255,.3);color:#b9c6f5;font:300 11px/1 system-ui,sans-serif;letter-spacing:.2em;padding:9px 14px;border-radius:999px;cursor:pointer;backdrop-filter:blur(6px);opacity:.8;transition:opacity .25s}
-.si__ctl button:hover,.si__ctl button:focus-visible{opacity:1;outline:none}
+.si__ctl{position:absolute;right:max(24px,env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;z-index:3}
+.si__ctl button{background:rgba(0,0,0,.38);border:1px solid rgba(160,180,255,.35);color:#d8e1ff;font:500 11px/1 system-ui,sans-serif;letter-spacing:.2em;padding:11px 16px;border-radius:999px;cursor:pointer;backdrop-filter:blur(10px);opacity:.9;transition:all .25s}
+.si__ctl button:hover,.si__ctl button:focus-visible{opacity:1;background:rgba(58,48,120,.55);outline:2px solid rgba(180,195,255,.6)}
+@media(min-width:900px){.si__ctl{right:36px;bottom:30px}.si__ctl button{font-size:12px;padding:12px 18px}}
 @media(max-width:600px){.si__ctl{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));gap:7px}.si__ctl button{font-size:10px;padding:8px 11px;letter-spacing:.12em}}
+@media(prefers-reduced-motion:reduce){.si__seam,.si__cta,.si__ctl button{transition:none}}
