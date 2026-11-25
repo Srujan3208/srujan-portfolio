@@ -77,7 +77,7 @@ export default function SpaceIntro({ onEnter, fixed = true }) {
   },[]);
   return <section ref={host} className={`si si--fixed ${fixed?"":"si--inline"}`} aria-label="Photorealistic 3D space intro">
     <div className="si__vignette"/>
-    <div className="si__top"><span>SRUJAN.DEV</span><span className="si__scene">A JOURNEY THROUGH THE UNIVERSE</span><button onClick={()=>setReady(true)}>SKIP INTRO ↗</button></div>
+    <div className="si__top"><span>SRUJAN.DEV</span><span className="si__scene">A JOURNEY THROUGH THE UNIVERSE</span><button onClick={()=>onEnter?.()}>SKIP INTRO ↗</button></div>
     <div className={`si__title ${ready?"is-visible":""}`}><span>EXPLORE MY UNIVERSE</span><h1>SRUJAN</h1><p>AI DEVELOPER <i/> SOFTWARE ENGINEER</p><button onClick={()=>onEnter?.()}>ENTER MY PORTFOLIO <b>↗</b></button></div>
     <div className="si__bottom"><span>SCROLL TO EXPLORE</span><span>EST. 2026 · INFINITE POSSIBILITIES</span></div>
   </section>;
