@@ -15,4 +15,4 @@ function IntroMount() {
 }
 
 const mount = document.getElementById("react-space-intro");
-if (mount) createRoot(mount).render(<React.StrictMode><IntroMount /></React.StrictMode>);
+if (mount) createRoot(mount).render(<IntroMount />);
