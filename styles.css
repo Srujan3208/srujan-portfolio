@@ -1080,3 +1080,48 @@ body.is-scrolling .topbar { background:rgba(7,7,17,.92); border-bottom-color:rgb
 /* Reliable inline Generative AI mark — no external image dependency */
 .cert-icon.genai-learning-mark {color:#d6b4ff;background:linear-gradient(145deg,#2b1746,#171124);border-color:#684294;box-shadow:inset 0 0 18px rgba(192,132,252,.14),0 0 18px rgba(147,51,234,.12);}
 .cert-icon.genai-learning-mark svg {display:block;width:27px;height:27px;filter:drop-shadow(0 0 5px rgba(192,132,252,.55));}
+
+
+/* CINEMATIC 22-SECOND INTRO REBUILD */
+#site-loader{overflow:hidden!important;background:#01030a!important}
+#site-loader .galaxy-universe{z-index:0!important;animation:galaxy-camera-flight 22s cubic-bezier(.2,.65,.25,1) both}
+#site-loader .loader-cosmos{z-index:1!important;opacity:.38!important}
+#site-loader .loader-inner{z-index:4!important;display:flex!important;gap:8px!important}
+#site-loader .earth-stage{opacity:0;transform:translateY(15vh) scale(.18) rotate(-18deg);filter:brightness(.7) saturate(1.2);animation:earth-arrival 22s cubic-bezier(.16,.72,.18,1) both!important}
+#site-loader .loader-brand,#site-loader .loader-label,#site-loader .loader-track,#site-loader .loader-coordinates{opacity:0;animation:loader-ui-fade 22s linear both}
+#site-loader .loader-brand{animation-delay:16.6s}
+#site-loader .loader-label,#site-loader .loader-track{animation-delay:15.8s}
+#site-loader .loader-coordinates{animation-delay:16.2s}
+#site-loader .loader-final-reveal{position:fixed;left:50%;bottom:8vh;z-index:8;display:flex;align-items:center;flex-direction:column;gap:9px;width:min(90vw,560px);opacity:0;transform:translate(-50%,22px);animation:final-title-arrive 22s ease both}
+.loader-final-kicker{font:600 9px 'Space Grotesk',sans-serif;letter-spacing:4px;color:#b8d8ff}
+.loader-final-reveal strong{font:700 clamp(42px,8vw,76px)/.95 'Space Grotesk',sans-serif;letter-spacing:9px;color:#f6faff;text-shadow:0 0 24px #60a5fa,0 0 70px #2563eb}
+.loader-final-role{font:500 10px 'Space Grotesk',sans-serif;letter-spacing:3px;color:#c8dafa}
+.loader-final-reveal button{margin-top:9px;padding:13px 25px;border:1px solid rgba(125,190,255,.8);border-radius:999px;background:linear-gradient(110deg,rgba(17,67,133,.8),rgba(60,35,125,.75));color:white;font:700 10px 'Space Grotesk',sans-serif;letter-spacing:1.8px;box-shadow:0 0 24px #2563eb66;cursor:pointer;pointer-events:auto}
+.loader-final-reveal button span{margin-left:12px;color:#93c5fd}
+#site-loader.is-launching .loader-final-reveal{animation:none;opacity:0}
+@keyframes galaxy-camera-flight{
+  0%{transform:scale(1) rotate(0deg);filter:brightness(.55) saturate(.8)}
+  18%{transform:scale(1.25) rotate(-2deg);filter:brightness(.85) saturate(1.2)}
+  42%{transform:scale(1.9) rotate(2deg);filter:brightness(1.3) saturate(1.5)}
+  64%{transform:scale(2.7) rotate(0deg);filter:brightness(1.55) saturate(1.6)}
+  78%,100%{transform:scale(3.2) rotate(0deg);filter:brightness(1.1) saturate(1.3)}
+}
+@keyframes earth-arrival{
+  0%,34%{opacity:0;transform:translateY(15vh) scale(.18) rotate(-18deg)}
+  46%{opacity:.5;transform:translateY(5vh) scale(.48) rotate(-8deg)}
+  62%{opacity:1;transform:translateY(0) scale(.78) rotate(0)}
+  76%,100%{opacity:1;transform:translateY(-3vh) scale(.88) rotate(0)}
+}
+@keyframes loader-ui-fade{0%,70%{opacity:0}82%,100%{opacity:1}}
+@keyframes final-title-arrive{0%,76%{opacity:0;transform:translate(-50%,22px);filter:blur(12px)}88%,100%{opacity:1;transform:translate(-50%,0);filter:blur(0)}}
+@media(max-width:760px){
+ #site-loader .loader-inner{width:100%!important;top:43%!important}
+ #site-loader .earth-stage{width:min(82vw,330px)!important;height:min(82vw,330px)!important}
+ #site-loader .loader-final-reveal{bottom:7vh}
+ .loader-final-reveal strong{font-size:48px;letter-spacing:6px}
+ .loader-final-role{font-size:8px;letter-spacing:1.6px}
+}
+@media(prefers-reduced-motion:reduce){
+ #site-loader .galaxy-universe,#site-loader .earth-stage,#site-loader .loader-final-reveal{animation:none!important}
+ #site-loader .earth-stage,#site-loader .loader-final-reveal{opacity:1!important;transform:none!important}
+}
