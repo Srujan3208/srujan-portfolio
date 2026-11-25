@@ -104,7 +104,6 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  };
  const fallback=()=>{
    root.classList.add('intro-fallback');
-   if(reduce){finish();return;}
    start=performance.now();
    const tick=now=>{if(finished)return;const t=(now-start)/1000,p=Math.min(100,t/12*100);if(fill)fill.style.width=p+'%';if(percent)percent.textContent=Math.floor(p).toString().padStart(2,'0')+'%';if(status)status.textContent='TRAVERSING THE MILKY WAY';if(t>=12)finish();else raf=requestAnimationFrame(tick);};
    raf=requestAnimationFrame(tick);
@@ -184,7 +183,6 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  };
  if(skip)skip.addEventListener('click',finish);
  window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!finished)finish();});
- if(reduce){finish();return;}
  if(!init())fallback();
  window.addEventListener('beforeunload',()=>{if(raf)cancelAnimationFrame(raf);if(resizeHandler)removeEventListener('resize',resizeHandler);renderer?.dispose();},{once:true});
 })();
