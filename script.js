@@ -85,105 +85,106 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
 
 /* Legacy cyber-globe loader removed; the 22-second cinematic renderer below owns this canvas. */
 
-/* 22-SECOND PROCEDURAL WEBGL INTRO — galaxy fly-through, Earth reveal, surface dive */
+
+/* UPLOADED GALAXY INTRO CONTROLLER */
 (()=>{
- const root=document.getElementById('site-loader'),canvas=document.getElementById('intro-cosmos');
+ const root=document.getElementById('site-loader');
+ const canvas=document.getElementById('intro-cosmos');
  if(!root||!canvas)return;
- const fill=document.getElementById('intro-progress-fill'),percent=document.getElementById('intro-percent'),status=root.querySelector('.intro-status'),skip=document.getElementById('intro-skip');
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- let gl=null,program=null,raf=0,startTime=0,finished=false;
- const vertex='attribute vec2 aPosition; varying vec2 vUv; void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.0,1.0);}';
- const fragment=`
- precision highp float;
- varying vec2 vUv;
- uniform vec2 uResolution;
- uniform float uTime;
- uniform float uPhase;
- uniform float uZoom;
- uniform vec2 uPointer;
- float hash(vec3 p){p=fract(p*.3183099+.1);p*=17.0;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
- float noise(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.0-2.0*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
- float fbm(vec3 p){float v=0.0,a=.52;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.03;a*=.49;}return v;}
- vec3 galaxy(vec2 uv){
-  vec2 p=uv-vec2(.5);p.x*=uResolution.x/uResolution.y;p+=uPointer*.018;
-  float r=length(p),ang=atan(p.y,p.x),spin=ang+log(r+.035)*2.25-uTime*.055;
-  float arms=pow(max(0.0,.5+.5*cos(spin*4.0)),8.0);
-  float core=exp(-r*8.0),disc=exp(-r*2.35);
-  float n=fbm(vec3(p*5.0,uTime*.025)),dust=fbm(vec3(p*12.0,1.4));
-  float lanes=smoothstep(.28,.78,arms*.75+n*.4)*disc;
-  float cloud=disc*(.12+n*.36)+lanes*.85;
-  vec3 col=vec3(.012,.014,.045);
-  col+=vec3(.12,.045,.28)*cloud;
-  col+=vec3(.13,.25,.72)*pow(max(0.0,arms),1.7)*disc*.72;
-  col+=vec3(.48,.12,.68)*lanes*.62;
-  col+=vec3(.95,.58,.38)*core*.92;
-  col*=.76+(.24*dust);
-  float stars=0.0;vec2 cell=floor(uv*uResolution/vec2(3.2));float h=hash(vec3(cell,2.));
-  vec2 local=fract(uv*uResolution/vec2(3.2))-.5;
-  stars=step(.994,h)*pow(max(0.0,1.0-length(local)*2.0),5.0);
-  float star2=step(.998,hash(vec3(floor(uv*uResolution/vec2(1.8)),7.)))*.8;
-  col+=vec3(.65,.76,1.0)*(stars+star2*.6);
-  col*=smoothstep(1.15,.12,r);
-  return col;
- }
- vec3 earth(vec2 uv){
-  vec2 p=uv-vec2(.51,.50);p.x*=uResolution.x/uResolution.y;p+=uPointer*.012;
-  float radius=mix(.78,3.15,uZoom);
-  float d=length(p),z=sqrt(max(0.0,radius*radius-d*d));
-  vec3 n=normalize(vec3(p,z));
-  float globe=step(d,radius);
-  float landNoise=fbm(n*vec3(5.0,5.0,5.0)+vec3(2.3,1.7,.6));
-  float ridge=fbm(n*12.0+vec3(3.1,0.0,1.8));
-  float land=smoothstep(.49,.62,landNoise+ridge*.11);
-  vec3 ocean=mix(vec3(.012,.045,.16),vec3(.018,.16,.34),smoothstep(-.2,.8,n.y));
-  vec3 ground=mix(vec3(.025,.20,.19),vec3(.20,.32,.30),ridge);
-  vec3 surface=mix(ocean,ground,land);
-  float light= max(0.0,dot(n,normalize(vec3(-.48,.58,.72))));
-  float cloud= smoothstep(.60,.78,fbm(n*22.0+vec3(0.0,uTime*.008,0.0)))*.22;
-  surface=surface*(.22+light*.95)+cloud;
-  float atmosphere=pow(1.0-max(0.0,n.z),3.0);
-  vec3 rim=vec3(.10,.43,1.0)*atmosphere*1.8;
-  return mix(vec3(0.0),surface+rim,globe);
- }
- void main(){
-  vec2 uv=vUv;
-  vec3 space=galaxy(uv);
-  vec3 earthCol=earth(uv);
-  float blend=smoothstep(0.0,1.0,uPhase);
-  vec3 color=mix(space,earthCol,blend);
-  float starfield=(hash(vec3(floor(uv*uResolution/2.2),5.))>.996)?1.0:0.0;
-  color+=vec3(.48,.62,1.0)*starfield*(1.0-blend*.7);
-  float vignette=smoothstep(1.15,.25,length((uv-.5)*vec2(uResolution.x/uResolution.y,1.0)));
-  color*=.68+.32*vignette;
-  color=pow(max(color,0.0),vec3(.88));
-  gl_FragColor=vec4(color,1.0);
- }`;
- const compile=(type,source)=>{const sh=gl.createShader(type);gl.shaderSource(sh,source);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(sh));return sh;};
+ const fill=document.getElementById('intro-progress-fill'),percent=document.getElementById('intro-percent');
+ const status=root.querySelector('.intro-status'),skip=document.getElementById('intro-skip');
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ let renderer,scene,camera,raf=0,start=0,finished=false,earth=null,galaxy=null,stars=null,resizeHandler;
+ const finish=()=>{
+   if(finished)return;finished=true;
+   if(raf)cancelAnimationFrame(raf);
+   root.classList.add('intro-exit');
+   document.body.classList.add('intro-complete');
+   setTimeout(()=>{root.remove();window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));},850);
+ };
+ const fallback=()=>{
+   root.classList.add('intro-fallback');
+   if(reduce){finish();return;}
+   start=performance.now();
+   const tick=now=>{if(finished)return;const t=(now-start)/1000,p=Math.min(100,t/12*100);if(fill)fill.style.width=p+'%';if(percent)percent.textContent=Math.floor(p).toString().padStart(2,'0')+'%';if(status)status.textContent='TRAVERSING THE MILKY WAY';if(t>=12)finish();else raf=requestAnimationFrame(tick);};
+   raf=requestAnimationFrame(tick);
+ };
  const init=()=>{
+  if(!window.THREE)return false;
   try{
-   gl=canvas.getContext('webgl',{alpha:false,antialias:false,powerPreference:'high-performance'})||canvas.getContext('experimental-webgl');
-   if(!gl)return false;
-   program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,vertex));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,fragment));gl.linkProgram(program);
-   if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program));
-   gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-   const loc=gl.getAttribLocation(program,'aPosition');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-   canvas._uniforms={resolution:gl.getUniformLocation(program,'uResolution'),time:gl.getUniformLocation(program,'uTime'),phase:gl.getUniformLocation(program,'uPhase'),zoom:gl.getUniformLocation(program,'uZoom'),pointer:gl.getUniformLocation(program,'uPointer')};
-   resize();return true;
-  }catch(e){canvas.classList.add('intro-fallback');return false;}
+   const THREE=window.THREE;
+   renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:'high-performance'});
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
+   renderer.setSize(innerWidth,innerHeight,false);
+   renderer.outputEncoding=THREE.sRGBEncoding;
+   scene=new THREE.Scene();scene.background=new THREE.Color(0x03020b);
+   camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,1600);camera.position.set(0,0,42);
+   const nebula=new THREE.BufferGeometry(),count=68000,positions=new Float32Array(count*3),colors=new Float32Array(count*3);
+   const c1=new THREE.Color(0x6932b8),c2=new THREE.Color(0x2358a8),c3=new THREE.Color(0x170d35);
+   for(let i=0;i<count;i++){
+    const arm=i%4,rad=Math.pow(Math.random(),.62)*42,angle=arm*Math.PI/2+rad*.105+(Math.random()-.5)*.62;
+    positions[i*3]=Math.cos(angle)*rad+(Math.random()-.5)*3.2;
+    positions[i*3+1]=Math.sin(angle)*rad*.58+(Math.random()-.5)*2.8;
+    positions[i*3+2]=(Math.random()-.5)*25;
+    const col=[c1,c2,c3][Math.floor(Math.random()*3)];colors[i*3]=col.r;colors[i*3+1]=col.g;colors[i*3+2]=col.b;
+   }
+   nebula.setAttribute('position',new THREE.BufferAttribute(positions,3));nebula.setAttribute('color',new THREE.BufferAttribute(colors,3));
+   galaxy=new THREE.Points(nebula,new THREE.PointsMaterial({size:.12,vertexColors:true,transparent:true,opacity:.72,depthWrite:false,blending:THREE.AdditiveBlending}));
+   scene.add(galaxy);
+   const starGeo=new THREE.BufferGeometry(),sc=6500,sp=new Float32Array(sc*3);
+   for(let i=0;i<sc;i++){sp[i*3]=(Math.random()-.5)*900;sp[i*3+1]=(Math.random()-.5)*600;sp[i*3+2]=(Math.random()-.5)*950;}
+   starGeo.setAttribute('position',new THREE.BufferAttribute(sp,3));
+   stars=new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xcbd8ff,size:.75,transparent:true,opacity:.82}));
+   scene.add(stars);
+   const ambient=new THREE.AmbientLight(0x9aaeff,1.25);scene.add(ambient);
+   const sun=new THREE.PointLight(0x8c6dff,3.4,400);sun.position.set(-35,22,45);scene.add(sun);
+   const globe=new THREE.Group();globe.position.set(0,0,-45);scene.add(globe);earth=globe;
+   const earthGeo=new THREE.SphereGeometry(10,72,72);
+   const earthMat=new THREE.MeshStandardMaterial({color:0x2466a6,roughness:.92,metalness:.03});
+   const earthMesh=new THREE.Mesh(earthGeo,earthMat);globe.add(earthMesh);
+   const landMat=new THREE.MeshStandardMaterial({color:0x348d76,roughness:1,transparent:true,opacity:.82});
+   const landGeo=new THREE.SphereGeometry(10.035,48,48);
+   const land=new THREE.Mesh(landGeo,landMat);globe.add(land);
+   const cloudGeo=new THREE.SphereGeometry(10.12,48,48);
+   const cloudMat=new THREE.MeshBasicMaterial({color:0xd7e9ff,transparent:true,opacity:.11,wireframe:true});
+   const clouds=new THREE.Mesh(cloudGeo,cloudMat);globe.add(clouds);
+   const atmosphere=new THREE.Mesh(new THREE.SphereGeometry(10.5,64,64),new THREE.MeshBasicMaterial({color:0x3c8dff,transparent:true,opacity:.13,side:THREE.BackSide}));
+   globe.add(atmosphere);
+   const moon=new THREE.Mesh(new THREE.SphereGeometry(2.1,32,32),new THREE.MeshStandardMaterial({color:0x9aa4bb,roughness:1}));
+   moon.position.set(18,6,-30);scene.add(moon);
+   let px=0,py=0,tx=0,ty=0;
+   const onPointer=e=>{tx=(e.clientX/innerWidth-.5)*.35;ty=(e.clientY/innerHeight-.5)*-.25;};
+   window.addEventListener('pointermove',onPointer,{passive:true});
+   const resize=()=>{if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));};
+   resizeHandler=resize;window.addEventListener('resize',resize,{passive:true});
+   const render=now=>{
+    if(finished)return;
+    raf=requestAnimationFrame(render);
+    const elapsed=(now-start)/1000,t=Math.min(elapsed,22);
+    px+=(tx-px)*.035;py+=(ty-py)*.035;
+    galaxy.rotation.z=t*.014;stars.rotation.y=t*.003;
+    earth.rotation.y=t*.035;earth.rotation.x=Math.sin(t*.16)*.035;
+    const approach=t<8?0:t<14?(t-8)/6:1;
+    earth.position.z=-45+approach*26;
+    earth.scale.setScalar(t<8?.42:t<14?.42+approach*.58:1+Math.min(1,(t-14)/8)*.28);
+    camera.position.x=px*4;camera.position.y=py*3;
+    camera.position.z=t<8?42-t*2.1:t<14?25-(t-8)*1.2:18-Math.min(1,(t-14)/8)*3.5;
+    camera.lookAt(0,0,-8);
+    if(fill)fill.style.width=(t/22*100)+'%';
+    if(percent)percent.textContent=Math.floor(t/22*100).toString().padStart(2,'0')+'%';
+    if(status)status.textContent=t<8?'TRAVERSING THE MILKY WAY':t<15?'APPROACHING PLANET EARTH':'DESCENDING TO THE SURFACE';
+    const hud=root.querySelector('.intro-hud');
+    if(hud)hud.style.setProperty('--intro-visibility',t>16?String(Math.min(1,(t-16)/2)): '0');
+    if(t>=22)finish();
+    renderer.render(scene,camera);
+   };
+   start=performance.now();raf=requestAnimationFrame(render);
+   return true;
+  }catch(err){try{renderer?.dispose();}catch{}return false;}
  };
- const resize=()=>{if(!gl)return;const dpr=Math.min(devicePixelRatio||1,matchMedia('(min-width:1000px)').matches?1.5:1);canvas.width=Math.floor(innerWidth*dpr);canvas.height=Math.floor(innerHeight*dpr);gl.viewport(0,0,canvas.width,canvas.height);gl.uniform2f(canvas._uniforms.resolution,canvas.width,canvas.height);};
- window.addEventListener('resize',resize,{passive:true});
- let px=0,py=0;window.addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*-2;},{passive:true});
- const finish=()=>{if(finished)return;finished=true;if(raf)cancelAnimationFrame(raf);root.classList.add('intro-exit');setTimeout(()=>{root.remove();window.scrollTo(0,0);window.dispatchEvent(new CustomEvent('portfolio:intro-complete'));},1100);};
- const render=now=>{
-  raf=requestAnimationFrame(render);const elapsed=Math.min(22,(now-startTime)/1000),phase=elapsed<8?0:elapsed<15?(elapsed-8)/7:1,zoom=elapsed<15?0:Math.min(1,(elapsed-15)/7);
-  if(gl&&program){gl.useProgram(program);gl.uniform1f(canvas._uniforms.time,elapsed);gl.uniform1f(canvas._uniforms.phase,phase);gl.uniform1f(canvas._uniforms.zoom,zoom);gl.uniform2f(canvas._uniforms.pointer,px,py);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
-  const p=Math.min(100,elapsed/22*100);if(fill)fill.style.width=p+'%';if(percent)percent.textContent=String(Math.floor(p)).padStart(2,'0')+'%';
-  if(status)status.textContent=elapsed<8?'TRAVERSING THE MILKY WAY':elapsed<15?'APPROACHING PLANET EARTH':'DESCENDING TO THE SURFACE';
-  if(elapsed>=22)finish();
- };
- const boot=()=>{if(reduced){finish();return;}if(!init())root.classList.add('intro-fallback');startTime=performance.now();raf=requestAnimationFrame(render);};
- if(skip)skip.addEventListener('click',finish);root.addEventListener('pointerdown',e=>{if(e.target===root)finish();});
- window.addEventListener('keydown',e=>{if(e.key==='Escape')finish();},{once:true});
- boot();
+ if(skip)skip.addEventListener('click',finish);
+ window.addEventListener('keydown',e=>{if(e.key==='Escape'&&!finished)finish();});
+ if(reduce){finish();return;}
+ if(!init())fallback();
+ window.addEventListener('beforeunload',()=>{if(raf)cancelAnimationFrame(raf);if(resizeHandler)removeEventListener('resize',resizeHandler);renderer?.dispose();},{once:true});
 })();
