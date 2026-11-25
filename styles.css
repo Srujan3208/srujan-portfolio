@@ -2085,3 +2085,46 @@ main,header,footer{position:relative;z-index:1}
  #site-loader.cinematic-intro{display:none!important}
  #portfolio-world{display:none!important}
 }
+
+
+/* Responsive uploaded galaxy intro: keep type, controls and progress in independent safe areas. */
+.space-intro{position:fixed;inset:0;z-index:1000;overflow:hidden;background:#03020b;isolation:isolate}
+#intro-cosmos{position:absolute;inset:0;width:100%;height:100%;display:block}
+.intro-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,rgba(2,1,9,.2) 72%,rgba(2,1,9,.8) 100%)}
+.intro-hud{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;align-items:center;padding:clamp(22px,4vw,58px) clamp(20px,5vw,72px) calc(78px + env(safe-area-inset-bottom));pointer-events:none;opacity:var(--intro-visibility,1);transition:opacity .7s ease}
+.intro-brand{display:flex;align-items:center;gap:12px;font:700 13px 'Space Grotesk',sans-serif;letter-spacing:2.2px;color:#f5efff}
+.intro-brand-mark{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;color:#080512;background:linear-gradient(135deg,#d8b4fe,#7c3aed);font-size:21px;box-shadow:0 0 28px #8b5cf677}
+.intro-brand-dot{color:#b78aff}
+.intro-center-copy{pointer-events:none;text-align:center;width:min(100%,950px);justify-self:center;align-self:center;padding:0 12px;text-shadow:0 3px 22px #03020b}
+.intro-eyebrow{font:600 10px 'Space Grotesk',sans-serif;letter-spacing:clamp(2px,.7vw,5px);color:#c5a1ff}
+.intro-center-copy h1{font:700 clamp(34px,7.8vw,104px)/.98 'Space Grotesk',sans-serif;letter-spacing:clamp(-5px,-.45vw,-1px);margin:18px 0 14px;color:#fff;overflow-wrap:anywhere}
+.intro-center-copy h1 em{font-style:normal;color:#d2b3ff;text-shadow:0 0 30px #864bdb66}
+.intro-center-copy p{font:500 clamp(9px,1vw,12px) 'DM Sans',sans-serif;letter-spacing:clamp(1.5px,.4vw,3px);color:#d7d0ea;margin:0}
+.intro-bottom{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(440px,calc(100% - 40px));display:grid;grid-template-columns:1fr auto;gap:9px 14px;align-items:center;color:#c8b6e8}
+.intro-status{font:600 9px 'Space Grotesk',sans-serif;letter-spacing:1.4px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.intro-percent{font:600 10px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums}
+.intro-progress{height:2px;background:#ffffff2c;border-radius:5px;overflow:hidden;grid-column:1/-1}
+.intro-progress i{height:100%;width:0;display:block;background:linear-gradient(90deg,#7c3aed,#a78bfa,#70b7ff);box-shadow:0 0 14px #9b6cff;transition:width .08s linear}
+.intro-skip{position:absolute;right:clamp(20px,5vw,72px);bottom:calc(30px + env(safe-area-inset-bottom));pointer-events:auto;border:1px solid #c29aff66;background:#100b20ad;backdrop-filter:blur(12px);color:#f4eaff;border-radius:99px;padding:11px 16px;font:600 9px 'Space Grotesk',sans-serif;letter-spacing:1.4px;cursor:pointer}
+.intro-skip span{color:#c49aff;margin-left:8px}
+.space-intro.intro-exit{opacity:0;visibility:hidden;transition:opacity .85s ease,visibility .85s ease}
+body.intro-complete{overflow-x:hidden}
+.space-intro.intro-fallback{background:radial-gradient(ellipse at 48% 42%,#34205f 0,#100d28 42%,#03020b 80%)}
+@media(max-width:600px){
+ .intro-hud{padding:calc(22px + env(safe-area-inset-top)) 18px calc(110px + env(safe-area-inset-bottom))}
+ .intro-brand{font-size:11px}
+ .intro-brand-mark{width:30px;height:30px}
+ .intro-center-copy{width:100%;padding:0 4px}
+ .intro-center-copy h1{font-size:clamp(32px,10vw,54px);line-height:1.02;letter-spacing:-1.8px;margin:14px 0 12px}
+ .intro-center-copy p{font-size:9px;letter-spacing:1.5px}
+ .intro-bottom{bottom:calc(25px + env(safe-area-inset-bottom));width:calc(100% - 36px)}
+ .intro-skip{right:18px;bottom:calc(81px + env(safe-area-inset-bottom));padding:10px 13px}
+}
+@media(max-height:560px) and (orientation:landscape){
+ .intro-hud{padding:14px 24px 96px}
+ .intro-center-copy h1{font-size:clamp(28px,6vw,54px);margin:7px 0}
+ .intro-brand{font-size:10px}
+ .intro-bottom{bottom:12px}
+ .intro-skip{bottom:55px}
+}
+@media(prefers-reduced-motion:reduce){.space-intro{display:none!important}}
