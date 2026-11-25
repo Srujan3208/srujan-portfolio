@@ -2063,7 +2063,6 @@ body.is-loading{min-height:100vh;overflow-x:hidden!important}
 #portfolio-world.mobile-scene-disabled{display:none!important}
 body{background-color:#070611}
 main,header,footer{position:relative;z-index:1}
-main>section{background:transparent!important}
 .hero{isolation:isolate}
 .hero-copy h1,.section-head h2{text-wrap:balance}
 .hero-copy h1{letter-spacing:-.065em}
