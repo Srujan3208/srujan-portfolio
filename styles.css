@@ -2128,3 +2128,10 @@ body.intro-complete{overflow-x:hidden}
  .intro-skip{bottom:55px}
 }
 @media(prefers-reduced-motion:reduce){.space-intro{display:none!important}}
+
+
+/* Keep the requested portfolio intro visible even when the OS requests reduced motion. */
+@media(prefers-reduced-motion:reduce){
+ #site-loader.cinematic-intro{display:block!important;visibility:visible!important;opacity:1!important}
+ .space-intro{display:block!important;visibility:visible!important}
+}
