@@ -2144,3 +2144,36 @@ body.intro-complete{overflow-x:hidden}
 #site-loader.cinematic-intro .intro-hud{z-index:3!important}
 @keyframes cosmicTwinkle{from{opacity:.45;transform:scale(1)}to{opacity:1;transform:scale(1.015)}}
 @media(prefers-reduced-motion:reduce){#site-loader.cinematic-intro:before{animation:none}}
+
+
+/* High-visibility Milky Way layer: CSS remains visible even when WebGL is unavailable. */
+#site-loader.cinematic-intro{
+ background-color:#02030c!important;
+ background-image:
+  radial-gradient(ellipse at 50% 48%,rgba(83,42,157,.42) 0%,rgba(25,20,68,.45) 34%,#02030c 82%)!important;
+}
+#site-loader.cinematic-intro:after{
+ content:"";position:absolute;inset:-24%;z-index:0;pointer-events:none;
+ background:
+  radial-gradient(ellipse at 50% 50%,rgba(244,220,255,.68) 0%,rgba(174,117,255,.42) 5%,rgba(93,73,210,.22) 15%,transparent 34%),
+  radial-gradient(ellipse at 50% 50%,transparent 18%,rgba(128,79,235,.22) 28%,transparent 51%),
+  conic-gradient(from 18deg at 50% 50%,transparent 0deg,rgba(103,91,220,.14) 28deg,transparent 63deg,rgba(76,153,255,.13) 112deg,transparent 158deg,rgba(181,105,255,.17) 215deg,transparent 262deg,rgba(97,126,255,.12) 315deg,transparent 360deg);
+ filter:blur(18px) saturate(1.5);transform:rotate(-13deg) scale(1.08);
+ animation:milkyWayFallback 28s linear infinite;
+}
+#site-loader.cinematic-intro:before{
+ z-index:0!important;opacity:.92!important;
+ background-image:
+  radial-gradient(2px 2px at 12% 22%,#fff 45%,transparent 70%),
+  radial-gradient(1px 1px at 26% 74%,#d8caff 45%,transparent 70%),
+  radial-gradient(2px 2px at 78% 18%,#fff 45%,transparent 70%),
+  radial-gradient(1px 1px at 88% 68%,#d8caff 45%,transparent 70%),
+  radial-gradient(1px 1px at 56% 82%,#fff 45%,transparent 70%),
+  radial-gradient(1px 1px at 42% 14%,#fff 45%,transparent 70%);
+ background-size:100% 100%;
+}
+#site-loader.cinematic-intro #intro-cosmos{z-index:1!important;background:transparent!important}
+#site-loader.cinematic-intro .intro-vignette{z-index:2!important}
+#site-loader.cinematic-intro .intro-hud{z-index:3!important}
+@keyframes milkyWayFallback{0%{transform:rotate(-13deg) scale(1.08)}50%{transform:rotate(7deg) scale(1.15)}100%{transform:rotate(23deg) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){#site-loader.cinematic-intro:after{animation:none}}
