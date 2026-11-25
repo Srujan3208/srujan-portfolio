@@ -21,9 +21,10 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  };
  /* The script is loaded at the end of body; start the intro immediately.
     Do not wait for every image/font/network request to finish. */
- window.setTimeout(finish,3200);
- window.setTimeout(finish,5200);
- window.addEventListener('pageshow',()=>window.setTimeout(finish,5200),{once:true});
+ const introDuration=22000;
+ window.setTimeout(finish,introDuration);
+ window.addEventListener('pageshow',()=>window.setTimeout(finish,introDuration),{once:true});
+ document.getElementById('skip-intro')?.addEventListener('click',finish);
 })();
 
 /* Cinematic scroll engine: progress, subtle parallax, spatial depth and reveal */
@@ -351,7 +352,7 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
  const loader=document.getElementById('site-loader');
  const counter=document.getElementById('loader-percent');
  if(loader&&counter&&!reduce){
-  const began=performance.now(),duration=2900;
+  const began=performance.now(),duration=20500;
   const tick=now=>{
    if(!document.getElementById('site-loader'))return;
    const p=Math.min(96,Math.floor(((now-began)/duration)*96));
