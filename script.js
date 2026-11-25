@@ -119,23 +119,23 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
    scene=new THREE.Scene();scene.background=null;
    camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,1600);camera.position.set(0,0,42);
    const nebula=new THREE.BufferGeometry(),count=68000,positions=new Float32Array(count*3),colors=new Float32Array(count*3);
-   const c1=new THREE.Color(0x6932b8),c2=new THREE.Color(0x2358a8),c3=new THREE.Color(0x170d35);
+   const c1=new THREE.Color(0xb56cff),c2=new THREE.Color(0x4d9dff),c3=new THREE.Color(0x39216f);
    for(let i=0;i<count;i++){
     const arm=i%4,rad=Math.pow(Math.random(),.62)*42,angle=arm*Math.PI/2+rad*.105+(Math.random()-.5)*.62;
     positions[i*3]=Math.cos(angle)*rad+(Math.random()-.5)*3.2;
     positions[i*3+1]=Math.sin(angle)*rad*.58+(Math.random()-.5)*2.8;
     positions[i*3+2]=(Math.random()-.5)*25;
-    const col=[c1,c2,c3][Math.floor(Math.random()*3)];colors[i*3]=col.r;colors[i*3+1]=col.g;colors[i*3+2]=col.b;
+    const pick=Math.random();const col=pick<.58?c1:pick<.91?c2:c3;const glow=.72+Math.random()*.65;colors[i*3]=Math.min(1,col.r*glow);colors[i*3+1]=Math.min(1,col.g*glow);colors[i*3+2]=Math.min(1,col.b*glow);
    }
    nebula.setAttribute('position',new THREE.BufferAttribute(positions,3));nebula.setAttribute('color',new THREE.BufferAttribute(colors,3));
-   galaxy=new THREE.Points(nebula,new THREE.PointsMaterial({size:.12,vertexColors:true,transparent:true,opacity:.72,depthWrite:false,blending:THREE.AdditiveBlending}));
+   galaxy=new THREE.Points(nebula,new THREE.PointsMaterial({size:2.1,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending}));
    scene.add(galaxy);
    const starGeo=new THREE.BufferGeometry(),sc=6500,sp=new Float32Array(sc*3);
    for(let i=0;i<sc;i++){sp[i*3]=(Math.random()-.5)*900;sp[i*3+1]=(Math.random()-.5)*600;sp[i*3+2]=(Math.random()-.5)*950;}
    starGeo.setAttribute('position',new THREE.BufferAttribute(sp,3));
-   stars=new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xcbd8ff,size:.75,transparent:true,opacity:.82}));
+   stars=new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xe3eaff,size:1.35,sizeAttenuation:false,transparent:true,opacity:.9,depthWrite:false}));
    scene.add(stars);
-   const ambient=new THREE.AmbientLight(0x9aaeff,1.25);scene.add(ambient);
+   const ambient=new THREE.AmbientLight(0xb8c7ff,1.65);scene.add(ambient);
    const sun=new THREE.PointLight(0x8c6dff,3.4,400);sun.position.set(-35,22,45);scene.add(sun);
    const globe=new THREE.Group();globe.position.set(0,0,-45);scene.add(globe);earth=globe;
    const earthGeo=new THREE.SphereGeometry(10,72,72);
