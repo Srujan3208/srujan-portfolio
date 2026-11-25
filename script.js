@@ -112,11 +112,11 @@ const sections=[...document.querySelectorAll('main section[id]')],links=[...docu
   if(!window.THREE)return false;
   try{
    const THREE=window.THREE;
-   renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,powerPreference:'high-performance'});
+   renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
    renderer.setSize(innerWidth,innerHeight,false);
    renderer.outputEncoding=THREE.sRGBEncoding;
-   scene=new THREE.Scene();scene.background=new THREE.Color(0x03020b);
+   scene=new THREE.Scene();scene.background=null;
    camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,1600);camera.position.set(0,0,42);
    const nebula=new THREE.BufferGeometry(),count=68000,positions=new Float32Array(count*3),colors=new Float32Array(count*3);
    const c1=new THREE.Color(0x6932b8),c2=new THREE.Color(0x2358a8),c3=new THREE.Color(0x170d35);
